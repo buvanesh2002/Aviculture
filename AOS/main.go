@@ -31,7 +31,7 @@ func main() {
 	router.HandleFunc("/listbyflock", ListFlockbyHandler).Methods("POST")
 	router.HandleFunc("/dailyentries",AddEntryHandler).Methods("POST")
 	router.HandleFunc("/addreminder", AddReminderHandler).Methods("POST")
-	//router.HandleFunc("/showreminder", ShowReminderHandler).Methods("POST")
+	router.HandleFunc("/listremainder", ListRemainderHandler).Methods("POST")
 	router.HandleFunc("/listflockentries", ListFlockEntryHandler).Methods("POST")
 	router.HandleFunc("/listparticularflock", ListParticularFlockHandler).Methods("POST")
 	router.HandleFunc("/dailyentryreport",DayWiseReportHandler).Methods("POST")
@@ -140,16 +140,6 @@ type Ids struct {
 func ListFlockbyHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  ListFlockbyHandler handler +++++++++++++++++++++++++")
-	// type lockFlock struct {
-	// 	ID string `json:"id"`
-	// }
-
-	// var data lockFlock
-	// if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
-	// 	log.Println(err)
-	// 	http.Error(w, err.Error(), http.StatusBadRequest)
-	// 	return
-	// }
 
 	b, err := ioutil.ReadAll(r.Body)
     if err != nil {
@@ -397,10 +387,15 @@ func ListParticularFlockHandler(w http.ResponseWriter, r *http.Request) {
     log.Println(request.ID)
 	id := request.ID
 
-	result:=service.ListParticularFlock(id)
+	result,err:=service.ListParticularFlock(id)
+    if err!=nil {
+        http.Error(w,"Invalid Credentials",http.StatusInternalServerError)
+        return 
+    }
 	json.NewEncoder(w).Encode(result)
 
 }
+
 
 func DayWiseReportHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -428,7 +423,6 @@ func ShowReminderHandler(w http.ResponseWriter, r *http.Request){
 	list := service.ShowReminders()
 	json.NewEncoder(w).Encode(list)
 }
-
 
 
 

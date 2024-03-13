@@ -1,15 +1,123 @@
-
-<header id="header">
-    <div>
-      <h1 class="nav"> Aviculture</h1>
+<!-- <header>
+ 
+  <a [matMenuTriggerFor]="menu1">
+    <span class="glyphicon glyphicon-book"></span> Entries <i class="fa fa-caret-down"></i>
+  </a>
+  <mat-menu #menu1="matMenu" class="spc-align">
+    <div class="arrow"></div>
+    <div class="mainenu-menu-item-panel">
      
+      <button mat-menu-item routerLink="/dailyentry">Daily Entry</button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item routerLink="/addflock">Add Flock</button>
+      <mat-divider></mat-divider>
     </div>
-  
+  </mat-menu>
+
+ 
+  <a [matMenuTriggerFor]="menu2">
+    <span class="glyphicon glyphicon-book"></span> List <i class="fa fa-caret-down"></i>
+  </a>
+  <mat-menu #menu2="matMenu" class="spc-align">
+    <div class="arrow"></div>
+    <div class="mainenu-menu-item-panel">
+     
+      <button mat-menu-item routerLink="/listflock">List Flock</button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item routerLink="/listflockentry">List Flock Entry</button>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-menu>
+</header> -->
+
+<!-- <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="ml-0"> <img src="/static/images/menu_icon.png" width="28px" height="30px"></span>
+  </button>
+  <a class="navbar-brand" href="/">
+    <img src="/static/images/logoeggs.png" alt="Logo" style="height: 28px;width:28px;margin-top:-7px;">EasePoultry
+  </a>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Entries
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/main_app/dailyflockentries/"><i class="fa fa-calendar"></i> Daily Entries</a>
+          <a class="dropdown-item" href="/main_app/reportflockbasic"><i class="fa fa-list"></i> Flock Entries</a>
+        </div>
+      </li>
+     
+      <li class="nav-item">
+        <a class="nav-link" href="/main_app/eggregisterlist/">Egg Register</a>
+      </li>
+
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Manage Flocks
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/main_app/flockcreate"><i class="fa fa-plus"></i> Add New Flock</a>
+         
+          <a class="dropdown-item" href="/main_app/reportflocklist"><i class="fa fa-pencil"></i> Edit Existing Flocks</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-bar-chart"></i> Reports
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+         
+          <a class="dropdown-item" href="/main_app/dayflockreport/"><i class="fa fa-calendar-plus-o"></i> Daily Reports</a>
+          
+          <a class="dropdown-item" href="/main_app/reportflockbasic"><i class="fa fa-list"></i> Tabular Reports</a>
+          <a class="dropdown-item" href="/main_app/reportflockbasicgraph"><i class="fa fa-line-chart"></i> Graphical Reports</a>
+          <a class="dropdown-item" href="/main_app/reportflockbasic/7/"><i class="fa fa-calendar"></i> Weekly Reports</a>
+          <a class="dropdown-item" href="/main_app/compareflocksselect"><i class="fa fa-balance-scale"></i> Compare Flocks</a>
+          
+        </div>
+      </li>
+     
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-calendar"></i> Reminders
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="/main_app/showreminders/"><i class="fa fa-bell-o"></i> Show Current</a>
+            <a class="dropdown-item" href="/main_app/setgeneralreinders/"><i class="fa fa-edit"></i> Set Age Wise</a>
+            <a class="dropdown-item" href="/main_app/setspecialreminders/"><i class="fa fa-edit"></i> Set Date Wise</a>
+          </div>
+        </li>
     
-    
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-info"></i> Info
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/main_app/perfromancetarrgets/"><i class="fa fa-bullseye"></i> Performance Targets</a>
+          <a class="dropdown-item" href="/main_app/daylightmanagement/"><i class="fa fa-lightbulb-o"></i> Day Light Management</a>
+        </div>
+      </li>
 
-  </header>
-  <router-outlet></router-outlet>
-  
+      <li class="nav-item">
+        <a class="nav-link" href="/main_app/dayseriesinfo/"><i class="fa fa-play-circle"></i> Video Series</a>
+      </li>
+     
+    </ul>
+    <div class="my-2 my-lg-0">
+      
+        <a class="btn btn-sm btn-outline-light rounded" href="/main_app/help/"><i class="fa fa-question"></i></a>
+        <a class="btn btn-sm btn-outline-light rounded" href="/main_app/updateprofile/"><i class="fa fa-user-o"></i></a>
+        <a class="btn btn-sm btn-outline-light rounded" href="/logout/">Log Out</a>
+      
+    </div>
+  </div>
+</nav> -->
 
 
+
+<router-outlet></router-outlet>

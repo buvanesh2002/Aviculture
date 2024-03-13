@@ -280,6 +280,7 @@ func AddReminder(value dto.Reminder) (string, error) {
 		return "", err
 	}
 	value.ReminderId = randomID
+	value.Status="true"
 	Client := config.GetConfig()
 	defer Client.Disconnect(context.Background())
 
@@ -444,8 +445,10 @@ func ListFlockEntry() []dto.Flockdata {
 	return flock
 }
 
-func ListParticularFlock(Id string) []dto.ListEntry {
+
+func ListParticularFlock(Id string) ([]dto.ListEntry, error) {
 	log.Println("========= list Particular Flock =================")
+	log.Println("==========id",Id)
 	var entry []dto.ListEntry
 	var flock dto.Flockdata
 	flock.ID = Id
@@ -456,9 +459,10 @@ func ListParticularFlock(Id string) []dto.ListEntry {
 	if err != nil {
 		log.Println("error fetching:", err)
 		log.Fatal(err)
+		return nil, err
 	}
 	entry = append(entry, flock.ListEntry...)
-	return entry
+	return entry,nil
 }
 
 func ListDayWiseReport(date string) []dto.ListEntry {
