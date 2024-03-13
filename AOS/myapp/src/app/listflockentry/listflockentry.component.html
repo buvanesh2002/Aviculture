@@ -3,14 +3,14 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th>ID</th>
+          <!-- <th>ID</th>
           <th>FlockName</th>
           <th>BreedName</th>
           <th>StartDate</th>
           <th>Age</th>
           <th>NoBirds</th>
           <th>ShedNumber</th>
-          <th>Active</th>
+          <th>Active</th> -->
           <!-- <th>Update</th> -->
           <th>listentry Date</th>
           <th>Age</th>
@@ -31,60 +31,30 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of responseData" class="item">
-          <td>{{ item.id }}</td>
+          <!-- <td>{{ item.id }}</td>
           <td>{{ item.flockName }}</td>
           <td>{{ item.breedName }}</td>
           <td>{{ item.startDate }}</td>
           <td>{{ item.age }}</td>
           <td>{{ item.openingBirds }}</td>
           <td>{{ item.shedNumber }}</td>
-          <td>{{ item.active }}</td>
+          <td>{{ item.active }}</td> -->
         
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.entrydate }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.age }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.openingbirds }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.mortality }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.birdssold }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.closingbirds }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.cummortality }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.mortalityPercent }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.eggsperDay }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.eggproducion }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.productionPercent }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.feed }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.feedperBird }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.feedperEgg }}
-          </td>
-          <td *ngFor="let listentry of item.listentry">
-            {{ listentry.cumFPE }}
-          </td>
+          <td>{{ item.entrydate }}</td>
+          <td>{{ item.age }}</td>
+          <td>{{ item.openingbirds }}</td>
+          <td>{{ item.mortality }}</td>
+          <td>{{ item.birdssold }}</td>
+          <td>{{ item.closingbirds }}</td>
+          <td>{{ item.cummortality }}</td>
+          <td>{{ item.mortalityPercent }}</td>
+          <td>{{ item.eggsperDay }}</td>
+          <td>{{ item.eggproducion }}</td>
+          <td>{{ item.productionPercent }}</td>
+          <td>{{ item.feed }}</td>
+          <td>{{ item.feedperBird }}</td>
+          <td>{{ item.feedperEgg }}</td>
+          <td>{{ item.cumFPE }}</td>
         </tr>
       </tbody>
     </table>

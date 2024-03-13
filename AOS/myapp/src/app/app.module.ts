@@ -15,10 +15,15 @@ import { ListFlockComponent } from './list-flock/list-flock.component';
 import { MatTableModule } from '@angular/material/table';
 import { UpadteFlockComponent } from './upadte-flock/upadte-flock.component';
 import { FlockentrydataComponent } from './flockentrydata/flockentrydata.component';
-import { ReminderComponent } from './reminder/reminder.component';
+
 import { DailyentryComponent } from './dailyentry/dailyentry.component';
 import { ListflockentryComponent } from './listflockentry/listflockentry.component';
 // import { AppService } from './app.service'; 
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
+import { FirstpageComponent } from './firstpage/firstpage.component';
+import { AddRemainderComponent } from './add-remainder/add-remainder.component';
+import { ListRemainderComponent } from './list-remainder/list-remainder.component';
 
 @NgModule({
   declarations: [
@@ -29,9 +34,11 @@ import { ListflockentryComponent } from './listflockentry/listflockentry.compone
     ListFlockComponent,
     UpadteFlockComponent,
     FlockentrydataComponent,
-    ReminderComponent,
     DailyentryComponent,
-    ListflockentryComponent
+    ListflockentryComponent,
+    FirstpageComponent,
+    AddRemainderComponent,
+    ListRemainderComponent
     
     
   ],
@@ -44,7 +51,9 @@ import { ListflockentryComponent } from './listflockentry/listflockentry.compone
     ToastrModule.forRoot(),
     MatInputModule,
     MatFormFieldModule,
-    MatTableModule
+    MatTableModule,
+    MatMenuModule,
+    MatDividerModule
   ],
   providers: [AppComponent],
   bootstrap: [AppComponent]
