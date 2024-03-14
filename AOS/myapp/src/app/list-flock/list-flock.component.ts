@@ -55,8 +55,4 @@ export class ListFlockComponent implements OnInit {
     console.log(id);
     this.router.navigate(['updateflock',id])
 }
-id( id:string){
-  console.log(id);
-  this.router.navigate(['listflockentry',id])
-}
 }

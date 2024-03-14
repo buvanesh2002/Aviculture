@@ -1,9 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface Item {
- 
+  id: string;
+  flockName: string;
+  breedName: string;
+  startDate: string;
+  age: string;
+  openingBirds: string;
+  shedNumber: string;
+  active: string;
+  listentry: {
     entrydate: string;
     age: number; // Assuming it should be a number
     openingbirds: number;
@@ -19,7 +27,7 @@ interface Item {
     feedperBird: number;
     feedperEgg: number;
     cumFPE: number;
-
+  }[]; // Array of entry objects
 }
 
 @Component({
@@ -31,25 +39,17 @@ interface Item {
 export class ListflockentryComponent implements OnInit {
 
   responseData: Item[] = [];
-  id : string ="";
 
-  constructor(private appservice: AppService, public router: Router,private route:ActivatedRoute) { }
-
- 
+  constructor(private appservice: AppService, public router: Router) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-       this.id = params['id']; 
-      console.log("fetch call=",this.id)
-      this.listData(this.id);
-    });
+    this.listData();
   }
 
-
-  listData(id:string) {
-   
+  listData() {
+    let obj = {};
     this.responseData = [];
-    this.appservice.postRequest("listparticularflock", { id: id }).subscribe(
+    this.appservice.postRequest("listflock", obj).subscribe(
       (response) => {
         console.log('List data received:', response);
         if (response && response.length) {
@@ -63,5 +63,8 @@ export class ListflockentryComponent implements OnInit {
     );
   }
 
- 
+  getname(id: string) {
+    console.log(id);
+    this.router.navigate(['updateflock', id]);
+  }
 }

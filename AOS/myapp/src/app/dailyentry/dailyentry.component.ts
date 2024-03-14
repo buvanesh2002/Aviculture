@@ -41,7 +41,7 @@ export class DailyentryComponent {
       (result: any) => {
         this.showSuccess('dailyentries created successfully!');
         this.resetForm();
-        this.router.navigate(['listflockentry']);
+        this.router.navigate(['listflock']);
       },
       (error: any) => {
         if (error.error && error.error.errors) {

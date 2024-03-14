@@ -52,10 +52,10 @@ type ListEntry struct {
 	BirdsSold int `json:"birdssold" bson:"birdssold"`
 	ClosingBirds int `json:"closingbirds" bson:"closingbirds"`
 	CumMortality int `json:"cummortality" bson:"cummortality"`
-	MortalityPer int `json:"mortalitypercent" bson:"mortalitypercent"`
+	MortalityPer int `json:"mortality%" bson:"mortality%"`
 	EggsPerDay int `json:"eggsperDay" bson:"eggsperDay"`
 	EggProducion int `json:"eggproducion" bson:"eggproducion"`
-	ProductionPer int `json:"productionpercent" bson:"productionpercent"`
+	ProductionPer int `json:"production%" bson:"production%"`
 	// HHP string  `json:"curHHP" bson:"curHHP"`
 	// CumHHP string `json:"cumHHP" bson:"cumHHP"`
 	Feed int 	`json:"feed" bson:"feed"`

@@ -8,25 +8,19 @@ import { UpadteFlockComponent } from './upadte-flock/upadte-flock.component';
 import { FlockentrydataComponent } from './flockentrydata/flockentrydata.component';
 import {DailyentryComponent} from './dailyentry/dailyentry.component';
 import { ListflockentryComponent } from './listflockentry/listflockentry.component';
-import { FirstpageComponent } from './firstpage/firstpage.component';
-import { AddRemainderComponent } from './add-remainder/add-remainder.component';
-import { ListRemainderComponent } from './list-remainder/list-remainder.component';
-
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/addflock', pathMatch: 'full' },
+ //{ path: '',  component: FlockEntryComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'firstpage',component:FirstpageComponent },
   {path: 'data', component: DataComponent},
   { path: 'addflock', component: FlockEntryComponent},
   {path  : 'listflock', component:ListFlockComponent},
   {path  : 'updateflock/:id', component:UpadteFlockComponent},
   {path : 'flockentrydata/:id', component: FlockentrydataComponent},
   {path:'dailyentry', component:DailyentryComponent },
-  {path :'listflockentry/:id' , component:ListflockentryComponent},
-  {path:'addremainder',component:AddRemainderComponent},
-  {path:'listremainder' , component:ListRemainderComponent}
+  {path :'listflockentry' , component:ListflockentryComponent}
 ];
 
 @NgModule({
@@ -34,4 +28,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-
