@@ -9,6 +9,7 @@ import (
 	"log"
 	"run/config"
 	"run/dto"
+
 	//	"strconv"
 	"time"
 
@@ -292,7 +293,7 @@ func AddReminder(value dto.Reminder) (string, error) {
 	return "Reminder added successfully", nil
 }
 
-func ShowReminders(value dto.Reminder) *[]dto.Reminder {
+func ShowReminders() *[]dto.Reminder {
 	log.Println("===============List Credentials===============")
 	DeleteReminder()
 	info := []dto.Reminder{}
@@ -345,7 +346,7 @@ func DeleteReminder() string {
 	// Perform deletion operation
 	_, err := collection.DeleteMany(context.Background(), filter)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return "failed to delete"
 	}
 	return "deleted  successfully"
@@ -379,32 +380,32 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 		flockEntries.OpeningBirds = lastEntry.ClosingBirds
 		flockEntries.CumMortality = lastEntry.CumMortality + flockEntries.Mortality
 		flockEntries.EggsPerDay = value.Eggs + (value.Trays * 30)
-		flockEntries.EggProducion=lastEntry.EggProducion+flockEntries.EggsPerDay
+		flockEntries.EggProducion = lastEntry.EggProducion + flockEntries.EggsPerDay
 		flockEntries.Feed = value.Feed
 		flockEntries.CumFPE = lastEntry.CumFPE + flockEntries.FeedPerEgg
 		flockEntries.ClosingBirds = flockEntries.OpeningBirds - (flockEntries.Mortality + flockEntries.BirdsSold)
-		flockEntries.FeedPerBird = (flockEntries.Feed*1000) / flockEntries.ClosingBirds
-		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds) 
-		flockEntries.ProductionPer = (flockEntries.EggProducion ) / flockEntries.ClosingBirds
-		flockEntries.FeedPerEgg=(flockEntries.Feed*1000)/flockEntries.EggProducion
-		flockEntries.CumFPE=(lastEntry.CumFPE+flockEntries.FeedPerBird)/flockEntries.EggProducion
-		flockEntries.TotalFeed=lastEntry.TotalFeed+flockEntries.Feed
-
+		flockEntries.FeedPerBird = (flockEntries.Feed * 1000) / flockEntries.ClosingBirds
+		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds)
+		flockEntries.ProductionPer = (flockEntries.EggProducion) / flockEntries.ClosingBirds
+		flockEntries.FeedPerEgg = (flockEntries.Feed * 1000) / flockEntries.EggProducion
+		flockEntries.TotalFeed = lastEntry.TotalFeed + flockEntries.Feed
+		flockEntries.CumFPE=flockEntries.TotalFeed/flockEntries.EggProducion
 	} else {
 
 		log.Println("inside else=========")
 		flockEntries.OpeningBirds = flock.NoBirds
 		flockEntries.CumMortality = flockEntries.Mortality
 		flockEntries.EggsPerDay = value.Eggs + (value.Trays * 30)
-		flockEntries.EggProducion=flockEntries.EggsPerDay
+		flockEntries.EggProducion = flockEntries.EggsPerDay
 		flockEntries.Feed = value.Feed
 		flockEntries.ClosingBirds = flockEntries.OpeningBirds - (flockEntries.Mortality + flockEntries.BirdsSold)
-		flockEntries.FeedPerBird = (flockEntries.Feed *1000)/ flockEntries.ClosingBirds
-		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds) 
-		flockEntries.ProductionPer = (flockEntries.EggProducion ) / flockEntries.ClosingBirds
-		flockEntries.FeedPerEgg=(flockEntries.Feed*1000)/flockEntries.EggProducion
-        flockEntries.CumFPE=flockEntries.FeedPerBird/flockEntries.EggProducion
-		flockEntries.TotalFeed=flockEntries.Feed
+		flockEntries.FeedPerBird = (flockEntries.Feed * 1000) / flockEntries.ClosingBirds
+		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds)
+		flockEntries.ProductionPer = (flockEntries.EggProducion) / flockEntries.ClosingBirds
+		flockEntries.FeedPerEgg = (flockEntries.Feed * 1000) / flockEntries.EggProducion
+		flockEntries.TotalFeed = flockEntries.Feed
+		flockEntries.CumFPE = flockEntries.TotalFeed / flockEntries.EggProducion
+
 	}
 
 	filter := bson.M{
@@ -423,45 +424,40 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 	return "updation in listEntry successfully"
 }
 
-func ListFlockEntry() []dto.Flockdata{
+func ListFlockEntry() []dto.Flockdata {
 	log.Println("----------------Lsit Flock Entry----------------")
-  //var listarray []dto.ListEntry
+	//var listarray []dto.ListEntry
 	var flock []dto.Flockdata
-	Client:=config.GetConfig()
-	collection:=Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
 	log.Println("----connected to DB------------------------")
 	cur, err := collection.Find(context.Background(), bson.M{"active": "true"})
-	if err!=nil{
+	if err != nil {
 		log.Println("error finding:", err)
 		log.Println(err)
 	}
 	defer Client.Disconnect(context.Background())
 	defer cur.Close(context.TODO())
-	log.Println("fsdfsdfSdfffef")
-   // var EntryLength int
-	err = cur.All(context.TODO(),&flock)
-	log.Println("asfafafafaf")
-	
-
-	
+	// var EntryLength int
+	err = cur.All(context.TODO(), &flock)
 	log.Println(flock)
 	return flock
 }
 
-func ListParticularFlock(Id string) []dto.ListEntry{
+func ListParticularFlock(Id string) []dto.ListEntry {
 	log.Println("========= list Particular Flock =================")
 	var entry []dto.ListEntry
 	var flock dto.Flockdata
-	flock.ID=Id
-	filter:=bson.M{"_id":flock.ID}
-	Client:=config.GetConfig()
-	collection:=Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
-	err:=collection.FindOne(context.TODO(),filter).Decode(&flock)
-    if err!=nil {
-		log.Println("error fetching:",err)
+	flock.ID = Id
+	filter := bson.M{"_id": flock.ID}
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	err := collection.FindOne(context.TODO(), filter).Decode(&flock)
+	if err != nil {
+		log.Println("error fetching:", err)
 		log.Fatal(err)
 	}
-	 entry=append(entry, flock.ListEntry...)
+	entry = append(entry, flock.ListEntry...)
 	return entry
 }
 
@@ -531,5 +527,7 @@ func UpdateReminder(value dto.Reminder)(string,error){
 	}
 	return "Reminder updtaed successfully",nil
 }
+
+
 
 

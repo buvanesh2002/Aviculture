@@ -34,6 +34,9 @@ func main() {
 	//router.HandleFunc("/showreminder", ShowReminderHandler).Methods("POST")
 	router.HandleFunc("/listflockentries", ListFlockEntryHandler).Methods("POST")
 	router.HandleFunc("/listparticularflock", ListParticularFlockHandler).Methods("POST")
+	router.HandleFunc("/dailyentryreport",DayWiseReportHandler).Methods("POST")
+	router.HandleFunc("/showreminder", ShowReminderHandler).Methods("POST")
+
 
 	directoryLocation := viper.GetString("uiDirectory")
 	log.Println("this is the UI Directory Location : ", directoryLocation)
@@ -399,6 +402,32 @@ func ListParticularFlockHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func DayWiseReportHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  List DailyEntry Report Handler +++++++++++++++++++++++++")
+	b, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+	var date Ids
+	err =json.Unmarshal(b,&date)
+	if err != nil {
+        log.Println(err)
+    }
+    log.Println(date.ID)
+	id := date.ID
+
+	result:=service.ListDayWiseReport(id)
+	json.NewEncoder(w).Encode(result)
+} 
+
+func ShowReminderHandler(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  ListFlockEntryHandler +++++++++++++++++++++++++")
+	list := service.ShowReminders()
+	json.NewEncoder(w).Encode(list)
+}
 
 
 
