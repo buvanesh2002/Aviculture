@@ -464,3 +464,72 @@ func ListParticularFlock(Id string) []dto.ListEntry{
 	 entry=append(entry, flock.ListEntry...)
 	return entry
 }
+
+func ListDayWiseReport(date string) []dto.ListEntry {
+    log.Println("============List day Wise report called =================")
+    var entries []dto.ListEntry
+
+    // Get MongoDB client
+    Client := config.GetConfig()
+
+    // Access the collection
+    collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+
+    // Define the filter to find entries for the specified date
+    filter := bson.M{"listentry.entrydate": date}
+
+    // Find documents matching the filter
+    cur, err := collection.Find(context.TODO(), filter)
+    if err != nil {
+        log.Println("Error fetching documents:", err)
+        return entries
+    }
+    defer cur.Close(context.TODO())
+
+    // Iterate over the cursor
+    for cur.Next(context.TODO()) {
+        var flock dto.Flockdata
+        if err := cur.Decode(&flock); err != nil {
+            log.Println("Error decoding document:", err)
+            continue
+        }
+        
+        // Iterate over the list entries
+        for _, entry := range flock.ListEntry {
+            // Check if the entry date matches the specified date
+            if entry.EntryDate == date {
+                // Append the matching entry to the result
+                entries = append(entries, entry)
+                // Break the loop since we found the entry for the specified date
+                break
+            }
+        }
+    }
+    return entries
+}
+
+func UpdateReminder(value dto.Reminder)(string,error){
+	log.Println("Update Reminder Called:")
+	//var change dto.Reminder
+	CLient:=config.GetConfig()
+	collection:=CLient.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
+	defer CLient.Disconnect(context.TODO())
+	//filter:=bson.M{"reminderId":value.ReminderId}
+	query:=bson.M{
+		"$set":bson.M{
+			"name":value.Name,
+			"beforedate":value.BeforeDate,
+			"afterdate":value.AfterDate,
+			"reminderdate":value.Date,
+			"remarks":value.Remarks,
+			"status":value.Status},
+		}
+	_,err:=collection.UpdateByID(context.Background(),bson.M{"reminderId":value.ReminderId},query)
+	if err != nil {
+		log.Println("error updating Reminder:",err)
+		return "",err
+	}
+	return "Reminder updtaed successfully",nil
+}
+
+
