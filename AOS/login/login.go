@@ -5,11 +5,11 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 
-	//"fmt"
+	
 	"log"
 	"run/config"
 	"run/dto"
-	//	"strconv"
+	
 	"time"
 
 	"github.com/spf13/viper"
@@ -53,7 +53,7 @@ func AddFlock(value dto.Flockdata) (string, error) {
 
 	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
 
-	// Convert Flockdata to bson.M
+	
 	data := bson.M{
 		"_id":       value.ID,
 		"flockName": value.FlockName,
@@ -172,7 +172,7 @@ func UpdateFlock(value dto.Flockdata) (string, error) {
 	Client := config.GetConfig()
 	defer Client.Disconnect(context.Background())
 	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
-	filter := bson.M{"_id": value.ID} // Assuming value.ID is the ID of the document to update
+	filter := bson.M{"_id": value.ID} 
 	log.Println("active=", value.Active)
 	log.Println("ID=", value.ID)
 	update := bson.M{
@@ -198,23 +198,19 @@ func UpdateFlock(value dto.Flockdata) (string, error) {
 }
 
 func generateRandomID(length int) (string, error) {
-	// Calculate the byte size needed to represent the ID of the specified length
 	byteSize := length / 2
 	if length%2 != 0 {
 		byteSize++
 	}
 
-	// Generate random bytes
 	bytes := make([]byte, byteSize)
 	_, err := rand.Read(bytes)
 	if err != nil {
 		return "", err
 	}
 
-	// Encode bytes to hexadecimal string
 	id := hex.EncodeToString(bytes)
 
-	// Truncate the string to the desired length
 	id = id[:length]
 
 	return id, nil
@@ -251,14 +247,14 @@ func AgeCalculator() string {
 		flockarray = append(flockarray, flock)
 	}
 	for _, flock := range flockarray {
-		createdDate, err = time.Parse("2006-01-02", flock.StartDate)
+		createdDate, _ = time.Parse("2006-01-02", flock.StartDate)
 		duration = Date.Sub(createdDate)
 		days = (flock.StartAge)
 		days = days + int(duration.Hours()/24)
 		filter = bson.M{"_id": flock.ID}
 		update = bson.M{
 			"$set": bson.M{
-				"age": int32(days), // Assuming 'days' is an integer
+				"age": int32(days),
 			},
 		}
 		_, err := collection.UpdateOne(context.Background(), filter, update)
@@ -266,7 +262,6 @@ func AgeCalculator() string {
 			log.Println("Error updating document:", err)
 		}
 	}
-	// UpdateOne method should be called outside the loop
 	return "success"
 
 }
@@ -440,8 +435,8 @@ func ListFlockEntry() []dto.Flockdata{
 	defer cur.Close(context.TODO())
 	log.Println("fsdfsdfSdfffef")
    // var EntryLength int
-	err = cur.All(context.TODO(),&flock)
-	log.Println("asfafafafaf")
+_ = cur.All(context.TODO(),&flock)
+	
 	
 
 	
@@ -468,7 +463,7 @@ func ListParticularFlock(Id string) ([]dto.ListEntry, error) {
 }
 func ListReminder()[]dto.Reminder{
 log.Println("----------------Lsit Flock Entry----------------")
-  //var listarray []dto.ListEntry
+  
 	var remainder []dto.Reminder
 	Client:=config.GetConfig()
 	collection:=Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
@@ -480,10 +475,9 @@ log.Println("----------------Lsit Flock Entry----------------")
 	}
 	defer Client.Disconnect(context.Background())
 	defer cur.Close(context.TODO())
-	log.Println("fsdfsdfSdfffef")
-   // var EntryLength int
-	err = cur.All(context.TODO(),&remainder)
-	log.Println("asfafafafaf")
+	
+	_ = cur.All(context.TODO(),&remainder)
+	
 	
 
 	

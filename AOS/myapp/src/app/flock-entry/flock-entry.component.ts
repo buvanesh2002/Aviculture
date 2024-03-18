@@ -61,6 +61,5 @@ export class FlockEntryComponent {
       this.toastr.error(msg);
     }
   }
-  
- 
+
 }

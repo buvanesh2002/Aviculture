@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/app.service';
+import { AuthserviceService } from '../authservice.service';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { AppService } from 'src/app/app.service';
 })
 export class LoginComponent {
   
-  constructor(private router: Router,private toastr: ToastrService,private appservice: AppService){}
+  constructor(private router: Router,private toastr: ToastrService,private appservice: AppService,private auth:AuthserviceService){}
 
   forms: any[] = [];
   username: string = ''; // Added username variable
@@ -37,13 +38,16 @@ export class LoginComponent {
         (result: any) => {
             console.log(result);
             if (result && result['message']) {  
-            //     this.showSucess(result['message']);
-            //    this.router.navigate(['listflock']);
+                
+                 this.showSucess(result['message']);
+                 this.id(true);
+
+              //  this.router.navigate(['listflock']);
             //  this.router.navigate(['updateflock']);
             // this.router.navigate(['addflock']);
             //  this.router.navigate(['dailyentry']);
              //this.router.navigate(['listflockentry']);
-             this.router.navigate(['firstpage']);
+             //this.router.navigate(['firstpage']);
             } else {
                 console.log("else")
                 this.showError(result['response']);
@@ -69,5 +73,10 @@ Agecalc(){
     if (msg) {
       this.toastr.error(msg);
     }
+  }
+
+  id( id:boolean){
+    console.log(id);
+    this.auth.canAccess(id);
   }
 }
