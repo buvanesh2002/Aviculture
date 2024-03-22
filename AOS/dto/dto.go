@@ -65,3 +65,13 @@ type ListEntry struct {
 	TotalFeed int `json:"totalFeed" bson:"totalFeed"`
 }
 
+
+type ListShop struct {
+	ID         string       `json:"id,omitempty" bson:"id,omitempty"`
+	BreedName string `json:"breedName,omitempty" bson:"breedName"`
+	Nobirds   int    `json:"noBirds,omitempty" bson:"noBirds"`
+	NoEgg     int    `json:"noEgg,omitempty" bson:"noEgg"`
+	Birdprice int    `json:"birdprice,omitempty"`
+	EggPrice  int    `json:"eggprice,omitempty"`
+	
+}

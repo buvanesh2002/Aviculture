@@ -48,6 +48,7 @@ export class LoginComponent {
             //  this.router.navigate(['dailyentry']);
              //this.router.navigate(['listflockentry']);
              //this.router.navigate(['firstpage']);
+             this.router.navigate(['home-cus']);
             } else {
                 console.log("else")
                 this.showError(result['response']);

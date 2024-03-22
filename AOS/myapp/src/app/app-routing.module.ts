@@ -1,16 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { DataComponent } from './data/data.component';
-import { FlockEntryComponent } from './flock-entry/flock-entry.component';
-import { ListFlockComponent } from './list-flock/list-flock.component';
-import { UpadteFlockComponent } from './upadte-flock/upadte-flock.component';
-import { FlockentrydataComponent } from './flockentrydata/flockentrydata.component';
-import {DailyentryComponent} from './dailyentry/dailyentry.component';
-import { ListflockentryComponent } from './listflockentry/listflockentry.component';
-import { FirstpageComponent } from './firstpage/firstpage.component';
-import { AddRemainderComponent } from './add-remainder/add-remainder.component';
-import { ListRemainderComponent } from './list-remainder/list-remainder.component';
+import { DataComponent } from './admin/data/data.component';
+import { FlockEntryComponent } from './admin/flock-entry/flock-entry.component';
+import { ListFlockComponent } from './admin/list-flock/list-flock.component';
+import { UpadteFlockComponent } from './admin/upadte-flock/upadte-flock.component';
+import { FlockentrydataComponent } from './admin/flockentrydata/flockentrydata.component';
+import {DailyentryComponent} from './admin/dailyentry/dailyentry.component';
+import { ListflockentryComponent } from './admin/listflockentry/listflockentry.component';
+import { FirstpageComponent } from './admin/firstpage/firstpage.component';
+import { AddRemainderComponent } from './admin/add-remainder/add-remainder.component';
+import { ListRemainderComponent } from './admin/list-remainder/list-remainder.component';
+import { CartComponent } from './customer/furni-1.0.0/cart/cart.component';
+import { CusomerComponent } from './customer/cusomer/cusomer.component';
+import { AboutComponent } from './customer/about/about.component';
+import { HomeCusComponent } from './customer/home-cus/home-cus.component';
+import { ContactComponent } from './customer/contact/contact.component';
+import { BlogComponent } from './customer/blog/blog.component';
+import { ServicesComponent } from './customer/services/services.component';
+import { ShopComponent } from './customer/shop/shop.component';
+import { ThankyouComponent } from './customer/thankyou/thankyou.component';
 
 
 
@@ -26,7 +35,16 @@ const routes: Routes = [
   {path:'dailyentry', component:DailyentryComponent },
   {path :'listflockentry/:id' , component:ListflockentryComponent},
   {path:'addremainder',component:AddRemainderComponent},
-  {path:'listremainder' , component:ListRemainderComponent}
+  {path:'listremainder' , component:ListRemainderComponent},
+  {path:'cusomer' , component:CusomerComponent},
+  { path: 'cart/:id', component: CartComponent },
+  { path: 'home-cus' ,component:HomeCusComponent}, 
+  { path: 'about' ,component:AboutComponent},
+  { path: 'contact', component:ContactComponent},
+  { path: 'blog' ,component:BlogComponent},
+  { path:'services' ,component:ServicesComponent},
+  {path: 'shop' , component:ShopComponent},
+  {path:'thankyou', component:ThankyouComponent},
 ];
 
 @NgModule({

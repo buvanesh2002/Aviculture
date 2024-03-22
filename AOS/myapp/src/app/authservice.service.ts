@@ -8,7 +8,7 @@ export class AuthserviceService {
 
   constructor(private router:Router){}
     isAuth():boolean{
-     if( !== null){
+     if( "fi"){
        return true;
      }
      return false;

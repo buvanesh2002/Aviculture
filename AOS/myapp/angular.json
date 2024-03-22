@@ -27,7 +27,10 @@
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "src/app/customer/furni-1.0.0/css/bootstrap.min.css",
+              "src/app/customer/furni-1.0.0/css/style.css"
+              ,"src/app/customer/furni-1.0.0/css/tiny-slider.css"
             ],
             "scripts": []
           },
@@ -86,7 +89,9 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/app/customer/furni-1.0.0/images"
+              
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",

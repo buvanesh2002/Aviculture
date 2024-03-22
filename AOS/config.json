@@ -5,8 +5,10 @@
     "db":"Login",
     "colleection":"users",
     "Addflock":"Flock",
+    "AddShop":"Shop",
     "AddReminder":"Reminder",
     "AddEntry":"Entries",
     "AddProduction":"Production"
+    
     
 }

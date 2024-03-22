@@ -29,11 +29,14 @@ func main() {
 	router.HandleFunc("/listflock", ListFlockHandler).Methods("POST")
 	router.HandleFunc("/updateflock", UpdateflockHandler).Methods("POST")
 	router.HandleFunc("/listbyflock", ListFlockbyHandler).Methods("POST")
-	router.HandleFunc("/dailyentries",AddEntryHandler).Methods("POST")
+	router.HandleFunc("/dailyentries", AddEntryHandler).Methods("POST")
 	router.HandleFunc("/addreminder", AddReminderHandler).Methods("POST")
 	router.HandleFunc("/listremainder", ListRemainderHandler).Methods("POST")
 	router.HandleFunc("/listflockentries", ListFlockEntryHandler).Methods("POST")
 	router.HandleFunc("/listparticularflock", ListParticularFlockHandler).Methods("POST")
+	router.HandleFunc("/shoplist", ShopListHandler).Methods("POST")
+	router.HandleFunc("/cartlist", CartListHandler).Methods("POST")
+	router.HandleFunc("/removecatrid", RemoveCartIDHandler).Methods("POST")
 
 	directoryLocation := viper.GetString("uiDirectory")
 	log.Println("this is the UI Directory Location : ", directoryLocation)
@@ -95,19 +98,19 @@ func AddFlockHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	
-	if flockdata.FlockName == "" || flockdata.BreedName == "" || flockdata.StartDate == "" || flockdata.StartAge ==0 || flockdata.NoBirds == 0 || flockdata.ShedNumber == "" {
+
+	if flockdata.FlockName == "" || flockdata.BreedName == "" || flockdata.StartDate == "" || flockdata.StartAge == 0 || flockdata.NoBirds == 0 || flockdata.ShedNumber == "" {
 		http.Error(w, "Incomplete or invalid flock data", http.StatusBadRequest)
 		return
 	}
 	fmt.Println("gddgyufgyugeuwy")
 	var data dto.Flockdata
 	data = dto.Flockdata{
-		FlockName:  flockdata.FlockName,
-		BreedName:  flockdata.BreedName,
-		StartDate:  flockdata.StartDate,
-		StartAge:   flockdata.StartAge,
-	//	Age:        flockdata.Age,
+		FlockName: flockdata.FlockName,
+		BreedName: flockdata.BreedName,
+		StartDate: flockdata.StartDate,
+		StartAge:  flockdata.StartAge,
+		//	Age:        flockdata.Age,
 		NoBirds:    flockdata.NoBirds,
 		ShedNumber: flockdata.ShedNumber,
 		Active:     "true",
@@ -131,27 +134,29 @@ func AddFlockHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 
 }
+
 type Ids struct {
 	ID string `bson:"id,omitempty" json:"id,omitempty"`
-} 
+}
+
 func ListFlockbyHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  ListFlockbyHandler handler +++++++++++++++++++++++++")
 
 	b, err := ioutil.ReadAll(r.Body)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-    var request Ids
-    err = json.Unmarshal(b, &request)
-    if err != nil {
-        log.Println(err)
-    }
-    log.Println(request.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var request Ids
+	err = json.Unmarshal(b, &request)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(request.ID)
 
 	id := request.ID
-	list,err := service.ListFlockbyid(id)
+	list, err := service.ListFlockbyid(id)
 	json.NewEncoder(w).Encode(list)
 }
 
@@ -162,7 +167,6 @@ func ListFlockHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(list)
 }
 
-
 // func AgeHandler(w http.ResponseWriter, r *http.Request) {
 // 	w.Header().Set("Content-Type", "application/json")
 // 	log.Println("++++++++++++++++++++++++++++  ListFlockHandler handler +++++++++++++++++++++++++")
@@ -170,10 +174,10 @@ func ListFlockHandler(w http.ResponseWriter, r *http.Request) {
 // 	json.NewEncoder(w).Encode(list)
 // }
 
-func UpdateflockHandler ( w http.ResponseWriter, r *http.Request){
+func UpdateflockHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  UpdateflockHandler handler +++++++++++++++++++++++++")
-    var flockdata dto.Flockdata
+	var flockdata dto.Flockdata
 	fmt.Println(r.Body)
 
 	if err := json.NewDecoder(r.Body).Decode(&flockdata); err != nil {
@@ -181,11 +185,10 @@ func UpdateflockHandler ( w http.ResponseWriter, r *http.Request){
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	if flockdata.ID == ""  || flockdata.FlockName == ""  || flockdata.BreedName == "" || flockdata.StartDate == "" || flockdata.StartAge == 0 || flockdata.NoBirds == 0|| flockdata.ShedNumber == "" {
+	if flockdata.ID == "" || flockdata.FlockName == "" || flockdata.BreedName == "" || flockdata.StartDate == "" || flockdata.StartAge == 0 || flockdata.NoBirds == 0 || flockdata.ShedNumber == "" {
 		http.Error(w, "Incomplete or invalid flock data", http.StatusBadRequest)
 		return
 	}
-	
 
 	log.Println(flockdata)
 
@@ -303,7 +306,7 @@ func AddReminderHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	if reminder.Name == "" || reminder.BeforeDate ==  ""|| reminder.AfterDate == "" || reminder.Date == "" || reminder.Remarks == ""  {
+	if reminder.Name == "" || reminder.BeforeDate == "" || reminder.AfterDate == "" || reminder.Date == "" || reminder.Remarks == "" {
 		http.Error(w, "Incomplete or invalid flock data", http.StatusBadRequest)
 		return
 	}
@@ -325,26 +328,26 @@ func AddReminderHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func AddEntryHandler (w http.ResponseWriter,r *http.Request){
+func AddEntryHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  AddEntryHandler handler +++++++++++++++++++++++++")
 	var entry dto.DailyEntry
-	fmt.Println("-----request-------",r.Body)
-	if err:=json.NewDecoder(r.Body).Decode(&entry); err != nil {
+	fmt.Println("-----request-------", r.Body)
+	if err := json.NewDecoder(r.Body).Decode(&entry); err != nil {
 		log.Println("---error in decodinng---", err)
-		http.Error(w,err.Error(),http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	log.Println("navaneesh",entry)
-	if entry.ID == ""{
+	log.Println("navaneesh", entry)
+	if entry.ID == "" {
 		http.Error(w, "Incomplete Entry data", http.StatusBadRequest)
 		return
 	}
-	msg,err:=service.DailyEntry(entry)
-	log.Println("Reciecved mesg:",msg)
-	if err!=nil {
-		http.Error(w,"Invalid Credentials",http.StatusInternalServerError)
-		return 
+	msg, err := service.DailyEntry(entry)
+	log.Println("Reciecved mesg:", msg)
+	if err != nil {
+		http.Error(w, "Invalid Credentials", http.StatusInternalServerError)
+		return
 	}
 	response := struct {
 		Message string `json:"message"`
@@ -354,8 +357,7 @@ func AddEntryHandler (w http.ResponseWriter,r *http.Request){
 	json.NewEncoder(w).Encode(response)
 }
 
-func DeleteReminderHandler(w http.ResponseWriter, r *http.Request){
-
+func DeleteReminderHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
@@ -366,40 +368,90 @@ func ListFlockEntryHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(list)
 }
 
-
-
 func ListParticularFlockHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  List PArticular FlockEntry Handler +++++++++++++++++++++++++")
 	b, err := ioutil.ReadAll(r.Body)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
-    var request Ids
-    err = json.Unmarshal(b, &request)
-    if err != nil {
-        log.Println(err)
-    }
-    log.Println(request.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var request Ids
+	err = json.Unmarshal(b, &request)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(request.ID)
 	id := request.ID
 
-	result,err:=service.ListParticularFlock(id)
-    if err!=nil {
-        http.Error(w,"Invalid Credentials",http.StatusInternalServerError)
-        return 
-    }
+	result, err := service.ListParticularFlock(id)
+	if err != nil {
+		http.Error(w, "Invalid Credentials", http.StatusInternalServerError)
+		return
+	}
 	json.NewEncoder(w).Encode(result)
 
 }
 
-func ListRemainderHandler(w http.ResponseWriter, r *http.Request){
+func ListRemainderHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-    log.Println("++++++++++++++++++++++++++++  List Reminder Handler +++++++++++++++++++++++++")
-    list := service.ListReminder()
-    json.NewEncoder(w).Encode(list)
+	log.Println("++++++++++++++++++++++++++++  List Reminder Handler +++++++++++++++++++++++++")
+	list := service.ListReminder()
+	json.NewEncoder(w).Encode(list)
 }
 
+func ShopListHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++ ShopListHandler +++++++++++++++++++++++++")
+	list := service.ShopList()
+	json.NewEncoder(w).Encode(list)
+}
 
+func CartListHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  ListFlockbyHandler handler +++++++++++++++++++++++++")
 
+	var i int64
+	i=0
+	i++
+	log.Println("++++++++++++++++++++++++++++count ===================== +++++++++++++++++++++++++",i)
+	
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var request Ids
+	err = json.Unmarshal(b, &request)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(request.ID)
 
+	id := request.ID
+	list := service.ShopListWithIDs(id)
+	json.NewEncoder(w).Encode(list)
+}
+
+func RemoveCartIDHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  ListFlockbyHandler handler +++++++++++++++++++++++++")
+
+	
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var request Ids
+	err = json.Unmarshal(b, &request)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(request.ID)
+
+	id := request.ID
+	response := service.RemoveFromGlobalArray(id)
+
+	json.NewEncoder(w).Encode(response)
+}

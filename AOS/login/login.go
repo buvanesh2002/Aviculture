@@ -5,14 +5,15 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 
-	
 	"log"
 	"run/config"
 	"run/dto"
-	
+
 	"time"
 
+	//"github.com/aws/aws-sdk-go/aws/client"
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -53,7 +54,6 @@ func AddFlock(value dto.Flockdata) (string, error) {
 
 	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
 
-	
 	data := bson.M{
 		"_id":       value.ID,
 		"flockName": value.FlockName,
@@ -172,7 +172,7 @@ func UpdateFlock(value dto.Flockdata) (string, error) {
 	Client := config.GetConfig()
 	defer Client.Disconnect(context.Background())
 	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
-	filter := bson.M{"_id": value.ID} 
+	filter := bson.M{"_id": value.ID}
 	log.Println("active=", value.Active)
 	log.Println("ID=", value.ID)
 	update := bson.M{
@@ -274,7 +274,7 @@ func AddReminder(value dto.Reminder) (string, error) {
 		return "", err
 	}
 	value.ReminderId = randomID
-	value.Status="true"
+	value.Status = "true"
 	Client := config.GetConfig()
 	defer Client.Disconnect(context.Background())
 
@@ -375,16 +375,16 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 		flockEntries.OpeningBirds = lastEntry.ClosingBirds
 		flockEntries.CumMortality = lastEntry.CumMortality + flockEntries.Mortality
 		flockEntries.EggsPerDay = value.Eggs + (value.Trays * 30)
-		flockEntries.EggProducion=lastEntry.EggProducion+flockEntries.EggsPerDay
+		flockEntries.EggProducion = lastEntry.EggProducion + flockEntries.EggsPerDay
 		flockEntries.Feed = value.Feed
 		flockEntries.CumFPE = lastEntry.CumFPE + flockEntries.FeedPerEgg
 		flockEntries.ClosingBirds = flockEntries.OpeningBirds - (flockEntries.Mortality + flockEntries.BirdsSold)
-		flockEntries.FeedPerBird = (flockEntries.Feed*1000) / flockEntries.ClosingBirds
-		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds) 
-		flockEntries.ProductionPer = (flockEntries.EggProducion ) / flockEntries.ClosingBirds
-		flockEntries.FeedPerEgg=(flockEntries.Feed*1000)/flockEntries.EggProducion
-		flockEntries.CumFPE=(lastEntry.CumFPE+flockEntries.FeedPerBird)/flockEntries.EggProducion
-		flockEntries.TotalFeed=lastEntry.TotalFeed+flockEntries.Feed
+		flockEntries.FeedPerBird = (flockEntries.Feed * 1000) / flockEntries.ClosingBirds
+		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds)
+		flockEntries.ProductionPer = (flockEntries.EggProducion) / flockEntries.ClosingBirds
+		flockEntries.FeedPerEgg = (flockEntries.Feed * 1000) / flockEntries.EggProducion
+		flockEntries.CumFPE = (lastEntry.CumFPE + flockEntries.FeedPerBird) / flockEntries.EggProducion
+		flockEntries.TotalFeed = lastEntry.TotalFeed + flockEntries.Feed
 
 	} else {
 
@@ -392,15 +392,15 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 		flockEntries.OpeningBirds = flock.NoBirds
 		flockEntries.CumMortality = flockEntries.Mortality
 		flockEntries.EggsPerDay = value.Eggs + (value.Trays * 30)
-		flockEntries.EggProducion=flockEntries.EggsPerDay
+		flockEntries.EggProducion = flockEntries.EggsPerDay
 		flockEntries.Feed = value.Feed
 		flockEntries.ClosingBirds = flockEntries.OpeningBirds - (flockEntries.Mortality + flockEntries.BirdsSold)
-		flockEntries.FeedPerBird = (flockEntries.Feed *1000)/ flockEntries.ClosingBirds
-		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds) 
-		flockEntries.ProductionPer = (flockEntries.EggProducion ) / flockEntries.ClosingBirds
-		flockEntries.FeedPerEgg=(flockEntries.Feed*1000)/flockEntries.EggProducion
-        flockEntries.CumFPE=flockEntries.FeedPerBird/flockEntries.EggProducion
-		flockEntries.TotalFeed=flockEntries.Feed
+		flockEntries.FeedPerBird = (flockEntries.Feed * 1000) / flockEntries.ClosingBirds
+		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds)
+		flockEntries.ProductionPer = (flockEntries.EggProducion) / flockEntries.ClosingBirds
+		flockEntries.FeedPerEgg = (flockEntries.Feed * 1000) / flockEntries.EggProducion
+		flockEntries.CumFPE = flockEntries.FeedPerBird / flockEntries.EggProducion
+		flockEntries.TotalFeed = flockEntries.Feed
 	}
 
 	filter := bson.M{
@@ -419,68 +419,185 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 	return "updation in listEntry successfully"
 }
 
-func ListFlockEntry() []dto.Flockdata{
+func ListFlockEntry() []dto.Flockdata {
 	log.Println("----------------Lsit Flock Entry----------------")
-  //var listarray []dto.ListEntry
+	//var listarray []dto.ListEntry
 	var flock []dto.Flockdata
-	Client:=config.GetConfig()
-	collection:=Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
 	log.Println("----connected to DB------------------------")
 	cur, err := collection.Find(context.Background(), bson.M{"active": "true"})
-	if err!=nil{
+	if err != nil {
 		log.Println("error finding:", err)
 		log.Println(err)
 	}
 	defer Client.Disconnect(context.Background())
 	defer cur.Close(context.TODO())
 	log.Println("fsdfsdfSdfffef")
-   // var EntryLength int
-_ = cur.All(context.TODO(),&flock)
-	
-	
+	// var EntryLength int
+	_ = cur.All(context.TODO(), &flock)
 
-	
 	log.Println(flock)
 	return flock
 }
 
 func ListParticularFlock(Id string) ([]dto.ListEntry, error) {
 	log.Println("========= list Particular Flock =================")
-	log.Println("==========id",Id)
+	log.Println("==========id", Id)
 	var entry []dto.ListEntry
 	var flock dto.Flockdata
-	flock.ID=Id
-	filter:=bson.M{"_id":flock.ID}
-	Client:=config.GetConfig()
-	collection:=Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
-	err:=collection.FindOne(context.TODO(),filter).Decode(&flock)
-    if err!=nil {
-		log.Println("error fetching:",err)
-		
+	flock.ID = Id
+	filter := bson.M{"_id": flock.ID}
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	err := collection.FindOne(context.TODO(), filter).Decode(&flock)
+	if err != nil {
+		log.Println("error fetching:", err)
+
 	}
-	 entry=append(entry, flock.ListEntry...)
-	return entry,err
+	entry = append(entry, flock.ListEntry...)
+	return entry, err
 }
-func ListReminder()[]dto.Reminder{
-log.Println("----------------Lsit Flock Entry----------------")
-  
+func ListReminder() []dto.Reminder {
+	log.Println("----------------Lsit Flock Entry----------------")
+
 	var remainder []dto.Reminder
-	Client:=config.GetConfig()
-	collection:=Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
 	log.Println("----connected to DB------------------------")
 	cur, err := collection.Find(context.Background(), bson.M{"status": "true"})
-	if err!=nil{
+	if err != nil {
 		log.Println("error finding:", err)
 		log.Println(err)
 	}
 	defer Client.Disconnect(context.Background())
 	defer cur.Close(context.TODO())
-	
-	_ = cur.All(context.TODO(),&remainder)
-	
-	
 
-	
+	_ = cur.All(context.TODO(), &remainder)
+
 	log.Println(remainder)
 	return remainder
+}
+
+func ShopList() *[]dto.ListShop {
+	var flock []dto.Flockdata
+	var shopdata []dto.ListShop
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	shopCollection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddShop"))
+	cur, err := collection.Find(context.Background(), bson.M{"active": "true"})
+	if err != nil {
+		log.Println("Collection list error : ", err)
+		return nil
+	}
+	defer Client.Disconnect(context.Background())
+	defer cur.Close(context.Background())
+	err = cur.All(context.Background(), &flock)
+	if err != nil {
+		log.Println("Error while fetching documents:", err)
+		return nil
+	}
+
+	
+	for _, f := range flock {
+		lastentry := len(f.ListEntry)
+		if lastentry > 0 {
+
+			log.Println("breed:", f.BreedName)
+		
+			filter := bson.M{"breedName": f.BreedName}
+			var existingShop dto.ListShop
+			err := shopCollection.FindOne(context.Background(), filter).Decode(&existingShop)
+			if err == nil {
+				
+				log.Println("Document with BreedName", f.BreedName, "already exists, updating values")
+				update := bson.M{
+					"$set": bson.M{
+						"noBirds":   f.ListEntry[lastentry-1].ClosingBirds,
+						"noEgg":     f.ListEntry[lastentry-1].EggProducion,
+						"birdprice": 50,
+						"eggprice":  5,
+					},
+				}
+				_, err := shopCollection.UpdateOne(context.Background(), filter, update)
+				if err != nil {
+					log.Println("Error updating document:", err)
+					continue
+				}
+			} else if err == mongo.ErrNoDocuments {
+				randomID, err := generateRandomID(10)
+				if err != nil {
+					log.Println("Error:", err)
+					return nil
+				}
+				ID := randomID
+			
+				_, err = shopCollection.InsertOne(context.Background(), dto.ListShop{
+					ID:        ID,
+					BreedName: f.BreedName,
+					Nobirds:   f.ListEntry[lastentry-1].ClosingBirds,
+					NoEgg:     f.ListEntry[lastentry-1].EggProducion,
+					Birdprice: 50,
+					EggPrice:  5,
+				})
+				if err != nil {
+					log.Println("Error while inserting document:", err)
+				}
+			} else {
+				
+				log.Println("Error while finding document:", err)
+				continue
+			}
+		}
+	}
+
+	
+	shopCur, err := shopCollection.Find(context.Background(), bson.M{})
+	if err != nil {
+		log.Println("Error while fetching shop documents:", err)
+		return nil
+	}
+	defer shopCur.Close(context.Background())
+	err = shopCur.All(context.Background(), &shopdata)
+	if err != nil {
+		log.Println("Error while fetching shop documents:", err)
+		return nil
+	}
+
+	return &shopdata
+}
+
+
+
+func fetchShopDataFromDB(client *mongo.Client, id string) (*dto.ListShop, error) {
+	var shopData dto.ListShop
+	collection := client.Database("Login").Collection("Shop")
+	filter := bson.M{"_id": id}
+	err := collection.FindOne(context.Background(), filter).Decode(&shopData)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			log.Printf("No document found with ID %s\n", id)
+			return nil, nil
+		}
+		log.Println("Error fetching shop data:", err)
+		return nil, err
+	}
+	return &shopData, nil
+}
+
+
+
+
+
+func ShopListWithIDs(id string) []dto.ListShop {
+	var shopList []dto.ListShop
+	return shopList
+}
+
+
+
+
+func RemoveFromGlobalArray(id string) string {
+	
+	return ""
 }
