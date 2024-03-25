@@ -1,7 +1,7 @@
 {
     "port":":8087",
-    "mongourl": "mongodb://localhost:27017",
-    "uiDirectory":"/home/rohith/Music/AOV/Aviculture/AOS/static",
+    "mongourl": "mongodb+srv://rohith:rohith@cluster0.cgwpnv8.mongodb.net/?retryWrites=true&w=majority",
+    "uiDirectory":"C:/Users/buvan/Documents/S8-PROJECT/Aviculture/AOS/static",
     "db":"Login",
     "colleection":"users",
     "Addflock":"Flock",

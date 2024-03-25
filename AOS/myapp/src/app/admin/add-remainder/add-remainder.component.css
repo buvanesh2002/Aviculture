@@ -1,4 +1,4 @@
-.container {
+.container1 {
     margin-top: 180px;
     display: flex;
     flex-direction: column;
@@ -50,5 +50,12 @@
     text-align: center; 
   }
   
+
   
+  .btn.btn-primary {
+    background: #3b5d50;
+    border-color: #3b5d50;
+    margin-bottom: 30px;
+    padding: inherit;
   
+  }

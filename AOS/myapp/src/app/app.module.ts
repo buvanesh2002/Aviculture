@@ -33,6 +33,8 @@ import { AboutComponent } from './customer/about/about.component';
 import { ContactComponent } from './customer/contact/contact.component';
 import { BlogComponent } from './customer/blog/blog.component';
 import { ServicesComponent } from './customer/services/services.component';
+import { UserloginComponent } from './userlogin/userlogin.component';
+import { UserfirstpageComponent } from './userfirstpage/userfirstpage.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { ServicesComponent } from './customer/services/services.component';
     AboutComponent,
     ContactComponent,
     BlogComponent,
-    ServicesComponent
+    ServicesComponent,
+    UserloginComponent,
+    UserfirstpageComponent
     
     
   ],

@@ -20,6 +20,8 @@ import { BlogComponent } from './customer/blog/blog.component';
 import { ServicesComponent } from './customer/services/services.component';
 import { ShopComponent } from './customer/shop/shop.component';
 import { ThankyouComponent } from './customer/thankyou/thankyou.component';
+import { UserloginComponent } from './userlogin/userlogin.component';
+import { UserfirstpageComponent } from './userfirstpage/userfirstpage.component';
 
 
 
@@ -45,6 +47,8 @@ const routes: Routes = [
   { path:'services' ,component:ServicesComponent},
   {path: 'shop' , component:ShopComponent},
   {path:'thankyou', component:ThankyouComponent},
+  {path:'userlogin', component:UserloginComponent},
+  {path:'userfirstpage', component:UserfirstpageComponent},
 ];
 
 @NgModule({
