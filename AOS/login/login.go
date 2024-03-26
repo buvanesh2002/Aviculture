@@ -39,8 +39,6 @@ func Login(value dto.Logindata) (string, error) {
 	}
 }
 
-
-
 func AddFlock(value dto.Flockdata) (string, error) {
 
 	log.Println("++++++++++++++++++++++++++++  AddFlock service +++++++++++++++++++++++++")
@@ -381,11 +379,13 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 		flockEntries.Feed = value.Feed
 		flockEntries.CumFPE = lastEntry.CumFPE + flockEntries.FeedPerEgg
 		flockEntries.ClosingBirds = flockEntries.OpeningBirds - (flockEntries.Mortality + flockEntries.BirdsSold)
-		flockEntries.FeedPerBird = (flockEntries.Feed * 1000) / flockEntries.ClosingBirds
-		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds)
-		flockEntries.ProductionPer = (flockEntries.EggProducion) / flockEntries.ClosingBirds
-		flockEntries.FeedPerEgg = (flockEntries.Feed * 1000) / flockEntries.EggProducion
-		flockEntries.CumFPE = (lastEntry.CumFPE + flockEntries.FeedPerBird) / flockEntries.EggProducion
+		flockEntries.FeedPerBird = (flockEntries.Feed * 1000) / float32(flockEntries.ClosingBirds)
+		flockEntries.MortalityPer = float32(flockEntries.CumMortality / flock.NoBirds)
+		flockEntries.ProductionPer =float32 (flockEntries.EggProducion) / float32(flockEntries.ClosingBirds)
+		if flockEntries.EggProducion != 0 {
+			flockEntries.FeedPerEgg = float32(flockEntries.Feed * 1000) / float32(flockEntries.EggProducion)
+			flockEntries.CumFPE = (lastEntry.CumFPE + flockEntries.FeedPerBird) / float32(flockEntries.EggProducion)
+		}
 		flockEntries.TotalFeed = lastEntry.TotalFeed + flockEntries.Feed
 
 	} else {
@@ -397,11 +397,13 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 		flockEntries.EggProducion = flockEntries.EggsPerDay
 		flockEntries.Feed = value.Feed
 		flockEntries.ClosingBirds = flockEntries.OpeningBirds - (flockEntries.Mortality + flockEntries.BirdsSold)
-		flockEntries.FeedPerBird = (flockEntries.Feed * 1000) / flockEntries.ClosingBirds
-		flockEntries.MortalityPer = (flockEntries.CumMortality / flock.NoBirds)
-		flockEntries.ProductionPer = (flockEntries.EggProducion) / flockEntries.ClosingBirds
-		flockEntries.FeedPerEgg = (flockEntries.Feed * 1000) / flockEntries.EggProducion
-		flockEntries.CumFPE = flockEntries.FeedPerBird / flockEntries.EggProducion
+		flockEntries.FeedPerBird = float32(flockEntries.Feed * 1000) / float32(flockEntries.ClosingBirds)
+		flockEntries.MortalityPer = float32(flockEntries.CumMortality / flock.NoBirds)
+		flockEntries.ProductionPer = float32(flockEntries.EggProducion) /float32( flockEntries.ClosingBirds)
+		if flockEntries.EggProducion != 0 {
+			flockEntries.FeedPerEgg = float32(flockEntries.Feed * 1000) / float32(flockEntries.EggProducion)
+			flockEntries.CumFPE = flockEntries.FeedPerBird /float32( flockEntries.EggProducion)
+		}
 		flockEntries.TotalFeed = flockEntries.Feed
 	}
 
@@ -500,18 +502,17 @@ func ShopList() *[]dto.ListShop {
 		return nil
 	}
 
-	
 	for _, f := range flock {
 		lastentry := len(f.ListEntry)
 		if lastentry > 0 {
 
 			log.Println("breed:", f.BreedName)
-		
+
 			filter := bson.M{"breedName": f.BreedName}
 			var existingShop dto.ListShop
 			err := shopCollection.FindOne(context.Background(), filter).Decode(&existingShop)
 			if err == nil {
-				
+
 				log.Println("Document with BreedName", f.BreedName, "already exists, updating values")
 				update := bson.M{
 					"$set": bson.M{
@@ -533,7 +534,7 @@ func ShopList() *[]dto.ListShop {
 					return nil
 				}
 				ID := randomID
-			
+
 				_, err = shopCollection.InsertOne(context.Background(), dto.ListShop{
 					ID:        ID,
 					BreedName: f.BreedName,
@@ -546,14 +547,13 @@ func ShopList() *[]dto.ListShop {
 					log.Println("Error while inserting document:", err)
 				}
 			} else {
-				
+
 				log.Println("Error while finding document:", err)
 				continue
 			}
 		}
 	}
 
-	
 	shopCur, err := shopCollection.Find(context.Background(), bson.M{})
 	if err != nil {
 		log.Println("Error while fetching shop documents:", err)
@@ -568,8 +568,6 @@ func ShopList() *[]dto.ListShop {
 
 	return &shopdata
 }
-
-
 
 func fetchShopDataFromDB(client *mongo.Client, id string) (*dto.ListShop, error) {
 	var shopData dto.ListShop
@@ -587,19 +585,12 @@ func fetchShopDataFromDB(client *mongo.Client, id string) (*dto.ListShop, error)
 	return &shopData, nil
 }
 
-
-
-
-
 func ShopListWithIDs(id string) []dto.ListShop {
 	var shopList []dto.ListShop
 	return shopList
 }
 
-
-
-
 func RemoveFromGlobalArray(id string) string {
-	
+
 	return ""
 }
