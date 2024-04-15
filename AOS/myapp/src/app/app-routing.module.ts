@@ -22,6 +22,7 @@ import { ShopComponent } from './customer/shop/shop.component';
 import { ThankyouComponent } from './customer/thankyou/thankyou.component';
 import { UserloginComponent } from './userlogin/userlogin.component';
 import { UserfirstpageComponent } from './userfirstpage/userfirstpage.component';
+import { CustomerregComponent } from './customer/customerreg/customerreg.component';
 
 
 
@@ -49,7 +50,8 @@ const routes: Routes = [
   {path:'thankyou', component:ThankyouComponent},
   {path:'userlogin', component:UserloginComponent},
   {path:'userfirstpage', component:UserfirstpageComponent},
-  { path: 'cart', component: CartComponent }
+  { path: 'cart', component: CartComponent },
+  { path: 'customerreg', component: CustomerregComponent }
 ];
 
 @NgModule({

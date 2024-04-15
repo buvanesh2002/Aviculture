@@ -35,6 +35,8 @@ import { BlogComponent } from './customer/blog/blog.component';
 import { ServicesComponent } from './customer/services/services.component';
 import { UserloginComponent } from './userlogin/userlogin.component';
 import { UserfirstpageComponent } from './userfirstpage/userfirstpage.component';
+import { CustomerregComponent } from './customer/customerreg/customerreg.component';
+
 
 
 @NgModule({
@@ -61,7 +63,8 @@ import { UserfirstpageComponent } from './userfirstpage/userfirstpage.component'
     BlogComponent,
     ServicesComponent,
     UserloginComponent,
-    UserfirstpageComponent
+    UserfirstpageComponent,
+    CustomerregComponent
     
     
   ],

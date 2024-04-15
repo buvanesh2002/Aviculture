@@ -23,7 +23,7 @@
   <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
 
     <div class="container">
-      <a class="navbar-brand" >Furni<span>.</span></a>
+      <a class="navbar-brand" >Aviculture<span>.</span></a>
 
       <button class="navbar-toggler" routerLink="/userlogin" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -58,8 +58,7 @@
         <div class="col-lg-5">
           <div class="intro-excerpt">
             <h1>Add Flock</h1>
-            <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-            <p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+            <p class="mb-4">Adding a flock to our aviculture endeavors is akin to welcoming new members into our avian family. Each addition symbolizes growth, responsibility, and a commitment to providing a safe and caring habitat for our birds. With every new flock, we embark on a journey of discovery, learning, and companionship, enriching our lives and the lives of our feathered friends.</p>
           </div>
         </div>
         <div class="col-lg-7">
@@ -71,7 +70,7 @@
     </div>
   </div>
 
-<div class="container1">
+<div class="container1" style="padding-bottom: 20px;">
   <form (ngSubmit)="onSubmit()" #f="ngForm">
     <h2>+ADD FLOCK</h2>
     <div class="form-group">
@@ -105,14 +104,17 @@
       <input matInput type="number" id="shedNumber" placeholder="eg: 1,4,...." name="shedNumber" [(ngModel)]="flockData.shedNumber" required>
       <mat-error *ngIf="f.submitted && f.controls['shedNumber'].errors?.['required']">*required</mat-error>
     </div>
-    <div class="form-group">
-      <label for="birdImage">BIRD IMAGE*</label>
-      <input matInput type="file" id="birdImage" placeholder="eg: 1,4,...." name="birdImage" [(ngModel)]="flockData.birdImage" required>
+    <div style="display: flex;">
+      <label for="birdImage" style="margin-right: 70px;">BIRD IMAGE*</label><br>
+      <input style="margin-top: 7px;" matInput type="file" id="birdImage" placeholder="eg: 1,4,...." name="birdImage" [(ngModel)]="flockData.birdImage" required style="z-index: 10000;" >
       <mat-error *ngIf="f.submitted && f.controls['birdImage'].errors?.['required']">*required</mat-error>
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <div class="form-group text-center" style="margin-top: 17px;padding-top: 10px;">
+      <button type="submit" class="btn btn-primary" style="padding-bottom: 35px;">Create</button>
+    </div>
   </form>
 </div>
+
 
 <footer class="footer-section">
   <div class="container relative">

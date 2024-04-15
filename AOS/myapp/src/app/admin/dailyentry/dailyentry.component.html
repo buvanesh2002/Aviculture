@@ -21,7 +21,7 @@
   <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
 
     <div class="container">
-      <a class="navbar-brand" >Furni<span>.</span></a>
+      <a class="navbar-brand" >Aviculture<span>.</span></a>
 
       <button class="navbar-toggler" routerLink="/userlogin" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -55,14 +55,14 @@
       <div class="row justify-content-between">
         <div class="col-lg-5">
           <div class="intro-excerpt">
-            <h1>Add Flock</h1>
-            <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-            <p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+            <h1>Daily Entry</h1>
+            <p class="mb-4">Daily entries are the heartbeat of aviculture, providing vital insights into the health and behavior of our avian companions. With meticulous documentation, we ensure their well-being and foster a deeper understanding of their needs.</p>
+           
           </div>
         </div>
         <div class="col-lg-7">
           <div class="hero-img-wrap">
-            <img src="assets/images/chicken-egg.png" class="img-fluid">
+            <img src="assets/images/chicken-egg.png" class="img-fluid" >
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
  
 
 
-<div class="container1">
+<div class="container1" style="margin-bottom: 35px;">
     <form (ngSubmit)="onSubmit()" #f="ngForm">
       <h2>+ DAILY ENTRY</h2>
       <div class="form-group">
@@ -114,8 +114,10 @@
         <label for="trays">TRAYS</label>
         <input matInput type="number" id="trays" placeholder="Trays" name="trays" [(ngModel)]="flockData.trays">
       </div>
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="submit" class="btn btn-primary" style="padding-bottom: 35px;">Create</button>
     </form>
+    <br>
+    <br>
   </div>
 
   <footer class="footer-section">

@@ -32,9 +32,10 @@
   
   button {
     margin-top: 20px;
-    margin-left: 300px;
-    height: 25px;
-    width:80px;
+    width: 100%; /* Ensure button occupies full width */
+    max-width: 150px; /* Limit the maximum width if needed */
+    height: 40px; /* Adjust height as needed */
+    align-self: center; /* Center the button horizontally */
   }
   .mat-form-field {
     width: 100%; 
