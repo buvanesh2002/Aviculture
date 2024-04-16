@@ -50,7 +50,7 @@
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						<li><a class="nav-link" routerLink="#"><img src="assets/images/user.svg"></a></li>
-						<li><a class="nav-link" routerLink="/cart"><img src="assets/images/cart.svg"></a></li>
+						<li><a class="nav-link" [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li>
 					</ul>
 				</div>
 			</div>
@@ -87,8 +87,10 @@
 									<tr>
 										<th class="product-thumbnail">Image</th>
 										<th class="product-name">Product</th>
-										<th class="product-price">Price</th>
-										<th class="product-quantity">Quantity</th>
+										<th class="product-price">Bird Price</th>
+										<th class="product-price">Egg Price</th>
+										<th class="product-quantity">Bird Quantity</th>
+										<th class="product-quantity">Egg Quantity</th>
 										<th class="product-total">Total</th>
 										<th class="product-remove">Remove</th>
 									</tr>
@@ -106,13 +108,26 @@
 											<p>EggPrice: {{ product.eggprice }}</p>
 											<!-- Add more product details here as needed -->
 										</td>
-										<td>${{ product.price }}</td>
+										<td>${{ product.birdprice }}</td>
+										<td>${{ product.eggprice }}</td>
+										<td>
+											<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+												<div class="input-group-prepend">
+													<button class="btn btn-outline-black decrease"  type="button">&minus;</button>
+												</div>
+												<input type="text" class="form-control text-center quantity-amount" value="{{ product.eggquantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+												<div class="input-group-append">
+													<button class="btn btn-outline-black increase" type="button">&plus;</button>
+												</div>
+											</div>
+										</td>
+										<!------>
 										<td>
 											<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
 												<div class="input-group-prepend">
 													<button class="btn btn-outline-black decrease" type="button">&minus;</button>
 												</div>
-												<input type="text" class="form-control text-center quantity-amount" value="{{ product.quantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+												<input type="text" class="form-control text-center quantity-amount" value="{{ product.birdquantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
 												<div class="input-group-append">
 													<button class="btn btn-outline-black increase" type="button">&plus;</button>
 												</div>

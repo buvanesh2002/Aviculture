@@ -37,6 +37,7 @@ func main() {
 	router.HandleFunc("/shoplist", ShopListHandler).Methods("POST")
 	router.HandleFunc("/cartlist", CartListHandler).Methods("POST")
 	router.HandleFunc("/removecatrid", RemoveCartIDHandler).Methods("POST")
+	router.HandleFunc("/listcart", ListCartHandler).Methods("POST")
 
 	directoryLocation := viper.GetString("uiDirectory")
 	log.Println("this is the UI Directory Location : ", directoryLocation)
@@ -98,6 +99,7 @@ func AddFlockHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	log.Println(flockdata)
 
 	if flockdata.FlockName == "" || flockdata.BreedName == "" || flockdata.StartDate == "" || flockdata.StartAge == 0 || flockdata.NoBirds == 0 || flockdata.ShedNumber == "" {
 		http.Error(w, "Incomplete or invalid flock data", http.StatusBadRequest)
@@ -110,6 +112,7 @@ func AddFlockHandler(w http.ResponseWriter, r *http.Request) {
 		BreedName: flockdata.BreedName,
 		StartDate: flockdata.StartDate,
 		StartAge:  flockdata.StartAge,
+		Image: flockdata.Image,
 		//	Age:        flockdata.Age,
 		NoBirds:    flockdata.NoBirds,
 		ShedNumber: flockdata.ShedNumber,
@@ -404,6 +407,7 @@ func ShopListHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++ ShopListHandler +++++++++++++++++++++++++")
 	list := service.ShopList()
+	log.Println("shpoList",list)
 	json.NewEncoder(w).Encode(list)
 }
 
@@ -454,4 +458,16 @@ func RemoveCartIDHandler(w http.ResponseWriter, r *http.Request) {
 	response := service.RemoveFromGlobalArray(id)
 
 	json.NewEncoder(w).Encode(response)
+}
+
+
+
+func ListCartHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  List cart handler +++++++++++++++++++++++++")
+
+
+	list := service.ListCart()
+	log.Println(list)
+	json.NewEncoder(w).Encode(list)
 }

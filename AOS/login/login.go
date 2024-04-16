@@ -66,6 +66,7 @@ func AddFlock(value dto.Flockdata) (string, error) {
 		"active":       value.Active,
 		"createdAt":    value.CreatedAt,
 		"updatedAt":    value.UpdatedAt,
+		"image":value.Image,
 	}
 
 	_, err = collection.InsertOne(context.Background(), data)
@@ -381,9 +382,9 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 		flockEntries.ClosingBirds = flockEntries.OpeningBirds - (flockEntries.Mortality + flockEntries.BirdsSold)
 		flockEntries.FeedPerBird = (flockEntries.Feed * 1000) / float32(flockEntries.ClosingBirds)
 		flockEntries.MortalityPer = float32(flockEntries.CumMortality / flock.NoBirds)
-		flockEntries.ProductionPer =float32 (flockEntries.EggProducion) / float32(flockEntries.ClosingBirds)
+		flockEntries.ProductionPer = float32(flockEntries.EggProducion) / float32(flockEntries.ClosingBirds)
 		if flockEntries.EggProducion != 0 {
-			flockEntries.FeedPerEgg = float32(flockEntries.Feed * 1000) / float32(flockEntries.EggProducion)
+			flockEntries.FeedPerEgg = float32(flockEntries.Feed*1000) / float32(flockEntries.EggProducion)
 			flockEntries.CumFPE = (lastEntry.CumFPE + flockEntries.FeedPerBird) / float32(flockEntries.EggProducion)
 		}
 		flockEntries.TotalFeed = lastEntry.TotalFeed + flockEntries.Feed
@@ -397,12 +398,12 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 		flockEntries.EggProducion = flockEntries.EggsPerDay
 		flockEntries.Feed = value.Feed
 		flockEntries.ClosingBirds = flockEntries.OpeningBirds - (flockEntries.Mortality + flockEntries.BirdsSold)
-		flockEntries.FeedPerBird = float32(flockEntries.Feed * 1000) / float32(flockEntries.ClosingBirds)
+		flockEntries.FeedPerBird = float32(flockEntries.Feed*1000) / float32(flockEntries.ClosingBirds)
 		flockEntries.MortalityPer = float32(flockEntries.CumMortality / flock.NoBirds)
-		flockEntries.ProductionPer = float32(flockEntries.EggProducion) /float32( flockEntries.ClosingBirds)
+		flockEntries.ProductionPer = float32(flockEntries.EggProducion) / float32(flockEntries.ClosingBirds)
 		if flockEntries.EggProducion != 0 {
-			flockEntries.FeedPerEgg = float32(flockEntries.Feed * 1000) / float32(flockEntries.EggProducion)
-			flockEntries.CumFPE = flockEntries.FeedPerBird /float32( flockEntries.EggProducion)
+			flockEntries.FeedPerEgg = float32(flockEntries.Feed*1000) / float32(flockEntries.EggProducion)
+			flockEntries.CumFPE = flockEntries.FeedPerBird / float32(flockEntries.EggProducion)
 		}
 		flockEntries.TotalFeed = flockEntries.Feed
 	}
@@ -503,6 +504,7 @@ func ShopList() *[]dto.ListShop {
 	}
 
 	for _, f := range flock {
+		//log.Println(f)
 		lastentry := len(f.ListEntry)
 		if lastentry > 0 {
 
@@ -522,6 +524,7 @@ func ShopList() *[]dto.ListShop {
 						"eggprice":  5,
 					},
 				}
+				log.Println("in update",f.BreedName)
 				_, err := shopCollection.UpdateOne(context.Background(), filter, update)
 				if err != nil {
 					log.Println("Error updating document:", err)
@@ -534,7 +537,7 @@ func ShopList() *[]dto.ListShop {
 					return nil
 				}
 				ID := randomID
-
+                 log.Println("in insertion",f.BreedName)
 				_, err = shopCollection.InsertOne(context.Background(), dto.ListShop{
 					ID:        ID,
 					BreedName: f.BreedName,
@@ -542,12 +545,12 @@ func ShopList() *[]dto.ListShop {
 					NoEgg:     f.ListEntry[lastentry-1].EggProducion,
 					Birdprice: 50,
 					EggPrice:  5,
+					Image:     f.Image,
 				})
 				if err != nil {
 					log.Println("Error while inserting document:", err)
 				}
 			} else {
-
 				log.Println("Error while finding document:", err)
 				continue
 			}
@@ -587,10 +590,122 @@ func fetchShopDataFromDB(client *mongo.Client, id string) (*dto.ListShop, error)
 
 func ShopListWithIDs(id string) []dto.ListShop {
 	var shopList []dto.ListShop
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
+	var shop dto.ListShop
+	log.Println(id)
+	id = removeFirstLastChar(id)
+	log.Println(id)
+	filter := bson.M{"id": id}
+	err := collection.FindOne(context.Background(), filter).Decode(&shop)
+	if err != nil {
+
+		if err == mongo.ErrNoDocuments {
+
+			err = config.Collection2.FindOne(context.Background(), bson.M{"id": id}).Decode(&shop)
+			log.Println(shop)
+			if err != nil {
+				log.Println(err)
+				if err == mongo.ErrNoDocuments {
+					log.Printf("No document found with ID %s\n", id)
+					return nil
+				}
+				log.Println("Error fetching shop Data:", err)
+				return nil
+			} else {
+				log.Println("In Else")
+				shop.BirdQuantity = 2
+				shop.EggQuantity = 0
+				iy, err := collection.InsertOne(context.Background(), shop)
+				log.Println(iy)
+				if err != nil {
+					log.Fatal(err)
+				}
+			}
+		} else {
+			log.Println("Error fetching shop data:", err)
+		}
+
+	}
+
+	query := bson.M{}
+	cur, err := collection.Find(context.Background(), query)
+	if err != nil {
+		log.Fatal("Failed to execute query:", err)
+	}
+	defer cur.Close(context.Background())
+
+	for cur.Next(context.Background()) {
+		var shop dto.ListShop
+		err := cur.Decode(&shop)
+		if err != nil {
+			log.Fatal("Error decoding document:", err)
+		}
+		shopList = append(shopList, shop)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal("Error:", err)
+	}
+
 	return shopList
 }
 
-func RemoveFromGlobalArray(id string) string {
+func removeFirstLastChar(input string) string {
+	if len(input) < 2 {
+		// If the string has less than 2 characters, there's nothing to remove
+		return input
+	}
+	// Return the substring starting from the second character up to the second-to-last character
+	return input[1 : len(input)-1]
+}
 
-	return ""
+func RemoveFromGlobalArray(id string) string {
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
+	filter := bson.M{"id": id}
+	result, err := collection.DeleteOne(context.Background(), filter)
+	if err != nil {
+		log.Printf("Error removing product from cart: %v\n", err)
+		return "Error removing product from cart"
+	}
+
+	if result.DeletedCount == 0 {
+		log.Printf("No product found with ID %s in the cart\n", id)
+		return "No product found"
+	}
+
+	log.Printf("Product with ID %s successfully removed from the cart\n", id)
+	return "Product has been successfully removed from the cart"
+
+}
+
+func ListCart() []dto.ListShop {
+	var shopList []dto.ListShop
+	query := bson.M{}
+	Client := config.GetConfig()
+	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
+	cur, err := collection.Find(context.Background(), query)
+	if err != nil {
+		log.Fatal("Failed to execute query:", err)
+	}
+	defer cur.Close(context.Background())
+
+	for cur.Next(context.Background()) {
+		var shop dto.ListShop
+		err := cur.Decode(&shop)
+		if err != nil {
+			log.Fatal("Error decoding document:", err)
+		}
+
+		shopList = append(shopList, shop)
+	}
+	log.Println(shopList[0].BirdQuantity)
+	log.Println(shopList)
+
+	if err := cur.Err(); err != nil {
+		log.Fatal("Error:", err)
+	}
+
+	return shopList
 }

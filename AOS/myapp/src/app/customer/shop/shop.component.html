@@ -196,7 +196,7 @@
 				<div class="col-12 col-md-4 col-lg-3 mb-5" *ngFor="let product of responseData">
 				  <a class="product-item" >
 					<!-- Assuming you have imagePath property for the product image -->
-					<img src="assets/images/chicken-egg.png" class="img-fluid product-thumbnail" alt="Product Image">
+					<img src="{{ product.image }}" class="img-fluid product-thumbnail" alt="Product Image">
 					<h3 class="product-title">{{ product.breedName }}</h3>
 					<p>Nobirds: {{ product.noBirds }}</p>
 					<p>NoEgg: {{ product.noEgg }}</p>

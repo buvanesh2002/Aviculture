@@ -6,6 +6,7 @@ type Logindata struct {
 }
 
 type Flockdata struct {
+	Image      string       `json:"image" bson:"image"`
 	ID         string       `json:"id,omitempty" bson:"_id,omitempty"`
 	FlockName  string       `json:"flockName,omitempty" bson:"flockName,omitempty"`
 	BreedName  string       `json:"breedName,omitempty" bson:"breedName,omitempty"`
@@ -58,16 +59,19 @@ type ListEntry struct {
 	// CumHHP string `json:"cumHHP" bson:"cumHHP"`
 	Feed        float32 `json:"feed" bson:"feed"`
 	FeedPerBird float32 `json:"feedperBird" bson:"feedperBird"`
-	FeedPerEgg  float32     `json:"feedperEgg" bson:"feedperEgg"`
+	FeedPerEgg  float32 `json:"feedperEgg" bson:"feedperEgg"`
 	CumFPE      float32 `json:"cumFPE" bson:"cumFPE"`
 	TotalFeed   float32 `json:"totalFeed" bson:"totalFeed"`
 }
 
 type ListShop struct {
-	ID        string `json:"id,omitempty" bson:"id,omitempty"`
-	BreedName string `json:"breedName,omitempty" bson:"breedName"`
-	Nobirds   int    `json:"noBirds,omitempty" bson:"noBirds"`
-	NoEgg     int    `json:"noEgg,omitempty" bson:"noEgg"`
-	Birdprice int    `json:"birdprice,omitempty"`
-	EggPrice  int    `json:"eggprice,omitempty"`
+	ID           string `json:"id,omitempty" bson:"id,omitempty"`
+	Image        string `json:"image" bson:"image"`
+	BreedName    string `json:"breedName,omitempty" bson:"breedName"`
+	Nobirds      int    `json:"noBirds,omitempty" bson:"noBirds"`
+	NoEgg        int    `json:"noEgg,omitempty" bson:"noEgg"`
+	Birdprice    int    `json:"birdprice,omitempty"  bson:"birdprice"`
+	EggPrice     int    `json:"eggprice,omitempty"  bson:"eggprice"`
+	EggQuantity  int    `json:"eggquantity"  bson:"eggquantity"`
+	BirdQuantity int    `json:"birdquantity"  bson:"birdquantity" `
 }

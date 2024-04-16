@@ -9,6 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var Collection2 *mongo.Collection
+
 func GetConfig() *mongo.Client {
 
 	mongourl := viper.GetString("mongourl")
@@ -21,7 +23,6 @@ func GetConfig() *mongo.Client {
 	} else {
 		log.Println("mongo connected successfully")
 	}
+	Collection2 = client.Database("Login").Collection("Shop")
 	return client
 }
-
-
