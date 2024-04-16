@@ -17,7 +17,7 @@ var AddRemainderCollection *mongo.Collection
 var AddFlockEntriesCollection *mongo.Collection
 var AddShopCollection *mongo.Collection
 var AddCartCollection *mongo.Collection
-
+var AddCustomerCollection *mongo.Collection
 func init() {
 	// mongourl := viper.GetString("mongourl")
 	mongourl := "mongodb+srv://rohith:rohith@cluster0.cgwpnv8.mongodb.net/?retryWrites=true&w=majority"
@@ -50,4 +50,5 @@ func init() {
 	//AddFlockEntriesCollection = client.Database("Login").Collection(viper.GetString("AddflockEntries"))
 	AddShopCollection = client.Database("Login").Collection("Shop")
 	AddCartCollection = client.Database("Login").Collection("Cart")
+	AddCustomerCollection = client.Database("Login").Collection("Customer")
 }

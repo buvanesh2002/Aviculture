@@ -40,6 +40,11 @@ func main() {
 	router.HandleFunc("/listcart", ListCartHandler).Methods("POST")
     router.HandleFunc("/eggquantity", EggquantityHandler).Methods("POST")
     router.HandleFunc("/birdquantity", BirdquantityHandler).Methods("POST")
+	router.HandleFunc("/customerreg", CustomerRegHandler).Methods("POST")
+	router.HandleFunc("/customerlogin", CustomerLoginHandler).Methods("POST")
+    router.HandleFunc("/adminreg", AdminRegHandler).Methods("POST")
+	router.HandleFunc("/placeorder", PlaceOrderHandler).Methods("POST")
+
 
 	directoryLocation := viper.GetString("uiDirectory")
 	log.Println("this is the UI Directory Location : ", directoryLocation)
@@ -413,6 +418,22 @@ func ShopListHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(list)
 }
 
+func PlaceOrderHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++ PlaceOrderHandler +++++++++++++++++++++++++")
+	list ,err:= service.PlaceOrder()
+	if err!=nil{
+		http.Error(w, "Invalid Credentials", http.StatusInternalServerError)
+		return
+	}
+	log.Println("placeordering is ",list)
+	response := struct {
+		Message string `json:"message"`
+	}{
+		Message: list,
+	}
+	json.NewEncoder(w).Encode(response)}
+
 func CartListHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  ListFlockbyHandler handler +++++++++++++++++++++++++")
@@ -527,3 +548,104 @@ func BirdquantityHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func CustomerRegHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  CustomerRegHandler +++++++++++++++++++++++++")
+
+	var customer dto.CustomerReg
+	fmt.Println(r.Body)
+
+	if err := json.NewDecoder(r.Body).Decode(&customer); err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if customer.Name == "" || customer.Email == "" || customer.Password == "" || customer.Phone == "" || customer.Address == "" || customer.Pincode == "" {
+		http.Error(w, "Incomplete or invalid customer data", http.StatusBadRequest)
+		return
+	}
+	fmt.Println("gddgyufgyugeuwy")
+
+	msg, err := service.AddCustomer(customer)
+	log.Println("Received msg:", msg)
+	if err != nil {
+		http.Error(w, "Invalid Credentials", http.StatusInternalServerError)
+		return
+	}
+
+	response := struct {
+		Message string `json:"message"`
+	}{
+		Message: msg,
+	}
+	json.NewEncoder(w).Encode(response)
+
+}
+
+
+
+
+func CustomerLoginHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  Customerlogin handler +++++++++++++++++++++++++")
+
+	var logindata dto.Logindata
+
+	if err := json.NewDecoder(r.Body).Decode(&logindata); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	log.Println(logindata)
+
+	msg, err := service.CustomerLogin(logindata)
+	log.Println("Received msg:", msg)
+	if err != nil {
+		http.Error(w, "Invalid Credentials", http.StatusInternalServerError)
+		return
+	}
+
+	response := struct {
+		Message string `json:"message"`
+	}{
+		Message: msg,
+	}
+	json.NewEncoder(w).Encode(response)
+
+}
+
+
+
+func AdminRegHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  AdminRegHandler +++++++++++++++++++++++++")
+
+	var admin dto.AdminReg
+	fmt.Println(r.Body)
+
+	if err := json.NewDecoder(r.Body).Decode(&admin); err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if admin.Name == "" || admin.Email == "" || admin.Password == "" || admin.Phone == "" || admin.Address == "" || admin.Pincode == "" {
+		http.Error(w, "Incomplete or invalid admin data", http.StatusBadRequest)
+		return
+	}
+	
+
+	msg, err := service.AddAdmin(admin)
+	log.Println("Received msg:", msg)
+	if err != nil {
+		http.Error(w, "Invalid Credentials", http.StatusInternalServerError)
+		return
+	}
+
+	response := struct {
+		Message string `json:"message"`
+	}{
+		Message: msg,
+	}
+	json.NewEncoder(w).Encode(response)
+
+}

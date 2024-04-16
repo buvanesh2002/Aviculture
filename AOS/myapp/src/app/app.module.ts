@@ -36,6 +36,7 @@ import { ServicesComponent } from './customer/services/services.component';
 import { UserloginComponent } from './userlogin/userlogin.component';
 import { UserfirstpageComponent } from './userfirstpage/userfirstpage.component';
 import { CustomerregComponent } from './customer/customerreg/customerreg.component';
+import { AdminregComponent } from './admin/adminreg/adminreg.component';
 
 
 
@@ -64,7 +65,8 @@ import { CustomerregComponent } from './customer/customerreg/customerreg.compone
     ServicesComponent,
     UserloginComponent,
     UserfirstpageComponent,
-    CustomerregComponent
+    CustomerregComponent,
+    AdminregComponent
     
     
   ],

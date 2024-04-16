@@ -4,6 +4,9 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
+	"fmt"
+	"strconv"
 
 	"log"
 	"run/config"
@@ -370,7 +373,7 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 	flockEntries.Age = flock.Age
 
 	log.Println("flockvalues-------------------------", flock)
-	log.Println("err in updateflockentry :", err)
+	//log.Println("err in updateflockentry :", err)
 	if err == nil && len(flock.ListEntry) > 0 {
 		log.Println("inside if ----------", flock.ListEntry)
 		lastEntry := (flock.ListEntry)[len(flock.ListEntry)-1]
@@ -617,7 +620,7 @@ func ShopListWithIDs(id string) []dto.ListShop {
 				log.Println("In Else")
 				shop.BirdQuantity = 0
 				shop.EggQuantity = 0
-				shop.TotalAmount =0
+				shop.TotalAmount = 0
 				iy, err := config.AddCartCollection.InsertOne(context.Background(), shop)
 				log.Println(iy)
 				if err != nil {
@@ -712,9 +715,9 @@ func ListCart() []dto.ListShop {
 	return shopList
 }
 
-func UpdateEggQuantity(id string, eggquantity int,totalamount int) string {
+func UpdateEggQuantity(id string, eggquantity int, totalamount int) string {
 	filter := bson.M{"id": id}
-	update := bson.M{"$set": bson.M{"eggquantity": eggquantity,"totalamount": totalamount}}
+	update := bson.M{"$set": bson.M{"eggquantity": eggquantity, "totalamount": totalamount}}
 	options := options.Update().SetUpsert(false)
 
 	// Perform the update operation
@@ -722,15 +725,15 @@ func UpdateEggQuantity(id string, eggquantity int,totalamount int) string {
 	if err != nil {
 		log.Println(err)
 		return "Egg Quantity is Not Updated"
-	}else{
+	} else {
 		log.Println(result)
 	}
 	return "Egg Quantity is Updated Successfully"
 }
 
-func UpdateBirdQuantity(id string, birdquantity int,totalamount int) string {
+func UpdateBirdQuantity(id string, birdquantity int, totalamount int) string {
 	filter := bson.M{"id": id}
-	update := bson.M{"$set": bson.M{"birdquantity": birdquantity,"totalamount": totalamount}}
+	update := bson.M{"$set": bson.M{"birdquantity": birdquantity, "totalamount": totalamount}}
 	options := options.Update().SetUpsert(false)
 
 	// Perform the update operation
@@ -738,8 +741,113 @@ func UpdateBirdQuantity(id string, birdquantity int,totalamount int) string {
 	if err != nil {
 		log.Println(err)
 		return "Bird Quantity is Not Updated"
-	}else{
+	} else {
 		log.Println(result)
 	}
 	return "Bird Quantity is Updated Successfully"
+}
+
+func AddCustomer(customer dto.CustomerReg) (string, error) {
+	log.Println("++++++++++++++++++++++++++++  AddCustomer service +++++++++++++++++++++++++")
+	ctx := context.Background()
+	var existingCustomer dto.CustomerReg
+	err := config.AddCustomerCollection.FindOne(ctx, bson.M{"email": customer.Email}).Decode(&existingCustomer)
+	if err == nil {
+		return "", errors.New("email already exists")
+	} else if err != mongo.ErrNoDocuments {
+		log.Println("Error checking for existing email:", err)
+		return "", err
+	}
+
+	// Insert customer into MongoDB
+	_, err = config.AddCustomerCollection.InsertOne(ctx, customer)
+	if err != nil {
+		log.Println("Error inserting document:", err)
+		return "", err
+	}
+
+	return "Customer added successfully", nil
+}
+
+func CustomerLogin(value dto.Logindata) (string, error) {
+	log.Println("++++++++++++++++++++++++++++  login service +++++++++++++++++++++++++")
+
+	log.Println(value)
+	// Client := config.GetConfig()
+	// defer Client.Disconnect(context.Background())
+
+	// collection := Client.Database(viper.GetString("db")).Collection("users")
+
+	filter := bson.M{"email": value.Email, "password": value.Password}
+
+	err := config.AddCustomerCollection.FindOne(context.Background(), filter).Decode(&value)
+	log.Println(err)
+	if err != nil {
+		return "Invalid Credentials", err
+	} else {
+		return "Login successful", nil
+	}
+}
+
+func AddAdmin(admin dto.AdminReg) (string, error) {
+	log.Println("++++++++++++++++++++++++++++  AddCustomer service +++++++++++++++++++++++++")
+	ctx := context.Background()
+	var existingCustomer dto.CustomerReg
+	err := config.LoginCollection.FindOne(ctx, bson.M{"email": admin.Email}).Decode(&existingCustomer)
+	if err == nil {
+		return "", errors.New("email already exists")
+	} else if err != mongo.ErrNoDocuments {
+		log.Println("Error checking for existing email:", err)
+		return "", err
+	}
+
+	// Insert customer into MongoDB
+	_, err = config.LoginCollection.InsertOne(ctx, admin)
+	if err != nil {
+		log.Println("Error inserting document:", err)
+		return "", err
+	}
+
+	return "Admin added successfully", nil
+}
+
+func PlaceOrder() (string, error) {
+	log.Println("-----------------------------IN placeorder----------------")
+	ctx := context.Background()
+	var totalprice int
+
+	query := bson.M{}
+	cur, err := config.AddCartCollection.Find(context.Background(), query)
+	if err != nil {
+		log.Fatal("Failed to execute query:", err)
+	}
+	defer cur.Close(context.Background())
+
+	for cur.Next(context.Background()) {
+		var shop dto.ListShop
+		err := cur.Decode(&shop)
+		if err != nil {
+			log.Fatal("Error decoding document:", err)
+		}
+		var flock dto.Flockdata
+		queryfind := bson.M{"breedName": shop.BreedName}
+		err = config.AddFlockCollection.FindOne(ctx, queryfind).Decode(&flock)
+		lastentry := len(flock.ListEntry)
+		flock.ListEntry[lastentry-1].ClosingBirds -= shop.BirdQuantity
+		flock.ListEntry[lastentry-1].EggProducion -= shop.EggQuantity
+		update := bson.M{"$set": bson.M{
+			"listentry": flock.ListEntry,
+		},
+		}
+		totalprice += shop.TotalAmount
+		_, err = config.AddFlockCollection.UpdateOne(ctx, queryfind, update)
+		if err!=nil {
+			fmt.Println("err updtaing",err)
+		}
+
+	}
+	_ = config.AddCartCollection.Drop(ctx)
+
+	go SendOrderConformation("buvaneshwaran.ee20@bitsathy.ac.in", strconv.Itoa(totalprice), strconv.Itoa(totalprice+50),time.Now().Format("12 Jan 2024"),"djhsgdj","5")
+	return "sfd", err
 }

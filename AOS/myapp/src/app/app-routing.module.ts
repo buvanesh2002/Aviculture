@@ -23,6 +23,7 @@ import { ThankyouComponent } from './customer/thankyou/thankyou.component';
 import { UserloginComponent } from './userlogin/userlogin.component';
 import { UserfirstpageComponent } from './userfirstpage/userfirstpage.component';
 import { CustomerregComponent } from './customer/customerreg/customerreg.component';
+import { AdminregComponent } from './admin/adminreg/adminreg.component';
 
 
 
@@ -51,7 +52,8 @@ const routes: Routes = [
   {path:'userlogin', component:UserloginComponent},
   {path:'userfirstpage', component:UserfirstpageComponent},
   { path: 'cart', component: CartComponent },
-  { path: 'customerreg', component: CustomerregComponent }
+  { path: 'customerreg', component: CustomerregComponent },
+  { path: 'adminreg', component: AdminregComponent }
 ];
 
 @NgModule({

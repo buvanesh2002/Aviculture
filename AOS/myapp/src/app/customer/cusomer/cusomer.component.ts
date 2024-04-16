@@ -41,4 +41,14 @@ export class CusomerComponent implements OnInit {
     // For simplicity, let's assume total is same as subtotal in this example
     return this.calculateSubtotal();
   }
+
+  placeorder(){
+    let obj = {};
+    this.appService.postRequest("placeorder", obj).subscribe((result: any) => {
+      console.log("result====", result);
+     
+      // console.log(this.products) 
+    });
+
+  }
 }

@@ -4,6 +4,7 @@ go 1.21.3
 
 require (
 	github.com/gorilla/mux v1.8.1
+	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	go.mongodb.org/mongo-driver v1.13.1
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 )

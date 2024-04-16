@@ -25,7 +25,7 @@ export class UserloginComponent {
   // }
 
   login() {
-    console.log("login");
+    console.log("customerlogin");
     let obj = {
         "email": this.username,
         "password": this.password
@@ -33,7 +33,7 @@ export class UserloginComponent {
 
     console.log(obj);
 
-    this.appservice.postRequest("login", obj).subscribe(
+    this.appservice.postRequest("customerlogin", obj).subscribe(
         (result: any) => {
             console.log(result);
             if (result && result['message']) {  
@@ -47,7 +47,7 @@ export class UserloginComponent {
             //  this.router.navigate(['dailyentry']);
              //this.router.navigate(['listflockentry']);
              //this.router.navigate(['firstpage']);
-             this.router.navigate(['listflock']);
+             this.router.navigate(['home-cus']);
             } else {
                 console.log("else")
                 this.showError(result['response']);
