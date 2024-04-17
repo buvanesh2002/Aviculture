@@ -11,6 +11,7 @@ export class CusomerComponent implements OnInit {
       this.fetchCart()
   }
   products: any[] = [];  
+  checkoutForm:any ={}
   constructor(public router:Router,private appService: AppService){}
   nav(){
     this.router.navigate(['cart']);

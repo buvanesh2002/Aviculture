@@ -57,7 +57,7 @@ func (sender *GmailSender) SendEmail(
 
 func SendOrderConformation(toEmail, price, totalAmount, dateofdelivey, id, noofitems string) {
 	sender := NewGmailSender("MOHAMMED YAMEEN SM", "mohammedyameen.ee20@bitsathy.ac.in", "idje waoa wmkd axzq")
-	subject := "Order Conformation"
+	subject := "Order Confirmation"
 	htmlTemplate := `
     <!DOCTYPE html>
     <html>
@@ -115,7 +115,7 @@ func SendOrderConformation(toEmail, price, totalAmount, dateofdelivey, id, noofi
                         <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:300px;">
                             <tr>
                                 <td align="left" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 36px; font-weight: 800; line-height: 48px;" class="mobile-center">
-                                    <h1 style="font-size: 36px; font-weight: 800; margin: 0; color: #ffffff;">Anon</h1>
+                                    <h1 style="font-size: 36px; font-weight: 800; margin: 0; color: #ffffff;">Aviculture</h1>
                                 </td>
                             </tr>
                         </table>
@@ -262,13 +262,13 @@ func SendOrderConformation(toEmail, price, totalAmount, dateofdelivey, id, noofi
                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                         <tr>
                             <td align="center">
-                                <img src="logo-footer.png" width="37" height="37" style="display: block; border: 0px;"/>
+                                <img src="assets/images/aviculture.jpeg" width="37" height="37" style="display: block; border: 0px;"/>
                             </td>
                         </tr>
                         <tr>
                             <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 24px; padding: 5px 0 10px 0;">
                                 <p style="font-size: 14px; font-weight: 800; line-height: 18px; color: #333333;">
-                                    Anon<br>
+                                    Aviculture<br>
                                     Sathy, Erode - 638402
                                 </p>
                             </td>

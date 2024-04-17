@@ -822,7 +822,7 @@ func PlaceOrder() (string, error) {
 		log.Fatal("Failed to execute query:", err)
 	}
 	defer cur.Close(context.Background())
-
+    var quantity int
 	for cur.Next(context.Background()) {
 		var shop dto.ListShop
 		err := cur.Decode(&shop)
@@ -830,11 +830,17 @@ func PlaceOrder() (string, error) {
 			log.Fatal("Error decoding document:", err)
 		}
 		var flock dto.Flockdata
+		log.Println("breedName:",shop.BreedName)
 		queryfind := bson.M{"breedName": shop.BreedName}
 		err = config.AddFlockCollection.FindOne(ctx, queryfind).Decode(&flock)
 		lastentry := len(flock.ListEntry)
+		log.Println("lastentry :", lastentry)
+		log.Println("beforeentry")
 		flock.ListEntry[lastentry-1].ClosingBirds -= shop.BirdQuantity
 		flock.ListEntry[lastentry-1].EggProducion -= shop.EggQuantity
+		quantity += shop.BirdQuantity
+		quantity += shop.EggQuantity
+		log.Println("after entry")
 		update := bson.M{"$set": bson.M{
 			"listentry": flock.ListEntry,
 		},
@@ -847,7 +853,13 @@ func PlaceOrder() (string, error) {
 
 	}
 	_ = config.AddCartCollection.Drop(ctx)
+	today := time.Now()
 
-	go SendOrderConformation("buvaneshwaran.ee20@bitsathy.ac.in", strconv.Itoa(totalprice), strconv.Itoa(totalprice+50),time.Now().Format("12 Jan 2024"),"djhsgdj","5")
+	// Add 10 days to today's date
+	newDate := today.AddDate(0, 0, 10)
+
+	// Format the new date as "2 Jan 2006"
+	formattedDate := newDate.Format("2 Jan 2006")
+	go SendOrderConformation("buvaneshwaran.ee20@bitsathy.ac.in", strconv.Itoa(totalprice), strconv.Itoa(totalprice+50),formattedDate,"id_01",strconv.Itoa(quantity))
 	return "sfd", err
 }
