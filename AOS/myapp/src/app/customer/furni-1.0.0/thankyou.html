@@ -207,3 +207,45 @@
 	</body>
 
 </html>
+
+
+
+
+<tr *ngFor="let product of products">
+	
+	<td class="product-name">
+		<h2 class="h5 text-black">{{ product.breedName }}</h2>
+		<p>Nobirds: {{ product.noBirds }}</p>
+		<p>NoEgg: {{ product.noEgg }}</p>
+		<p>Birdprice: {{ product.birdprice }}</p>
+		<p>EggPrice: {{ product.eggprice }}</p>
+		<!-- Add more product details here as needed -->
+	</td>
+	<td style="font-weight: bolder;">₹{{ product.birdprice }}</td>
+	<td style="font-weight: bolder;">₹{{ product.eggprice }}</td>
+	<td>
+		<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+			<div class="input-group-prepend">
+				<button class="btn btn-outline-black decrease"  type="button" (click)="birdminus(product.id)" [disabled]="product.birdquantity === 0">&minus;</button>
+			</div>
+			<input type="text" class="form-control text-center quantity-amount" value="{{ product.birdquantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+			<div class="input-group-append">
+				<button class="btn btn-outline-black increase" type="button" (click)="birdplus(product.id)" [disabled]="product.birdquantity === product.noBirds">&plus;</button>
+			</div>
+		</div>
+	</td>
+	<!------>         
+	<td>
+		<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+			<div class="input-group-prepend">
+				<button class="btn btn-outline-black decrease" type="button" (click)="eggminus(product.id)" [disabled]="product.eggquantity === 0">&minus;</button>
+			</div>
+			<input type="text" class="form-control text-center quantity-amount" value="{{ product.eggquantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+			<div class="input-group-append">
+				<button class="btn btn-outline-black increase" type="button" (click)="eggplus(product.id)" [disabled]="product.eggquantity === product.noEgg">&plus;</button>
+			</div>
+		</div>
+	</td>
+	<td style="font-weight: bolder;">₹{{ product.totalamount }}</td>
+	<td><a (click)="removeProduct(product.id)" class="btn btn-black btn-sm">X</a></td>
+</tr>

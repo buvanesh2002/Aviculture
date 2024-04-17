@@ -12,8 +12,9 @@ import (
 	"time"
 
 	//"github.com/aws/aws-sdk-go/aws/client"
-	"github.com/spf13/viper"
+	// "github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -21,14 +22,14 @@ func Login(value dto.Logindata) (string, error) {
 	log.Println("++++++++++++++++++++++++++++  login service +++++++++++++++++++++++++")
 
 	log.Println(value)
-	Client := config.GetConfig()
-	defer Client.Disconnect(context.Background())
+	// Client := config.GetConfig()
+	// defer Client.Disconnect(context.Background())
 
-	collection := Client.Database(viper.GetString("db")).Collection("users")
+	// collection := Client.Database(viper.GetString("db")).Collection("users")
 
 	filter := bson.M{"email": value.Email, "password": value.Password}
 
-	err := collection.FindOne(context.Background(), filter).Decode(&value)
+	err := config.LoginCollection.FindOne(context.Background(), filter).Decode(&value)
 	log.Println(err)
 	if err != nil {
 		return "Invalid Credentials", err
@@ -49,10 +50,10 @@ func AddFlock(value dto.Flockdata) (string, error) {
 	}
 	value.ID = randomID
 
-	Client := config.GetConfig()
-	defer Client.Disconnect(context.Background())
+	// Client := config.GetConfig()
+	// defer Client.Disconnect(context.Background())
 
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
 
 	data := bson.M{
 		"_id":       value.ID,
@@ -66,10 +67,10 @@ func AddFlock(value dto.Flockdata) (string, error) {
 		"active":       value.Active,
 		"createdAt":    value.CreatedAt,
 		"updatedAt":    value.UpdatedAt,
-		"image":value.Image,
+		"image":        value.Image,
 	}
 
-	_, err = collection.InsertOne(context.Background(), data)
+	_, err = config.AddFlockCollection.InsertOne(context.Background(), data)
 	if err != nil {
 		log.Println("Error inserting document:", err)
 		return "", err
@@ -82,16 +83,16 @@ func ListFlock() *[]dto.Flockdata {
 	AgeCalculator()
 	log.Println("===============List Credentials===============")
 	info := []dto.Flockdata{}
-	Client := config.GetConfig()
-	db := viper.GetString("db")
-	log.Println("db name : ", db)
-
-	collection := Client.Database(db).Collection(viper.GetString("Addflock"))
-	cur, err := collection.Find(context.Background(), bson.M{"active": "true"})
+	// Client := config.GetConfig()
+	// db := viper.GetString("db")
+	// log.Println("db name : ", db)
+	// // this is also add flock collection
+	// collection := Client.Database(db).Collection(viper.GetString("Addflock"))
+	cur, err := config.AddFlockCollection.Find(context.Background(), bson.M{"active": "true"})
 	if err != nil {
 		log.Println("Collection list error : ", err)
 	}
-	defer Client.Disconnect(context.Background())
+	// defer Client.Disconnect(context.Background())
 	defer cur.Close(context.Background())
 
 	err = cur.All(context.Background(), &info)
@@ -129,12 +130,12 @@ func ListFlockbyid(id string) (dto.Flockdata, error) {
 	log.Println("===============ListFlockbyid Credentials===============")
 
 	var info dto.Flockdata
-	Client := config.GetConfig()
-	db := viper.GetString("db")
+	// Client := config.GetConfig()
+	// db := viper.GetString("db")
 
-	collection := Client.Database(db).Collection(viper.GetString("Addflock"))
+	// collection := Client.Database(db).Collection(viper.GetString("Addflock"))
 	filter := bson.M{"_id": id}
-	result := collection.FindOne(context.Background(), filter)
+	result := config.AddFlockCollection.FindOne(context.Background(), filter)
 	if result.Err() != nil {
 		log.Println("Error while fetching document:", result.Err())
 		return dto.Flockdata{}, result.Err()
@@ -153,11 +154,11 @@ func DailyEntry(value dto.DailyEntry) (string, error) {
 	log.Println("============= Daily Entry =================")
 	ctx := context.TODO()
 	defer ctx.Done()
-	Client := config.GetConfig()
-	defer Client.Disconnect(context.Background())
-	db := viper.GetString("db")
-	collection := Client.Database(db).Collection(viper.GetString("AddEntry"))
-	_, err := collection.InsertOne(ctx, value)
+	// Client := config.GetConfig()
+	// defer Client.Disconnect(context.Background())
+	// db := viper.GetString("db")
+	// collection := Client.Database(db).Collection(viper.GetString("AddEntry"))
+	_, err := config.AddEntryCollection.InsertOne(ctx, value)
 	if err != nil {
 		log.Println("Error Inserting Document:", err)
 		return " ", err
@@ -170,9 +171,9 @@ func DailyEntry(value dto.DailyEntry) (string, error) {
 func UpdateFlock(value dto.Flockdata) (string, error) {
 	log.Println("++++++++++++++++++++++++++++  UpdateFlock service +++++++++++++++++++++++++")
 
-	Client := config.GetConfig()
-	defer Client.Disconnect(context.Background())
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	// Client := config.GetConfig()
+	// defer Client.Disconnect(context.Background())
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
 	filter := bson.M{"_id": value.ID}
 	log.Println("active=", value.Active)
 	log.Println("ID=", value.ID)
@@ -189,7 +190,7 @@ func UpdateFlock(value dto.Flockdata) (string, error) {
 		},
 	}
 
-	_, err := collection.UpdateOne(context.Background(), filter, update)
+	_, err := config.AddFlockCollection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		log.Println("Error updating document:", err)
 		return "", err
@@ -228,13 +229,13 @@ func AgeCalculator() string {
 		update      bson.M
 	)
 
-	Client := config.GetConfig()
-	db := viper.GetString("db")
-	collection := Client.Database(db).Collection(viper.GetString("Addflock"))
+	// Client := config.GetConfig()
+	// db := viper.GetString("db")
+	// collection := Client.Database(db).Collection(viper.GetString("Addflock"))
 	Date := time.Now()
 	ctx := context.TODO()
 	search := bson.M{}
-	cursor, err := collection.Find(ctx, search)
+	cursor, err := config.AddFlockCollection.Find(ctx, search)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -258,7 +259,7 @@ func AgeCalculator() string {
 				"age": int32(days),
 			},
 		}
-		_, err := collection.UpdateOne(context.Background(), filter, update)
+		_, err := config.AddFlockCollection.UpdateOne(context.Background(), filter, update)
 		if err != nil {
 			log.Println("Error updating document:", err)
 		}
@@ -276,12 +277,12 @@ func AddReminder(value dto.Reminder) (string, error) {
 	}
 	value.ReminderId = randomID
 	value.Status = "true"
-	Client := config.GetConfig()
-	defer Client.Disconnect(context.Background())
+	// Client := config.GetConfig()
+	// defer Client.Disconnect(context.Background())
 
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
 
-	_, err1 := collection.InsertOne(context.Background(), value)
+	_, err1 := config.AddRemainderCollection.InsertOne(context.Background(), value)
 	if err1 != nil {
 		log.Println("Error inserting document:", err1)
 		return "", err1
@@ -293,15 +294,15 @@ func ShowReminders(value dto.Reminder) *[]dto.Reminder {
 	log.Println("===============List Credentials===============")
 	DeleteReminder()
 	info := []dto.Reminder{}
-	Client := config.GetConfig()
-	db := viper.GetString("db")
-	log.Println("db name : ", db)
-	collection := Client.Database(db).Collection(viper.GetString("AddReminder"))
-	cur, err := collection.Find(context.Background(), bson.M{"active": "true"})
+	// Client := config.GetConfig()
+	// db := viper.GetString("db")
+	// log.Println("db name : ", db)
+	// collection := Client.Database(db).Collection(viper.GetString("AddReminder"))
+	cur, err := config.AddRemainderCollection.Find(context.Background(), bson.M{"active": "true"})
 	if err != nil {
 		log.Println("Collection list error : ", err)
 	}
-	defer Client.Disconnect(context.Background())
+	// defer Client.Disconnect(context.Background())
 	defer cur.Close(context.Background())
 	err = cur.All(context.Background(), &info)
 	if err != nil {
@@ -311,14 +312,14 @@ func ShowReminders(value dto.Reminder) *[]dto.Reminder {
 	return &info
 }
 func UpdateEntry(value dto.DailyEntry) {
-	client := config.GetConfig()
-	defer client.Disconnect(context.Background())
-	collection := client.Database(viper.GetString("db")).Collection(viper.GetString("AddFlock"))
+	// client := config.GetConfig()
+	// defer client.Disconnect(context.Background())
+	// collection := client.Database(viper.GetString("db")).Collection(viper.GetString("AddFlock"))
 	filter := bson.M{"_id": value.ID}
 	update := bson.M{
 		"$push": bson.M{"entry": value},
 	}
-	_, err := collection.UpdateOne(context.Background(), filter, update)
+	_, err := config.AddFlockCollection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		log.Println("error while updating:", err)
 	}
@@ -328,9 +329,9 @@ func UpdateEntry(value dto.DailyEntry) {
 func DeleteReminder() string {
 
 	log.Println("------------Reminder Deletion callled ")
-	Client := config.GetConfig()
-	defer Client.Disconnect(context.Background())
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
+	// Client := config.GetConfig()
+	// defer Client.Disconnect(context.Background())
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
 
 	currentDate := time.Now().Format("2006-01-02")
 
@@ -340,7 +341,7 @@ func DeleteReminder() string {
 	}
 
 	// Perform deletion operation
-	_, err := collection.DeleteMany(context.Background(), filter)
+	_, err := config.AddRemainderCollection.DeleteMany(context.Background(), filter)
 	if err != nil {
 		log.Fatal(err)
 		return "failed to delete"
@@ -350,8 +351,8 @@ func DeleteReminder() string {
 
 func UpdateFlockEntries(value dto.DailyEntry) string {
 	log.Println("------------Update FlockEntries-------------")
-	Client := config.GetConfig()
-	defer Client.Disconnect(context.TODO())
+	// Client := config.GetConfig()
+	// defer Client.Disconnect(context.TODO())
 	//collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddflockEntries"))
 	var flock dto.Flockdata
 	var flockEntries dto.ListEntry
@@ -359,13 +360,13 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 	flockEntries.Mortality = value.Mortality
 	flockEntries.BirdsSold = value.BirdsSold
 
-	FlockCollection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	// FlockCollection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
 
 	flockfilter := bson.M{
 		"_id": value.ID,
 	}
 
-	err := FlockCollection.FindOne(context.TODO(), flockfilter).Decode(&flock)
+	err := config.AddFlockCollection.FindOne(context.TODO(), flockfilter).Decode(&flock)
 	flockEntries.Age = flock.Age
 
 	log.Println("flockvalues-------------------------", flock)
@@ -416,7 +417,7 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 			"listentry": flockEntries,
 		},
 	}
-	_, err = FlockCollection.UpdateOne(context.Background(), filter, query)
+	_, err = config.AddFlockCollection.UpdateOne(context.Background(), filter, query)
 	if err != nil {
 		log.Println("error inserting", err)
 		return "updation in listEntry failed"
@@ -428,15 +429,15 @@ func ListFlockEntry() []dto.Flockdata {
 	log.Println("----------------Lsit Flock Entry----------------")
 	//var listarray []dto.ListEntry
 	var flock []dto.Flockdata
-	Client := config.GetConfig()
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
-	log.Println("----connected to DB------------------------")
-	cur, err := collection.Find(context.Background(), bson.M{"active": "true"})
+	// Client := config.GetConfig()
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	// log.Println("----connected to DB------------------------")
+	cur, err := config.AddFlockCollection.Find(context.Background(), bson.M{"active": "true"})
 	if err != nil {
 		log.Println("error finding:", err)
 		log.Println(err)
 	}
-	defer Client.Disconnect(context.Background())
+	//defer Client.Disconnect(context.Background())
 	defer cur.Close(context.TODO())
 	log.Println("fsdfsdfSdfffef")
 	// var EntryLength int
@@ -453,9 +454,9 @@ func ListParticularFlock(Id string) ([]dto.ListEntry, error) {
 	var flock dto.Flockdata
 	flock.ID = Id
 	filter := bson.M{"_id": flock.ID}
-	Client := config.GetConfig()
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
-	err := collection.FindOne(context.TODO(), filter).Decode(&flock)
+	// Client := config.GetConfig()
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	err := config.AddFlockCollection.FindOne(context.TODO(), filter).Decode(&flock)
 	if err != nil {
 		log.Println("error fetching:", err)
 
@@ -467,15 +468,15 @@ func ListReminder() []dto.Reminder {
 	log.Println("----------------Lsit Flock Entry----------------")
 
 	var remainder []dto.Reminder
-	Client := config.GetConfig()
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
-	log.Println("----connected to DB------------------------")
-	cur, err := collection.Find(context.Background(), bson.M{"status": "true"})
+	// Client := config.GetConfig()
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
+	// log.Println("----connected to DB------------------------")
+	cur, err := config.AddFlockCollection.Find(context.Background(), bson.M{"status": "true"})
 	if err != nil {
 		log.Println("error finding:", err)
 		log.Println(err)
 	}
-	defer Client.Disconnect(context.Background())
+	// defer Client.Disconnect(context.Background())
 	defer cur.Close(context.TODO())
 
 	_ = cur.All(context.TODO(), &remainder)
@@ -487,15 +488,15 @@ func ListReminder() []dto.Reminder {
 func ShopList() *[]dto.ListShop {
 	var flock []dto.Flockdata
 	var shopdata []dto.ListShop
-	Client := config.GetConfig()
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
-	shopCollection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddShop"))
-	cur, err := collection.Find(context.Background(), bson.M{"active": "true"})
+	// Client := config.GetConfig()
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
+	// shopCollection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddShop"))
+	cur, err := config.AddFlockCollection.Find(context.Background(), bson.M{"active": "true"})
 	if err != nil {
 		log.Println("Collection list error : ", err)
 		return nil
 	}
-	defer Client.Disconnect(context.Background())
+	//defer Client.Disconnect(context.Background())
 	defer cur.Close(context.Background())
 	err = cur.All(context.Background(), &flock)
 	if err != nil {
@@ -512,7 +513,7 @@ func ShopList() *[]dto.ListShop {
 
 			filter := bson.M{"breedName": f.BreedName}
 			var existingShop dto.ListShop
-			err := shopCollection.FindOne(context.Background(), filter).Decode(&existingShop)
+			err := config.AddShopCollection.FindOne(context.Background(), filter).Decode(&existingShop)
 			if err == nil {
 
 				log.Println("Document with BreedName", f.BreedName, "already exists, updating values")
@@ -524,8 +525,8 @@ func ShopList() *[]dto.ListShop {
 						"eggprice":  5,
 					},
 				}
-				log.Println("in update",f.BreedName)
-				_, err := shopCollection.UpdateOne(context.Background(), filter, update)
+				log.Println("in update", f.BreedName)
+				_, err := config.AddShopCollection.UpdateOne(context.Background(), filter, update)
 				if err != nil {
 					log.Println("Error updating document:", err)
 					continue
@@ -537,8 +538,8 @@ func ShopList() *[]dto.ListShop {
 					return nil
 				}
 				ID := randomID
-                 log.Println("in insertion",f.BreedName)
-				_, err = shopCollection.InsertOne(context.Background(), dto.ListShop{
+				log.Println("in insertion", f.BreedName)
+				_, err = config.AddShopCollection.InsertOne(context.Background(), dto.ListShop{
 					ID:        ID,
 					BreedName: f.BreedName,
 					Nobirds:   f.ListEntry[lastentry-1].ClosingBirds,
@@ -557,7 +558,7 @@ func ShopList() *[]dto.ListShop {
 		}
 	}
 
-	shopCur, err := shopCollection.Find(context.Background(), bson.M{})
+	shopCur, err := config.AddShopCollection.Find(context.Background(), bson.M{})
 	if err != nil {
 		log.Println("Error while fetching shop documents:", err)
 		return nil
@@ -574,9 +575,9 @@ func ShopList() *[]dto.ListShop {
 
 func fetchShopDataFromDB(client *mongo.Client, id string) (*dto.ListShop, error) {
 	var shopData dto.ListShop
-	collection := client.Database("Login").Collection("Shop")
+	// collection := client.Database("Login").Collection("Shop")
 	filter := bson.M{"_id": id}
-	err := collection.FindOne(context.Background(), filter).Decode(&shopData)
+	err := config.AddShopCollection.FindOne(context.Background(), filter).Decode(&shopData)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			log.Printf("No document found with ID %s\n", id)
@@ -590,19 +591,19 @@ func fetchShopDataFromDB(client *mongo.Client, id string) (*dto.ListShop, error)
 
 func ShopListWithIDs(id string) []dto.ListShop {
 	var shopList []dto.ListShop
-	Client := config.GetConfig()
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
+	// Client := config.GetConfig()
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
 	var shop dto.ListShop
 	log.Println(id)
 	id = removeFirstLastChar(id)
 	log.Println(id)
 	filter := bson.M{"id": id}
-	err := collection.FindOne(context.Background(), filter).Decode(&shop)
+	err := config.AddCartCollection.FindOne(context.Background(), filter).Decode(&shop)
 	if err != nil {
 
 		if err == mongo.ErrNoDocuments {
 
-			err = config.Collection2.FindOne(context.Background(), bson.M{"id": id}).Decode(&shop)
+			err = config.AddShopCollection.FindOne(context.Background(), bson.M{"id": id}).Decode(&shop)
 			log.Println(shop)
 			if err != nil {
 				log.Println(err)
@@ -614,9 +615,10 @@ func ShopListWithIDs(id string) []dto.ListShop {
 				return nil
 			} else {
 				log.Println("In Else")
-				shop.BirdQuantity = 2
+				shop.BirdQuantity = 0
 				shop.EggQuantity = 0
-				iy, err := collection.InsertOne(context.Background(), shop)
+				shop.TotalAmount =0
+				iy, err := config.AddCartCollection.InsertOne(context.Background(), shop)
 				log.Println(iy)
 				if err != nil {
 					log.Fatal(err)
@@ -629,7 +631,7 @@ func ShopListWithIDs(id string) []dto.ListShop {
 	}
 
 	query := bson.M{}
-	cur, err := collection.Find(context.Background(), query)
+	cur, err := config.AddCartCollection.Find(context.Background(), query)
 	if err != nil {
 		log.Fatal("Failed to execute query:", err)
 	}
@@ -661,10 +663,10 @@ func removeFirstLastChar(input string) string {
 }
 
 func RemoveFromGlobalArray(id string) string {
-	Client := config.GetConfig()
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
+	// Client := config.GetConfig()
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
 	filter := bson.M{"id": id}
-	result, err := collection.DeleteOne(context.Background(), filter)
+	result, err := config.AddCartCollection.DeleteOne(context.Background(), filter)
 	if err != nil {
 		log.Printf("Error removing product from cart: %v\n", err)
 		return "Error removing product from cart"
@@ -683,9 +685,9 @@ func RemoveFromGlobalArray(id string) string {
 func ListCart() []dto.ListShop {
 	var shopList []dto.ListShop
 	query := bson.M{}
-	Client := config.GetConfig()
-	collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
-	cur, err := collection.Find(context.Background(), query)
+	// Client := config.GetConfig()
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
+	cur, err := config.AddCartCollection.Find(context.Background(), query)
 	if err != nil {
 		log.Fatal("Failed to execute query:", err)
 	}
@@ -708,4 +710,36 @@ func ListCart() []dto.ListShop {
 	}
 
 	return shopList
+}
+
+func UpdateEggQuantity(id string, eggquantity int,totalamount int) string {
+	filter := bson.M{"id": id}
+	update := bson.M{"$set": bson.M{"eggquantity": eggquantity,"totalamount": totalamount}}
+	options := options.Update().SetUpsert(false)
+
+	// Perform the update operation
+	result, err := config.AddCartCollection.UpdateOne(context.Background(), filter, update, options)
+	if err != nil {
+		log.Println(err)
+		return "Egg Quantity is Not Updated"
+	}else{
+		log.Println(result)
+	}
+	return "Egg Quantity is Updated Successfully"
+}
+
+func UpdateBirdQuantity(id string, birdquantity int,totalamount int) string {
+	filter := bson.M{"id": id}
+	update := bson.M{"$set": bson.M{"birdquantity": birdquantity,"totalamount": totalamount}}
+	options := options.Update().SetUpsert(false)
+
+	// Perform the update operation
+	result, err := config.AddCartCollection.UpdateOne(context.Background(), filter, update, options)
+	if err != nil {
+		log.Println(err)
+		return "Bird Quantity is Not Updated"
+	}else{
+		log.Println(result)
+	}
+	return "Bird Quantity is Updated Successfully"
 }

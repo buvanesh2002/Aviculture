@@ -29,6 +29,7 @@ export class CartComponent implements OnInit {
   
   }
 
+
   fetchFlockData(id: string): void {
     this.appService.postRequest("cartlist", { id: id }).subscribe((res: any) => {
       this.count++
@@ -51,7 +52,7 @@ export class CartComponent implements OnInit {
     let subtotal = 0;
     for (const product of this.products) {
       // Assuming there's a price property in each product
-      subtotal += (product.price * product.quantity);
+      subtotal += (product.totalamount);
     }
     return subtotal;
   }
@@ -77,20 +78,99 @@ export class CartComponent implements OnInit {
   }  
    
 
-  eggminus(){
-
+  eggminus(productId: number) {
+    const index = this.products.findIndex(product => product.id === productId);
+    if (index !== -1) {
+      if (this.products[index].eggquantity > 0) {
+        this.products[index].eggquantity--;
+        this.products[index].totalamount -= (this.products[index].eggprice)
+        this.products
+        let obj = {
+          id: productId, // Replace yourIdValue with the actual value of the id
+          eggquantity: this.products[index].eggquantity, // Replace yourEggQuantityValue with the actual value of the eggquantity
+          totalamount : this.products[index].totalamount
+        };
+        
+        this.appService.postRequest("eggquantity", obj).subscribe((result: any) => {
+          console.log("result====", result);
+        });
+        
+      } else {
+        console.error('Quantity cannot be less than 0');
+      }
+    } else {
+      console.error('Product not found');
+    }
   }
 
-  eggplus(){
-
+  eggplus(productId: number) {
+    const index = this.products.findIndex(product => product.id === productId);
+    if (index !== -1) {
+      this.products[index].eggquantity++;
+      this.products[index].totalamount += (this.products[index].eggprice)
+      if ( this.products[index].eggquantity === this.products[index].noEgg){
+        this.toastr.success("This is the Maximum EggQuantity Present For this Breed")
+      }
+      let obj = {
+        id: productId, // Replace yourIdValue with the actual value of the id
+        eggquantity: this.products[index].eggquantity,// Replace yourEggQuantityValue with the actual value of the eggquantity
+        totalamount : this.products[index].totalamount
+      };
+      
+      this.appService.postRequest("eggquantity", obj).subscribe((result: any) => {
+        console.log("result====", result);
+      });
+    } else {
+      console.error('Product not found');
+    }
   }
 
-  birdminus(){
-
+  birdminus(productId: number) {
+    const index = this.products.findIndex(product => product.id === productId);
+    if (index !== -1) {
+      if (this.products[index].birdquantity > 0) {
+        this.products[index].birdquantity--;
+        this.products[index].totalamount -= (this.products[index].birdprice)
+        let obj = {
+          id: productId, // Replace yourIdValue with the actual value of the id
+          birdquantity: this.products[index].birdquantity, // Replace yourEggQuantityValue with the actual value of the eggquantity
+          totalamount : this.products[index].totalamount
+        };
+        
+        this.appService.postRequest("birdquantity", obj).subscribe((result: any) => {
+          console.log("result====", result);
+        });
+      } else {
+        console.error('Quantity cannot be less than 0');
+      }
+    } else {
+      console.error('Product not found');
+    }
   }
 
-  birdplus(){
+  birdplus(productId: number) {
+    const index = this.products.findIndex(product => product.id === productId);
+    if (index !== -1) {
 
+      this.products[index].birdquantity++;
+      this.products[index].totalamount += (this.products[index].birdprice)
+      if ( this.products[index].birdquantity == this.products[index].noBirds){
+ 
+        this.toastr.success("This is the Maximum BirdQuantity Present For this Breed")
+      }
+   
+      let obj = {
+        id: productId, // Replace yourIdValue with the actual value of the id
+        birdquantity: this.products[index].birdquantity, // Replace yourEggQuantityValue with the actual value of the eggquantity
+        totalamount : this.products[index].totalamount
+      };
+      
+      this.appService.postRequest("birdquantity", obj).subscribe((result: any) => {
+        console.log("result====", result);
+      });
+    } else {
+      console.error('Product not found');
+    }
   }
 
 

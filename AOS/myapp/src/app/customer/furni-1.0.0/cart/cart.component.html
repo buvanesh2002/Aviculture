@@ -108,32 +108,32 @@
 											<p>EggPrice: {{ product.eggprice }}</p>
 											<!-- Add more product details here as needed -->
 										</td>
-										<td>${{ product.birdprice }}</td>
-										<td>${{ product.eggprice }}</td>
+										<td style="font-weight: bolder;">₹{{ product.birdprice }}</td>
+										<td style="font-weight: bolder;">₹{{ product.eggprice }}</td>
 										<td>
 											<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
 												<div class="input-group-prepend">
-													<button class="btn btn-outline-black decrease"  type="button">&minus;</button>
-												</div>
-												<input type="text" class="form-control text-center quantity-amount" value="{{ product.eggquantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-												<div class="input-group-append">
-													<button class="btn btn-outline-black increase" type="button">&plus;</button>
-												</div>
-											</div>
-										</td>
-										<!------>
-										<td>
-											<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
-												<div class="input-group-prepend">
-													<button class="btn btn-outline-black decrease" type="button">&minus;</button>
+													<button class="btn btn-outline-black decrease"  type="button" (click)="birdminus(product.id)" [disabled]="product.birdquantity === 0">&minus;</button>
 												</div>
 												<input type="text" class="form-control text-center quantity-amount" value="{{ product.birdquantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
 												<div class="input-group-append">
-													<button class="btn btn-outline-black increase" type="button">&plus;</button>
+													<button class="btn btn-outline-black increase" type="button" (click)="birdplus(product.id)" [disabled]="product.birdquantity === product.noBirds">&plus;</button>
 												</div>
 											</div>
 										</td>
-										<td>${{ product.price }}</td>
+										<!------>         
+										<td>
+											<div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
+												<div class="input-group-prepend">
+													<button class="btn btn-outline-black decrease" type="button" (click)="eggminus(product.id)" [disabled]="product.eggquantity === 0">&minus;</button>
+												</div>
+												<input type="text" class="form-control text-center quantity-amount" value="{{ product.eggquantity }}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+												<div class="input-group-append">
+													<button class="btn btn-outline-black increase" type="button" (click)="eggplus(product.id)" [disabled]="product.eggquantity === product.noEgg">&plus;</button>
+												</div>
+											</div>
+										</td>
+										<td style="font-weight: bolder;">₹{{ product.totalamount }}</td>
 										<td><a (click)="removeProduct(product.id)" class="btn btn-black btn-sm">X</a></td>
 									</tr>
 								</tbody>
@@ -177,7 +177,7 @@
 										<span class="text-black">Subtotal</span>
 									</div>
 									<div class="col-md-6 text-right">
-										<strong class="text-black">${{ calculateSubtotal() }}</strong>
+										<strong class="text-black">₹{{ calculateSubtotal() }}</strong>
 									</div>
 								</div>
 								<div class="row mb-5">
@@ -185,7 +185,7 @@
 										<span class="text-black">Total</span>
 									</div>
 									<div class="col-md-6 text-right">
-										<strong class="text-black">${{ calculateTotal() }}</strong>
+										<strong class="text-black">₹{{ calculateTotal() }}</strong>
 									</div>
 								</div>
 								<div class="row">

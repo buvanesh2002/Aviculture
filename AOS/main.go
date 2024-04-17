@@ -38,6 +38,8 @@ func main() {
 	router.HandleFunc("/cartlist", CartListHandler).Methods("POST")
 	router.HandleFunc("/removecatrid", RemoveCartIDHandler).Methods("POST")
 	router.HandleFunc("/listcart", ListCartHandler).Methods("POST")
+    router.HandleFunc("/eggquantity", EggquantityHandler).Methods("POST")
+    router.HandleFunc("/birdquantity", BirdquantityHandler).Methods("POST")
 
 	directoryLocation := viper.GetString("uiDirectory")
 	log.Println("this is the UI Directory Location : ", directoryLocation)
@@ -471,3 +473,57 @@ func ListCartHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println(list)
 	json.NewEncoder(w).Encode(list)
 }
+
+type EggQuantity struct {
+	ID           string `json:"id" bson:"id"`
+	Eggquantity  int `json:"eggquantity"  bson:"eggquantity" `
+	TotalAmount int  `json:"totalamount"  bson:"totalamount" `
+}
+
+type BirdQuantity struct {
+	ID           string `json:"id" bson:"id"`
+	Birdquantity int `json:"birdquantity"  bson:"birdquantity" `
+	TotalAmount int  `json:"totalamount"  bson:"totalamount" `
+}
+
+func EggquantityHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  EggquantityHandler +++++++++++++++++++++++++")
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var request EggQuantity
+	err = json.Unmarshal(b, &request)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(request.Eggquantity)
+	response := service.UpdateEggQuantity(request.ID,request.Eggquantity,request.TotalAmount)
+
+	json.NewEncoder(w).Encode(response)
+}
+
+
+
+func BirdquantityHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  BirdquantityHandler +++++++++++++++++++++++++")
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var request BirdQuantity
+	err = json.Unmarshal(b, &request)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(request.Birdquantity)
+	response := service.UpdateBirdQuantity(request.ID,request.Birdquantity,request.TotalAmount)
+
+	json.NewEncoder(w).Encode(response)
+}
+
+

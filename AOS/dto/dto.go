@@ -74,4 +74,7 @@ type ListShop struct {
 	EggPrice     int    `json:"eggprice,omitempty"  bson:"eggprice"`
 	EggQuantity  int    `json:"eggquantity"  bson:"eggquantity"`
 	BirdQuantity int    `json:"birdquantity"  bson:"birdquantity" `
+	TotalAmount int     `json:"totalamount"  bson:"totalamount" `
 }
+
+
