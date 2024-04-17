@@ -572,6 +572,7 @@ func ShopList() *[]dto.ListShop {
 		log.Println("Error while fetching shop documents:", err)
 		return nil
 	}
+	log.Println(shopdata)
 
 	return &shopdata
 }

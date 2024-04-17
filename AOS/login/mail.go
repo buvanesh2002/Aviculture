@@ -262,7 +262,7 @@ func SendOrderConformation(toEmail, price, totalAmount, dateofdelivey, id, noofi
                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                         <tr>
                             <td align="center">
-                                <img src="assets/images/aviculture.jpeg" width="37" height="37" style="display: block; border: 0px;"/>
+                                <img src="https://images.pexels.com/photos/97533/pexels-photo-97533.jpeg?cs=srgb&dl=animal-avian-bird-97533.jpg&fm=jpg" width="37" height="37" style="display: block; border: 0px;"/>
                             </td>
                         </tr>
                         <tr>
