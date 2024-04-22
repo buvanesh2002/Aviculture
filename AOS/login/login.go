@@ -812,7 +812,7 @@ func AddAdmin(admin dto.AdminReg) (string, error) {
 	return "Admin added successfully", nil
 }
 
-func PlaceOrder() (string, error) {
+func PlaceOrder(order dto.Order) (string, error) {
 	log.Println("-----------------------------IN placeorder----------------")
 	ctx := context.Background()
 	var totalprice int
@@ -823,6 +823,11 @@ func PlaceOrder() (string, error) {
 		log.Fatal("Failed to execute query:", err)
 	}
 	defer cur.Close(context.Background())
+	_, err = config.OrderCollection.InsertOne(ctx, order)
+	if err != nil {
+		log.Println("Error inserting order:", err)
+		return "", err
+	}
     var quantity int
 	for cur.Next(context.Background()) {
 		var shop dto.ListShop
@@ -861,6 +866,27 @@ func PlaceOrder() (string, error) {
 
 	// Format the new date as "2 Jan 2006"
 	formattedDate := newDate.Format("2 Jan 2006")
-	go SendOrderConformation("buvaneshwaran.ee20@bitsathy.ac.in", strconv.Itoa(totalprice), strconv.Itoa(totalprice+50),formattedDate,"id_01",strconv.Itoa(quantity))
-	return "sfd", err
+	go SendOrderConformation(order.EmailAddress, strconv.Itoa(totalprice), strconv.Itoa(totalprice+50),formattedDate,"id_01",strconv.Itoa(quantity))
+	return "order placed successfully", err
+}
+
+func ListOrder() []dto.Order {
+	log.Println("----------------Lsit Flock Entry----------------")
+
+	var Orders []dto.Order
+	// Client := config.GetConfig()
+	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
+	// log.Println("----connected to DB------------------------")
+	cur, err := config.OrderCollection.Find(context.Background(), bson.M{})
+	if err != nil {
+		log.Println("error finding:", err)
+		log.Println(err)
+	}
+	// defer Client.Disconnect(context.Background())
+	defer cur.Close(context.TODO())
+
+	_ = cur.All(context.TODO(), &Orders)
+
+	log.Println(Orders)
+	return Orders
 }

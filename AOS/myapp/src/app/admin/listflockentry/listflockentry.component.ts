@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 interface Item {
  
@@ -33,7 +34,7 @@ export class ListflockentryComponent implements OnInit {
   responseData: Item[] = [];
   id : string ="";
 
-  constructor(private appservice: AppService, public router: Router,private route:ActivatedRoute) { }
+  constructor(private appservice: AppService, private route: ActivatedRoute, private router: Router,public auth:AuthserviceService) {}
 
  
 

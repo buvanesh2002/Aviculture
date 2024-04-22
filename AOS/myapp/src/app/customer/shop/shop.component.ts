@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 @Component({
   selector: 'app-shop',
@@ -10,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ShopComponent {
   responseData: any[] = []; // Modify type of responseData to match your response data structure
   
-  constructor(private appservice: AppService, public router: Router, private route: ActivatedRoute) { }
+  constructor(private appservice: AppService, public router: Router, private route: ActivatedRoute,public auth:AuthserviceService) { }
 
   ngOnInit() {
     this.listData();

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppService } from 'src/app/app.service';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 @Component({
   selector: 'app-adminreg',
@@ -10,7 +11,7 @@ import { AppService } from 'src/app/app.service';
 })
 export class AdminregComponent {
   adminData:any ={};
-  constructor(private router: Router, private toastr: ToastrService, private appservice: AppService) {}
+  constructor(private router: Router, private toastr: ToastrService, private appservice: AppService,public auth:AuthserviceService) {}
   onSubmit() {
     let obj = {
       "name": this.adminData.name,
@@ -27,7 +28,7 @@ export class AdminregComponent {
       (result: any) => {
         this.showSuccess('admin created successfully!');
         this.resetForm();
-        this.router.navigate(['login']);
+        // this.router.navigate(['login']);
       },
       (error: any) => {
         if (error.error && error.error.errors) {

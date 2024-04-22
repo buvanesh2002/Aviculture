@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/app.service';
+import { AuthserviceService } from 'src/app/authservice.service';
 @Component({
   selector: 'app-cusomer',
   templateUrl: './cusomer.component.html',
@@ -12,7 +13,7 @@ export class CusomerComponent implements OnInit {
   }
   products: any[] = [];  
   checkoutForm:any ={}
-  constructor(public router:Router,private appService: AppService){}
+  constructor(public router:Router,private appService: AppService,public auth: AuthserviceService){}
   nav(){
     this.router.navigate(['cart']);
   }
@@ -44,7 +45,24 @@ export class CusomerComponent implements OnInit {
   }
 
   placeorder(){
-    let obj = {};
+    for (let i = 0; i < this.products.length; i++) {
+    let obj = {
+      "address": this.checkoutForm.address,
+      "companyname": this.checkoutForm.companyname,
+      "country": this.checkoutForm.country,
+      "emailaddress": this.checkoutForm.emailaddress,
+      "firstname": this.checkoutForm.firstname,
+      "lastname": this.checkoutForm.lastname,
+      "ordernotes": this.checkoutForm.ordernotes,
+      "phone": this.checkoutForm.phone,
+      "postalcode": this.checkoutForm.postalcode,
+      "state": this.checkoutForm.state,
+      "breedname":this.products[i].breedName,
+      "birdquantity":this.products[i].birdquantity,
+      "eggquanity":this.products[i].eggquanity,
+      "totalamount":this.products[i].totalamount
+    };
+    // console.log(this.checkoutForm)
     this.appService.postRequest("placeorder", obj).subscribe((result: any) => {
       console.log("result====", result);
      
@@ -52,4 +70,5 @@ export class CusomerComponent implements OnInit {
     });
 
   }
+}
 }

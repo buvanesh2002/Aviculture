@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 @Component({
   selector: 'app-home-cus',
@@ -9,8 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class HomeCusComponent {
    
-  constructor(private appservice: AppService, public router: Router,private route:ActivatedRoute) {}
-
+  constructor(private appservice: AppService, public router: Router,private route:ActivatedRoute,public auth:AuthserviceService) {}
+   
+   
   tocart(){
      
   }

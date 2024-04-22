@@ -19,4 +19,18 @@ export class AuthserviceService {
       }
      
     }
+    isloggedin:boolean = false
+    islogged ():boolean{
+      return this.isloggedin 
+    }
+    dologin(){
+      this.isloggedin = true
+    }
+    logout(){
+      this.isloggedin = false
+      this.router.navigate(['userlogin']);
+    }
+    adminlogout(){
+      this.router.navigate(['login']);
+    }
 }

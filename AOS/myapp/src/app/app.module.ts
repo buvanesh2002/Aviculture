@@ -37,7 +37,7 @@ import { UserloginComponent } from './userlogin/userlogin.component';
 import { UserfirstpageComponent } from './userfirstpage/userfirstpage.component';
 import { CustomerregComponent } from './customer/customerreg/customerreg.component';
 import { AdminregComponent } from './admin/adminreg/adminreg.component';
-
+import { ViewordersComponent } from './admin/vieworders/vieworders.component';
 
 
 @NgModule({
@@ -66,7 +66,8 @@ import { AdminregComponent } from './admin/adminreg/adminreg.component';
     UserloginComponent,
     UserfirstpageComponent,
     CustomerregComponent,
-    AdminregComponent
+    AdminregComponent,
+    ViewordersComponent
     
     
   ],

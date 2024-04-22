@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 interface FlockData {
   mortality?: number;
@@ -21,7 +22,7 @@ export class FlockentrydataComponent implements OnInit {
   flockData: FlockData = {};
   id: string = "";
 
-  constructor(private appService: AppService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private appService: AppService, private route: ActivatedRoute, private router: Router,public auth:AuthserviceService) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {

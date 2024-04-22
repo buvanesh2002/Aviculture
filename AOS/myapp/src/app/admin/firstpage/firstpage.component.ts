@@ -8,7 +8,7 @@ import { AuthserviceService } from '../../authservice.service';
   styleUrls: ['./firstpage.component.css']
 })
 export class FirstpageComponent {
-  constructor(private router:Router,private auth:AuthserviceService){}
+  constructor(private router:Router,public auth:AuthserviceService){}
   
   ngOnInit() {
     this.auth.canAccess(true);

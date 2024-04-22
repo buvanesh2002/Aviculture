@@ -47,6 +47,7 @@ export class UserloginComponent {
             //  this.router.navigate(['dailyentry']);
              //this.router.navigate(['listflockentry']);
              //this.router.navigate(['firstpage']);
+             this.auth.dologin();
              this.router.navigate(['home-cus']);
             } else {
                 console.log("else")

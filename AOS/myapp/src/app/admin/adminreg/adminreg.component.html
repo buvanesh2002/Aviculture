@@ -29,9 +29,7 @@
 
       <div class="collapse navbar-collapse" id="navbarsFurni">
         <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-          <li >
-            <a class="nav-link" routerLink="/userlogin">Home</a>
-          </li>
+          
           <li><a class="nav-link" routerLink="/addremainder">Addremainder</a></li>
           <li><a class="nav-link" routerLink="/listremainder">Listremainder</a></li>
           <li><a class="nav-link" routerLink="/addflock">Addflock</a></li>
@@ -39,12 +37,14 @@
           <li><a class="nav-link" routerLink="/dailyentry">Dailyentry</a></li>
           <!-- <li><a class="nav-link" routerLink="/login"> Adminlogin</a></li> -->
           <li class="nav-item active"><a class="nav-link" routerLink="/adminreg"> Admin reg</a></li>
+          <li ><a class="nav-link" routerLink="/vieworders"> View Orders</a></li>
         </ul>
 
-        <!-- <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-          <li><a class="nav-link" routerLink="#"><img src="assets/images/user.svg"></a></li>
-          <li><a class="nav-link"  [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li>
-        </ul> -->
+        <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+          <!-- <li><a class="nav-link" routerLink="#"><img src="assets/images/user.svg"></a></li>
+          <li><a class="nav-link"  [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li> -->
+          <li  (click)="auth.adminlogout()"><a class="nav-link">Logout</a></li>
+        </ul> 
       </div>
     </div>
       

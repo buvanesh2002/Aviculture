@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppService } from 'src/app/app.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +15,7 @@ export class CartComponent implements OnInit {
   count:number=0
   birdquant:number=1;
   eggquant:number=1;
-  constructor(private appService: AppService, private route: ActivatedRoute, private router: Router,private toastr: ToastrService) {}
+  constructor(private appService: AppService, private route: ActivatedRoute, private router: Router,private toastr: ToastrService,public auth:AuthserviceService) {}
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = params['id']; 

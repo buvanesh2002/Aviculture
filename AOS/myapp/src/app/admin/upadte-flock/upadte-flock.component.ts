@@ -64,6 +64,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 
 
@@ -76,7 +77,7 @@ export class UpadteFlockComponent implements OnInit {
   responseData: any[] = []; // Assuming this is where you store the fetched flock data
   flockData: any = {}; // Object to hold flock data for form
   id : string ="";
-  constructor(private appService: AppService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) {}
+  constructor(private appService: AppService,private toastr: ToastrService, private route: ActivatedRoute, private router: Router,public auth:AuthserviceService) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {

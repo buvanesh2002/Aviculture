@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/app.service';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 @Component({
   selector: 'app-add-remainder',
@@ -11,8 +12,8 @@ import { AppService } from 'src/app/app.service';
 export class AddRemainderComponent {
   reminderData: any = {};
 
-  constructor(private router: Router, private toastr: ToastrService, private appservice: AppService) {}
-
+  constructor(private router: Router, private toastr: ToastrService, private appservice: AppService,public auth:AuthserviceService) {}
+ 
   onSubmit() {
     let obj = {
       "reminderId": this.reminderData.reminderId,

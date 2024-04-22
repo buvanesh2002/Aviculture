@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/app.service';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 @Component({
   selector: 'app-dailyentry',
@@ -13,7 +14,7 @@ export class DailyentryComponent {
   flockData: any = {
     
   };
-  constructor(private router: Router, private toastr: ToastrService, private appservice: AppService) {}
+  constructor(private router: Router, private toastr: ToastrService, private appservice: AppService,public auth:AuthserviceService) {}
 
   //Mortality
 //Eggs

@@ -93,9 +93,7 @@
 
       <div class="collapse navbar-collapse" id="navbarsFurni">
         <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-          <li >
-            <a class="nav-link" routerLink="/userlogin">Home</a>
-          </li>
+    
           <li><a class="nav-link" routerLink="/addremainder">Addremainder</a></li>
           <li><a class="nav-link" routerLink="/listremainder">Listremainder</a></li>
           <li><a class="nav-link" routerLink="/addflock">Addflock</a></li>
@@ -105,10 +103,11 @@
           <li ><a class="nav-link" routerLink="/adminreg"> Admin reg</a></li>
         </ul>
 
-        <!-- <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-          <li><a class="nav-link" routerLink="#"><img src="assets/images/user.svg"></a></li>
-          <li><a class="nav-link"  [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li>
-        </ul> -->
+        <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+          <!-- <li><a class="nav-link" routerLink="#"><img src="assets/images/user.svg"></a></li>
+          <li><a class="nav-link"  [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li> -->
+          <li  (click)="auth.adminlogout()"><a class="nav-link">Logout</a></li>
+        </ul> 
       </div>
     </div>
       
@@ -120,9 +119,9 @@
       <div class="row justify-content-between">
         <div class="col-lg-5">
           <div class="intro-excerpt">
-            <h1>Add Flock</h1>
-            <p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-            <p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+            <h1>Update Flock</h1>
+            <p class="mb-4">Embarking on the journey of updating flock details is akin to refining a masterpiece, where each adjustment breathes new life into the canvas of avian care. With every tweak, we sculpt a narrative of dedication, ensuring our feathered companions thrive in an environment meticulously tailored to their needs.</p>
+           
           </div>
         </div>
         <div class="col-lg-7">
@@ -135,7 +134,7 @@
   </div>
 
   
-  <div class="container1">
+  <div class="container1" style="margin-bottom: 150px;">
     <form (ngSubmit)="onSubmit()" #f="ngForm">
         <h2>+UPDATE FLOCK</h2>
         
@@ -179,7 +178,8 @@
             <input matInput type="number" id="shedNumber" placeholder="eg: 1,4,...." name="shedNumber" [(ngModel)]="flockData.shedNumber" required>
             <mat-error *ngIf="f.submitted && f.controls['shedNumber'].errors?.['required']">*required</mat-error>
         </div>
-    <button type="submit" class="btn-btn-primary">Update</button> 
+    <!-- <button type="submit" class="btn-btn-primary">Update</button>  -->
+    <button type="submit" class="btn btn-primary" style="padding-bottom: 35px;"> Update </button>
     </form>
 </div>
 

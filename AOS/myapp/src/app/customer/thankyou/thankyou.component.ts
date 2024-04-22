@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 @Component({
   selector: 'app-thankyou',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./thankyou.component.css']
 })
 export class ThankyouComponent {
+
+  constructor(public auth:AuthserviceService) {}
 
 }

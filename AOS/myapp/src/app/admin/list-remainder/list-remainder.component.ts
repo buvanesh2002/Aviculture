@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AppService } from 'src/app/app.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 interface Item {
   reminderId: string;
@@ -23,7 +24,7 @@ export class ListRemainderComponent {
   responseData: Item[] = [];
 
 
-  constructor(private appservice: AppService,public router:Router) {}
+  constructor(private appservice: AppService, private route: ActivatedRoute, private router: Router,public auth:AuthserviceService) {}
 
   ngOnInit() {
     this.listData()

@@ -41,7 +41,7 @@
 						<li class="nav-item">
 							<a class="nav-link" routerLink="/home-cus">Home</a>
 						</li>
-						<li><a class="nav-link" routerLink="/shop">Shop</a></li>
+						<li *ngIf="auth.islogged()"><a class="nav-link" routerLink="/shop">Shop</a></li>
 						<li><a class="nav-link" routerLink="/about">About us</a></li>
 						<li class="active"><a class="nav-link" routerLink="/services">Services</a></li>
 						<li><a class="nav-link" routerLink="/blog">Blog</a></li>
@@ -49,8 +49,9 @@
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="#"><img src="assets/images/user.svg"></a></li>
-						<li><a class="nav-link" [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li>
+						<li *ngIf="auth.islogged()"><a class="nav-link" href="#"><img src="assets/images/user.svg"></a></li>
+						<li *ngIf="auth.islogged()"><a class="nav-link" [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li>
+						<li *ngIf="auth.islogged()" (click)="auth.logout()"><a class="nav-link">Logout</a></li>
 					</ul>
 				</div>
 			</div>

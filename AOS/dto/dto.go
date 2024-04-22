@@ -95,3 +95,22 @@ type AdminReg struct {
     Address  string `json:"address" bson:"address"`
     Pincode  string `json:"pincode" bson:"pincode"`
 }
+
+
+type Order struct {
+	Address    string `json:"address" bson:"address"`
+    Companyname    string `json:"companyname" bson:"companyname"`
+    Country string `json:"country" bson:"country"`
+    EmailAddress    string `json:"emailaddress" bson:"emailaddress"`
+    FirstName  string `json:"firstname" bson:"firstname"`
+    LastName  string `json:"lastname" bson:"lastname"`
+	OrderNotes  string `json:"ordernotes" bson:"ordernotes"`
+	Phone  string `json:"phone" bson:"phone"`
+	PostalCode  string `json:"postalcode" bson:"postalcode"`
+	State  string `json:"state" bson:"state"`
+    BreedName    string `json:"breedname,omitempty" bson:"breedname"`
+	EggQuantity  int    `json:"eggquantity"  bson:"eggquantity"`
+	BirdQuantity int    `json:"birdquantity"  bson:"birdquantity" `
+	TotalAmount int     `json:"totalamount"  bson:"totalamount" `
+
+}

@@ -44,6 +44,7 @@ func main() {
 	router.HandleFunc("/customerlogin", CustomerLoginHandler).Methods("POST")
     router.HandleFunc("/adminreg", AdminRegHandler).Methods("POST")
 	router.HandleFunc("/placeorder", PlaceOrderHandler).Methods("POST")
+	router.HandleFunc("/listorder", ListOrderHandler).Methods("POST")
 
 
 	directoryLocation := viper.GetString("uiDirectory")
@@ -421,7 +422,12 @@ func ShopListHandler(w http.ResponseWriter, r *http.Request) {
 func PlaceOrderHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++ PlaceOrderHandler +++++++++++++++++++++++++")
-	list ,err:= service.PlaceOrder()
+	var order dto.Order
+	if err := json.NewDecoder(r.Body).Decode(&order); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	list ,err:= service.PlaceOrder(order)
 	if err!=nil{
 		http.Error(w, "Invalid Credentials", http.StatusInternalServerError)
 		return
@@ -648,4 +654,13 @@ func AdminRegHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(response)
 
+}
+
+
+
+func ListOrderHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	log.Println("++++++++++++++++++++++++++++  List Reminder Handler +++++++++++++++++++++++++")
+	list := service.ListOrder()
+	json.NewEncoder(w).Encode(list)
 }

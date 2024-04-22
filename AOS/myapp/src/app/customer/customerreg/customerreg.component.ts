@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppService } from 'src/app/app.service';
+import { AuthserviceService } from 'src/app/authservice.service';
 
 @Component({
   selector: 'app-customerreg',
@@ -11,7 +12,7 @@ import { AppService } from 'src/app/app.service';
 export class CustomerregComponent {
   userData: any = {}; // Object to store user registration data
 
-  constructor(private router: Router, private toastr: ToastrService, private appservice: AppService) { }
+  constructor(private router: Router, private toastr: ToastrService, private appservice: AppService, public auth :AuthserviceService) { }
 
   onSubmit() {
     let obj = {
