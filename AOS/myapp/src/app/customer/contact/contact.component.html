@@ -43,7 +43,7 @@
 						</li>
 						<li *ngIf="auth.islogged()"><a class="nav-link" routerLink="/shop">Shop</a></li>
 						<li><a class="nav-link" routerLink="/about">About us</a></li>
-						<li><a class="nav-link" routerLink="/services">Services</a></li>
+						
 						<li><a class="nav-link" routerLink="/blog">Blog</a></li>
 						<li class="nav-item active"><a class="nav-link" routerLink="/contact">Contact us</a></li>
 						<li *ngIf="!auth.islogged()"><a class="nav-link" routerLink="/userlogin"> Customer</a></li>
@@ -52,8 +52,11 @@
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li *ngIf="auth.islogged()"><a class="nav-link" href="#"><img src="assets/images/user.svg"></a></li>
+						<li *ngIf="auth.islogged()"><a class="nav-link" ><img src="assets/images/user.svg"></a></li>
 						<li *ngIf="auth.islogged()"><a class="nav-link" [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li>
+						
+					</ul>
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
 						<li *ngIf="auth.islogged()" (click)="auth.logout()"><a class="nav-link">Logout</a></li>
 					</ul>
 				</div>
@@ -63,14 +66,14 @@
 		<!-- End Header/Navigation -->
 
 		<!-- Start Hero Section -->
-			<div class="hero">
+			<div class="hero" style="margin-bottom: 150px;">
 				<div class="container">
 					<div class="row justify-content-between">
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
 								<h1>Contact</h1>
-								<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-								<p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+								<p class="mb-4">Let's connect feathers to fingertips. Reach out to us today and let our team at Aviculture Farm guide you on your journey towards avian excellence. Your questions, ideas, and feedback are the wings that help us soar higher together.</p>
+								<p *ngIf="auth.islogged()"><a routerLink="/shop" class="btn btn-secondary me-2">Shop Now</a><a  class="btn btn-white-outline">Explore</a></p>
 							</div>
 						</div>
 						<div class="col-lg-7">
@@ -104,7 +107,7 @@
                       </svg>
                     </div> <!-- /.icon -->
                     <div class="service-contents">
-                      <p>43 Raymouth Rd. Baltemoer, London 3910</p>
+                      <p>54, Kottanakara street,Sathyamangalam</p>
                     </div> <!-- /.service-contents-->
                   </div> <!-- /.service -->
                 </div>
@@ -117,7 +120,7 @@
                       </svg>
                     </div> <!-- /.icon -->
                     <div class="service-contents">
-                      <p>infoyourdomain.com</p>
+                      <p>aviculturefarm&#64;gmail.com</p>
                     </div> <!-- /.service-contents-->
                   </div> <!-- /.service -->
                 </div>
@@ -130,7 +133,7 @@
                       </svg>
                     </div> <!-- /.icon -->
                     <div class="service-contents">
-                      <p>+1 294 3925 3939</p>
+                      <p>+91 8754876543</p>
                     </div> <!-- /.service-contents-->
                   </div> <!-- /.service -->
                 </div>
@@ -213,14 +216,14 @@
 
 				<div class="row g-5 mb-5">
 					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Aviculture<span>.</span></a></div>
+						<div class="mb-4 footer-logo-wrap"><a  class="footer-logo">Aviculture<span>.</span></a></div>
 						<p class="mb-4">Welcome to our Aviculture Website, your ultimate destination for everything related to bird care, breeding, and conservation. Join us in our mission to promote responsible aviculture practices and preserve bird species around the world.</p>
 
 						<ul class="list-unstyled custom-social">
-							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+							<li><a ><span class="fa fa-brands fa-facebook-f"></span></a></li>
+							<li><a ><span class="fa fa-brands fa-twitter"></span></a></li>
+							<li><a ><span class="fa fa-brands fa-instagram"></span></a></li>
+							<li><a ><span class="fa fa-brands fa-linkedin"></span></a></li>
 						</ul>
 					</div>
 
@@ -228,35 +231,35 @@
 						<div class="row links-wrap">
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="#">About us</a></li>
-									<li><a href="#">Services</a></li>
-									<li><a href="#">Blog</a></li>
-									<li><a href="#">Contact us</a></li>
+									<li><a >About us</a></li>
+									<li><a >Services</a></li>
+									<li><a >Blog</a></li>
+									<li><a >Contact us</a></li>
 								</ul>
 							</div>
 
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="#">Support</a></li>
-									<li><a href="#">Knowledge base</a></li>
-									<li><a href="#">Live chat</a></li>
+									<li><a >Support</a></li>
+									<li><a >Knowledge base</a></li>
+									<li><a >Live chat</a></li>
 								</ul>
 							</div>
 
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="#">Jobs</a></li>
-									<li><a href="#">Our team</a></li>
-									<li><a href="#">Leadership</a></li>
-									<li><a href="#">Privacy Policy</a></li>
+									<li><a >Jobs</a></li>
+									<li><a >Our team</a></li>
+									<li><a >Leadership</a></li>
+									<li><a >Privacy Policy</a></li>
 								</ul>
 							</div>
 
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="#">Achievements</a></li>
-									<li><a href="#">Testimonials</a></li>
-									<li><a href="#">Awards</a></li>
+									<li><a >Achievements</a></li>
+									<li><a >Testimonials</a></li>
+									<li><a >Awards</a></li>
 								</ul>
 							</div>
 						</div>
@@ -273,8 +276,8 @@
 
 						<div class="col-lg-6 text-center text-lg-end">
 							<ul class="list-unstyled d-inline-flex ms-auto">
-								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-								<li><a href="#">Privacy Policy</a></li>
+								<li class="me-4"><a >Terms &amp; Conditions</a></li>
+								<li><a >Privacy Policy</a></li>
 							</ul>
 						</div>
 

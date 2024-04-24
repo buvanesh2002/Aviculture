@@ -54,6 +54,9 @@
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						<li *ngIf="auth.islogged()"><a class="nav-link" routerLink="#"><img src="assets/images/user.svg"></a></li>
 						<li *ngIf="auth.islogged()"><a class="nav-link"[routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li>
+						
+					</ul>
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
 						<li *ngIf="auth.islogged()" (click)="auth.logout()"><a class="nav-link">Logout</a></li>
 					</ul>
 				</div>
@@ -70,7 +73,7 @@
 							<div class="intro-excerpt">
 								<h1>Services</h1>
 								<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-								<p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+								<p *ngIf="auth.islogged()"><a routerLink="/shop" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
 							</div>
 						</div>
 						<div class="col-lg-7">

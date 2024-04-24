@@ -43,7 +43,7 @@
 						</li>
 						<li *ngIf="auth.islogged()"><a class="nav-link" routerLink="/shop">Shop</a></li>
 						<li><a class="nav-link" routerLink="/about">About us</a></li>
-						<li><a class="nav-link" routerLink="/services">Services</a></li>
+					
 						<li><a class="nav-link" routerLink="/blog">Blog</a></li>
 						<li><a class="nav-link" routerLink="/contact">Contact us</a></li>
 						<li *ngIf="!auth.islogged()"><a class="nav-link" routerLink="/userlogin"> Customer</a></li>
@@ -55,6 +55,9 @@
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						<li *ngIf="auth.islogged()"><a class="nav-link" routerLink="#"><img src="assets/images/user.svg"></a></li>
 						<li *ngIf="auth.islogged()"><a class="nav-link"  [routerLink]="['/cart', null]"><img src="assets/images/cart.svg"></a></li>
+						
+					</ul>
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
 						<li *ngIf="auth.islogged()" (click)="auth.logout()"><a class="nav-link">Logout</a></li>
 					</ul>
 				</div>
@@ -64,14 +67,14 @@
 		<!-- End Header/Navigation -->
 
 		<!-- Start Hero Section -->
-			<div class="hero">
+			<div class="hero" style="margin-bottom: 150px;">
 				<div class="container">
 					<div class="row justify-content-between">
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
 								<h1 style="font-size: 50px;">AVICULTURE FARM<span class="d-block"></span></h1>
 								<p class="mb-4">Welcome to Our farm.The all stop destination for shopping  </p>
-								<p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+								<p *ngIf="auth.islogged()"><a routerLink="/shop" class="btn btn-secondary me-2">Shop Now</a><a  class="btn btn-white-outline">Explore</a></p>
 							</div>
 						</div>
 						<div class="col-lg-7">
@@ -91,18 +94,18 @@
 
 					<!-- Start Column 1 -->
 					<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-						<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
-						<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. </p>
-						<p><a routerLink="/shop" class="btn">Explore</a></p>
+						<h2 class="mb-4 section-title">Grown with eternal love</h2>
+						<p class="mb-4">Progress is not just about where we're going, but how far we've come. Let our commitment to growth be the compass guiding us forward, step by step, towards our brightest future. </p>
+						<p><a routerLink="/about" class="btn">Explore</a></p>
 					</div> 
 					<!-- End Column 1 -->
 
 					<!-- Start Column 2 -->
 					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" routerLink="/cart">
+						<a class="product-item" >
 							<img src="assets/images/quail.png" class="img-fluid product-thumbnail">
 							<h3 class="product-title">Quail</h3>
-							<strong class="product-price">$50.00</strong>
+							<strong class="product-price">₹50.00</strong>
 
 							<span class="icon-cross">
 								<img src="assets/images/cross.svg"  (click)="tocart()"  class="img-fluid">
@@ -113,10 +116,10 @@
 
 					<!-- Start Column 3 -->
 					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" routerLink="/cart">
+						<a class="product-item" >
 							<img src="assets/images/duck.png" class="img-fluid product-thumbnail">
 							<h3 class="product-title">Duck</h3>
-							<strong class="product-price">$78.00</strong>
+							<strong class="product-price">₹78.00</strong>
 
 							<span class="icon-cross">
 								<img src="assets/images/cross.svg" class="img-fluid">
@@ -127,10 +130,10 @@
 
 					<!-- Start Column 4 -->
 					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" routerLink="/cart">
+						<a class="product-item" >
 							<img src="assets/images/turkey.png" class="img-fluid product-thumbnail">
 							<h3 class="product-title">Turkey</h3>
-							<strong class="product-price">$43.00</strong>
+							<strong class="product-price">₹43.00</strong>
 
 							<span class="icon-cross">
 								<img src="assets/images/cross.svg" class="img-fluid">
@@ -150,7 +153,7 @@
 				<div class="row justify-content-between">
 					<div class="col-lg-6">
 						<h2 class="section-title">Why Choose Us</h2>
-						<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
+						<p>Fly with confidence, soar with quality. Choose us for birds that embody growth and excellence.</p>
 
 						<div class="row my-5">
 							<div class="col-6 col-md-6">
@@ -159,7 +162,7 @@
 										<img src="assets/images/truck.svg" alt="Image" class="imf-fluid">
 									</div>
 									<h3>Fast &amp; Free Shipping</h3>
-									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+									<p>Experience the freedom of fast, free shipping with every order. Choose us for swift delivery and seamless service.</p>
 								</div>
 							</div>
 
@@ -169,7 +172,7 @@
 										<img src="assets/images/bag.svg" alt="Image" class="imf-fluid">
 									</div>
 									<h3>Easy to Shop</h3>
-									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+									<p>Shop with ease, fly with joy. Enjoy effortless browsing and easy checkout with our user-friendly platform. Choose convenience, choose us.</p>
 								</div>
 							</div>
 
@@ -179,7 +182,7 @@
 										<img src="assets/images/support.svg" alt="Image" class="imf-fluid">
 									</div>
 									<h3>24/7 Support</h3>
-									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+									<p>Round-the-clock support, because your satisfaction knows no bounds. With us, assistance is always just a click or call away. Choose peace of mind, choose 24/7 support.</p>
 								</div>
 							</div>
 
@@ -189,7 +192,7 @@
 										<img src="assets/images/return.svg" alt="Image" class="imf-fluid">
 									</div>
 									<h3>Hassle Free Returns</h3>
-									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+									<p>Enjoy hassle-free returns, because your satisfaction is our priority. With us, shopping is risk-free and convenient. Choose confidence, choose hassle-free returns.</p>
 								</div>
 							</div>
 
@@ -198,7 +201,7 @@
 
 					<div class="col-lg-5">
 						<div class="img-wrap">
-							<img src="assets/images/quail.jpg" alt="Image" class="img-fluid">
+							<img src="assets/images/growing.jpg" alt="Image" class="img-fluid">
 						</div>
 					</div>
 
@@ -219,16 +222,17 @@
 						</div> -->
 					</div>
 					<div class="col-lg-5 ps-lg-5">
-						<h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
-						<p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+						<h2 class="section-title mb-4">Our Products are great up to the mark</h2>
+						<p>Our products are exceptional, meeting and exceeding expectations at every turn. With us, quality is never compromised. Choose excellence, choose products that set the standard.</p>
 
 						<ul class="list-unstyled custom-list my-4">
-							<li>Donec vitae odio quis nisl dapibus malesuada</li>
-							<li>Donec vitae odio quis nisl dapibus malesuada</li>
-							<li>Donec vitae odio quis nisl dapibus malesuada</li>
-							<li>Donec vitae odio quis nisl dapibus malesuada</li>
+							<li>Avian Wellness: Our products prioritize the health and well-being of your feathered friends, incorporating avian-specific considerations to promote their physical and mental vitality.</li>
+							<li>Premium Ingredients: We source only the highest quality ingredients, carefully selected to meet the unique nutritional needs of birds, ensuring optimal health and vitality.
+							</li>
+							<li>Expert Craftsmanship: Our products are crafted with precision and care, drawing on years of expertise in aviculture to deliver solutions that are tailored to the needs of your avian companions.</li>
+							<li>Trusted by Avian Enthusiasts: Endorsed by avian enthusiasts and professionals alike, our products are recognized for their effectiveness and reliability, earning the trust of bird lovers worldwide.</li>
 						</ul>
-						<p><a herf="#" class="btn">Explore</a></p>
+						<p><a routerLink="/about" class="btn">Explore</a></p>
 					</div>
 				</div>
 			</div>
@@ -236,52 +240,7 @@
 		<!-- End We Help Section -->
 
 		<!-- Start Popular Product -->
-		<div class="popular-product">
-			<div class="container">
-				<div class="row">
-
-					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-						<div class="product-item-sm d-flex">
-							<!-- <div class="thumbnail">
-								<img src="assets/images/product-1.png" alt="Image" class="img-fluid">
-							</div> -->
-							<div class="pt-3">
-								<h3>Nordic Chair</h3>
-								<p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-								<p><a href="#">Read More</a></p>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-						<div class="product-item-sm d-flex">
-							<!-- <div class="thumbnail">
-								<img src="assets/images/product-2.png" alt="Image" class="img-fluid">
-							</div> -->
-							<div class="pt-3">
-								<h3>Kruzo Aero Chair</h3>
-								<p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-								<p><a href="#">Read More</a></p>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-						<div class="product-item-sm d-flex">
-							<!-- <div class="thumbnail">
-								<img src="assets/images/product-3.png" alt="Image" class="img-fluid">
-							</div> -->
-							<div class="pt-3">
-								<h3>Ergonomic Chair</h3>
-								<p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-								<p><a href="#">Read More</a></p>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
+		
 		<!-- End Popular Product -->
 
 		<!-- Start Testimonial Slider -->
@@ -310,15 +269,15 @@
 
 											<div class="testimonial-block text-center">
 												<blockquote class="mb-5">
-													<p>&ldquo;Welcome to our aviculture website, where we nurture a thriving community of feathered friends. With a passion for avian care and expertise in bird husbandry, we provide a haven for our avian residents to flourish. Explore our sanctuary and discover the beauty of aviculture firsthand.&rdquo;</p>
+													<p>&ldquo;Ever since I started using products from Aviculture farm, I've seen a remarkable improvement in the health and vitality of my feathered friends. Their avian-specific formulations and premium ingredients truly set them apart. I can't recommend Aviculture farm enough for any bird enthusiast!&rdquo;</p>
 												</blockquote>
 
 												<div class="author-info">
 													<div class="author-pic">
 														<img src="assets/images/person-1.png" alt="Maria Jones" class="img-fluid">
 													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
+													<h3 class="font-weight-bold">Sarah M</h3>
+													<span class="position d-block mb-3"> Co-Founder, Royal Farms.</span>
 												</div>
 											</div>
 
@@ -333,15 +292,15 @@
 
 											<div class="testimonial-block text-center">
 												<blockquote class="mb-5">
-													<p>&ldquo;Welcome to our aviculture website, where we nurture a thriving community of feathered friends. With a passion for avian care and expertise in bird husbandry, we provide a haven for our avian residents to flourish. Explore our sanctuary and discover the beauty of aviculture firsthand.&rdquo;</p>
+													<p>&ldquo;I've tried many products for my birds over the years, but nothing comes close to the quality and effectiveness of Aviculture Farm. Their attention to detail and commitment to avian wellness is unmatched. My birds are happier and healthier thanks to Aviculture Farm!&rdquo;</p>
 												</blockquote>
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="assets/images/person-1.png" alt="Maria Jones" class="img-fluid">
+														<img src="assets/images/person-8.jpeg" alt="Maria Jones" class="img-fluid">
 													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
+													<h3 class="font-weight-bold">Maria M</h3>
+													<span class="position d-block mb-3"> Co-Founder, Great farms.</span>
 												</div>
 											</div>
 
@@ -356,15 +315,15 @@
 
 											<div class="testimonial-block text-center">
 												<blockquote class="mb-5">
-													<p>&ldquo;Welcome to our aviculture website, where we nurture a thriving community of feathered friends. With a passion for avian care and expertise in bird husbandry, we provide a haven for our avian residents to flourish. Explore our sanctuary and discover the beauty of aviculture firsthand..&rdquo;</p>
+													<p>&ldquo;As a long-time avian enthusiast, I'm always on the lookout for products that prioritize the well-being of my feathered companions. That's why I trust Aviculture Farm. Their dedication to excellence and passion for aviculture shines through in every product. Simply put, they're the best in the business!&rdquo;</p>
 												</blockquote>
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="assets/images/person-1.png" alt="Maria Jones" class="img-fluid">
+														<img src="assets/images/person-10.jpeg" alt="Maria Jones" class="img-fluid">
 													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
+													<h3 class="font-weight-bold">Mary</h3>
+													<span class="position d-block mb-3">Founder, Golden Farms.</span>
 												</div>
 											</div>
 
@@ -390,7 +349,7 @@
 						<h2 class="section-title">Recent Blog</h2>
 					</div>
 					<div class="col-md-6 text-start text-md-end">
-						<a href="#" class="more">View All Posts</a>
+						<a  class="more">View All Posts</a>
 					</div>
 				</div>
 
@@ -398,11 +357,11 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="assets/images/post-1.jpg" alt="Image" class="img-fluid"></a>
+							<a  class="post-thumbnail"><img src="assets/images/post-1.jpeg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
-								<h3><a href="#">First Time Home Owner Ideas</a></h3>
+								<h3><a >Resource Management in Aviculture</a></h3>
 								<div class="meta">
-									<span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 19, 2021</a></span>
+									<span>by <a >Kristin Watson</a></span> <span>on <a >Dec 19, 2021</a></span>
 								</div>
 							</div>
 						</div>
@@ -410,11 +369,11 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="assets/images/post-2.jpg" alt="Image" class="img-fluid"></a>
+							<a  class="post-thumbnail"><img src="assets/images/post-2.jpeg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
-								<h3><a href="#">How To Keep Your Furniture Clean</a></h3>
+								<h3><a >Bird Breeding Techniques</a></h3>
 								<div class="meta">
-									<span>by <a href="#">Robert Fox</a></span> <span>on <a href="#">Dec 15, 2021</a></span>
+									<span>by <a >Robert Fox</a></span> <span>on <a >Dec 15, 2021</a></span>
 								</div>
 							</div>
 						</div>
@@ -422,11 +381,11 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="assets/images/post-3.jpg" alt="Image" class="img-fluid"></a>
+							<a  class="post-thumbnail"><img src="assets/images/post-3.jpeg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
-								<h3><a href="#">Small Space Furniture Apartment Ideas</a></h3>
+								<h3><a >Growing Aviculture</a></h3>
 								<div class="meta">
-									<span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 12, 2021</a></span>
+									<span>by <a >Kristin Watson</a></span> <span>on <a >Dec 12, 2021</a></span>
 								</div>
 							</div>
 						</div>
@@ -470,14 +429,14 @@
 
 				<div class="row g-5 mb-5">
 					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Aviculture<span>.</span></a></div>
+						<div class="mb-4 footer-logo-wrap"><a  class="footer-logo">Aviculture<span>.</span></a></div>
 						<p class="mb-4">Welcome to our Aviculture Website, your ultimate destination for everything related to bird care, breeding, and conservation. Join us in our mission to promote responsible aviculture practices and preserve bird species around the world.</p>
 
 						<ul class="list-unstyled custom-social">
-							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+							<li><a ><span class="fa fa-brands fa-facebook-f"></span></a></li>
+							<li><a ><span class="fa fa-brands fa-twitter"></span></a></li>
+							<li><a ><span class="fa fa-brands fa-instagram"></span></a></li>
+							<li><a ><span class="fa fa-brands fa-linkedin"></span></a></li>
 						</ul>
 					</div>
 
@@ -485,35 +444,35 @@
 						<div class="row links-wrap">
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="#">About us</a></li>
-									<li><a href="#">Services</a></li>
-									<li><a href="#">Blog</a></li>
-									<li><a href="#">Contact us</a></li>
+									<li><a >About us</a></li>
+									<li><a >Services</a></li>
+									<li><a >Blog</a></li>
+									<li><a >Contact us</a></li>
 								</ul>
 							</div>
 
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="#">Support</a></li>
-									<li><a href="#">Knowledge base</a></li>
-									<li><a href="#">Live chat</a></li>
+									<li><a >Support</a></li>
+									<li><a >Knowledge base</a></li>
+									<li><a >Live chat</a></li>
 								</ul>
 							</div>
 
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="#">Jobs</a></li>
-									<li><a href="#">Our team</a></li>
-									<li><a href="#">Leadership</a></li>
-									<li><a href="#">Privacy Policy</a></li>
+									<li><a >Jobs</a></li>
+									<li><a >Our team</a></li>
+									<li><a >Leadership</a></li>
+									<li><a >Privacy Policy</a></li>
 								</ul>
 							</div>
 
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="#">Achievements</a></li>
-									<li><a href="#">Testimonials</a></li>
-									<li><a href="#">Awards</a></li>
+									<li><a >Achievements</a></li>
+									<li><a >Testimonials</a></li>
+									<li><a >Awards</a></li>
 								</ul>
 							</div>
 						</div>
@@ -530,8 +489,8 @@
 
 						<div class="col-lg-6 text-center text-lg-end">
 							<ul class="list-unstyled d-inline-flex ms-auto">
-								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-								<li><a href="#">Privacy Policy</a></li>
+								<li class="me-4"><a >Terms &amp; Conditions</a></li>
+								<li><a >Privacy Policy</a></li>
 							</ul>
 						</div>
 
