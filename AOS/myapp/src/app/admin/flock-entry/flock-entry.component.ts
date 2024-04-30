@@ -21,6 +21,7 @@ export class FlockEntryComponent {
         console.log("Base64 image string:", base64String);
         // Proceed with form submission here
         let obj = {
+          "emailid" : this.auth.adminemail,
             "flockName": this.flockData.flockName,
             "breedName": this.flockData.breedName,
             "startDate": this.flockData.startDate,

@@ -12,6 +12,7 @@ import { AuthserviceService } from 'src/app/authservice.service';
 export class DailyentryComponent {
 
   flockData: any = {
+    "emailid" : this.auth.adminemail
     
   };
   constructor(private router: Router, private toastr: ToastrService, private appservice: AppService,public auth:AuthserviceService) {}
@@ -25,20 +26,21 @@ export class DailyentryComponent {
 
   onSubmit() {
     let obj = {
+      "emailid" : this.auth.adminemail,
       "id": this.flockData.id,
       "date": this.flockData.date.toString(),
       "mortality": parseInt(this.flockData.mortality) ,
-      "extraEggs":  parseInt(this.flockData.extraEggs),
+      "extraeggs":  parseInt(this.flockData.extraEggs),
       "feed": parseInt(this.flockData.feed) ,
-      "birdsSold": parseInt(this.flockData.birdsSold) ,
-      "countErr":  parseInt(this.flockData.countErr) ,
-      "remarks": this.flockData.remarks,
+      "birdssold": parseInt(this.flockData.birdsSold) ,
+      "counterr":  parseInt(this.flockData.countErr) ,
+      "remarks": this.flockData.remarks.toString(),
       "trays":parseInt(this.flockData.trays) 
     };
 
     console.log(obj);
     
-    this.appservice.postRequest("dailyentries", this.flockData).subscribe(
+    this.appservice.postRequest("dailyentries", obj).subscribe(
       (result: any) => {
         this.showSuccess('dailyentries created successfully!');
         this.resetForm();

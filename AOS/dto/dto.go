@@ -6,6 +6,7 @@ type Logindata struct {
 }
 
 type Flockdata struct {
+	EmailId    string       `json:"emailid" bson :emailid`
 	Image      string       `json:"image" bson:"image"`
 	ID         string       `json:"id,omitempty" bson:"_id,omitempty"`
 	FlockName  string       `json:"flockName,omitempty" bson:"flockName,omitempty"`
@@ -23,6 +24,7 @@ type Flockdata struct {
 }
 
 type DailyEntry struct {
+	EmailId   string  `json:"emailid" bson :emailid`
 	ID        string  `json:"id" bson:"id"`
 	Date      string  `json:"date,omitempty" bson:"date,omitempty"`
 	Mortality int     `json:"mortality,omitempty" bson:"mortality,omitempty"`
@@ -35,6 +37,7 @@ type DailyEntry struct {
 }
 
 type Reminder struct {
+	EmailId    string `json:"emailid" bson :emailid`
 	ReminderId string `json:"reminderId,omitempty" bson:"reminderId,omitempty"`
 	Name       string `json:"remindername" bson:remindername"`
 	BeforeDate string `json:"beforedate" bson:"beforedate"`
@@ -44,6 +47,7 @@ type Reminder struct {
 	Status     string `json:"status" bson:"status"`
 }
 type ListEntry struct {
+	EmailId       string  `json:"emailid" bson :emailid`
 	EntryDate     string  `json:"entrydate" bson:"entrydate"`
 	Age           int     `json:"age" bson:"age"`
 	OpeningBirds  int     `json:"openingbirds" bson:"openingbirds"`
@@ -65,6 +69,8 @@ type ListEntry struct {
 }
 
 type ListShop struct {
+	UserEmailId  string `json:"useremailid" bson:"useremailid"`
+	EmailId      string `json:"emailid" bson :emailid`
 	ID           string `json:"id,omitempty" bson:"id,omitempty"`
 	Image        string `json:"image" bson:"image"`
 	BreedName    string `json:"breedName,omitempty" bson:"breedName"`
@@ -74,43 +80,42 @@ type ListShop struct {
 	EggPrice     int    `json:"eggprice,omitempty"  bson:"eggprice"`
 	EggQuantity  int    `json:"eggquantity"  bson:"eggquantity"`
 	BirdQuantity int    `json:"birdquantity"  bson:"birdquantity" `
-	TotalAmount int     `json:"totalamount"  bson:"totalamount" `
+	TotalAmount  int    `json:"totalamount"  bson:"totalamount" `
 }
 
-
 type CustomerReg struct {
-    Name     string `json:"name" bson:"name"`
-    Email    string `json:"email" bson:"email"`
-    Password string `json:"password" bson:"password"`
-    Phone    string `json:"phone" bson:"phone"`
-    Address  string `json:"address" bson:"address"`
-    Pincode  string `json:"pincode" bson:"pincode"`
+	Name     string `json:"name" bson:"name"`
+	Email    string `json:"email" bson:"email"`
+	Password string `json:"password" bson:"password"`
+	Phone    string `json:"phone" bson:"phone"`
+	Address  string `json:"address" bson:"address"`
+	Pincode  string `json:"pincode" bson:"pincode"`
 }
 
 type AdminReg struct {
-    Name     string `json:"name" bson:"name"`
-    Email    string `json:"email" bson:"email"`
-    Password string `json:"password" bson:"password"`
-    Phone    string `json:"phone" bson:"phone"`
-    Address  string `json:"address" bson:"address"`
-    Pincode  string `json:"pincode" bson:"pincode"`
+	Name     string `json:"name" bson:"name"`
+	Email    string `json:"email" bson:"email"`
+	Password string `json:"password" bson:"password"`
+	Phone    string `json:"phone" bson:"phone"`
+	Address  string `json:"address" bson:"address"`
+	Pincode  string `json:"pincode" bson:"pincode"`
 }
 
-
 type Order struct {
-	Address    string `json:"address" bson:"address"`
-    Companyname    string `json:"companyname" bson:"companyname"`
-    Country string `json:"country" bson:"country"`
-    EmailAddress    string `json:"emailaddress" bson:"emailaddress"`
-    FirstName  string `json:"firstname" bson:"firstname"`
-    LastName  string `json:"lastname" bson:"lastname"`
-	OrderNotes  string `json:"ordernotes" bson:"ordernotes"`
-	Phone  string `json:"phone" bson:"phone"`
-	PostalCode  string `json:"postalcode" bson:"postalcode"`
-	State  string `json:"state" bson:"state"`
-    BreedName    string `json:"breedname,omitempty" bson:"breedname"`
+	UserEmailId  string `json:"useremailid" bson:"useremailid"`
+	EmailId      string `json:"emailid" bson :emailid` 
+	Address      string `json:"address" bson:"address"`
+	Companyname  string `json:"companyname" bson:"companyname"`
+	Country      string `json:"country" bson:"country"`
+	EmailAddress string `json:"emailaddress" bson:"emailaddress"`
+	FirstName    string `json:"firstname" bson:"firstname"`
+	LastName     string `json:"lastname" bson:"lastname"`
+	OrderNotes   string `json:"ordernotes" bson:"ordernotes"`
+	Phone        string `json:"phone" bson:"phone"`
+	PostalCode   string `json:"postalcode" bson:"postalcode"`
+	State        string `json:"state" bson:"state"`
+	BreedName    string `json:"breedname,omitempty" bson:"breedname"`
 	EggQuantity  int    `json:"eggquantity"  bson:"eggquantity"`
 	BirdQuantity int    `json:"birdquantity"  bson:"birdquantity" `
-	TotalAmount int     `json:"totalamount"  bson:"totalamount" `
-
+	TotalAmount  int    `json:"totalamount"  bson:"totalamount" `
 }

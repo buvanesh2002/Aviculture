@@ -72,10 +72,13 @@
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
 								<h1>Shop</h1>
+								<p class="mb-4">"Shop" section of the aviculture site, users can find a selection of avian-related products, focusing primarily on eggs and birds. This section serves as an online marketplace where enthusiasts, breeders, and pet owners can explore and purchase various breeds of birds and their eggs.</p>
 							</div>
 						</div>
 						<div class="col-lg-7">
-							
+							<div class="hero-img-wrap">
+								<img src="assets/images/chicken-egg.png" class="img-fluid">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -203,7 +206,7 @@
 				<div class="col-12 col-md-4 col-lg-3 mb-5" *ngFor="let product of responseData">
 				  <a class="product-item" >
 					<!-- Assuming you have imagePath property for the product image -->
-					<img src="{{ product.image }}" class="img-fluid product-thumbnail" alt="Product Image">
+					<img src="{{ product.image }}" class="product-thumbnail" alt="Product Image">
 					<h3 class="product-title">{{ product.breedName }}</h3>
 					<p>Nobirds: {{ product.noBirds }}</p>
 					<p>NoEgg: {{ product.noEgg }}</p>

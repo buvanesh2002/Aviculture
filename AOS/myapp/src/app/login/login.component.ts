@@ -48,6 +48,7 @@ export class LoginComponent {
             //  this.router.navigate(['dailyentry']);
              //this.router.navigate(['listflockentry']);
              //this.router.navigate(['firstpage']);
+             this.auth.adminlogin(this.username)
              this.router.navigate(['addremainder']);
             } else {
                 console.log("else")

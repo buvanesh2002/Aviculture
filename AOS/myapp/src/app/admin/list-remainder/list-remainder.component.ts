@@ -32,7 +32,9 @@ export class ListRemainderComponent {
 
 
   listData() {
-    let obj = {};
+    let obj = {
+      "emailid":this.auth.adminemail
+    };
     this.responseData= []
     this.appservice.postRequest("listremainder", obj).subscribe(
       (response) => {

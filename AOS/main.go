@@ -38,14 +38,13 @@ func main() {
 	router.HandleFunc("/cartlist", CartListHandler).Methods("POST")
 	router.HandleFunc("/removecatrid", RemoveCartIDHandler).Methods("POST")
 	router.HandleFunc("/listcart", ListCartHandler).Methods("POST")
-    router.HandleFunc("/eggquantity", EggquantityHandler).Methods("POST")
-    router.HandleFunc("/birdquantity", BirdquantityHandler).Methods("POST")
+	router.HandleFunc("/eggquantity", EggquantityHandler).Methods("POST")
+	router.HandleFunc("/birdquantity", BirdquantityHandler).Methods("POST")
 	router.HandleFunc("/customerreg", CustomerRegHandler).Methods("POST")
 	router.HandleFunc("/customerlogin", CustomerLoginHandler).Methods("POST")
-    router.HandleFunc("/adminreg", AdminRegHandler).Methods("POST")
+	router.HandleFunc("/adminreg", AdminRegHandler).Methods("POST")
 	router.HandleFunc("/placeorder", PlaceOrderHandler).Methods("POST")
 	router.HandleFunc("/listorder", ListOrderHandler).Methods("POST")
-
 
 	directoryLocation := viper.GetString("uiDirectory")
 	log.Println("this is the UI Directory Location : ", directoryLocation)
@@ -120,8 +119,9 @@ func AddFlockHandler(w http.ResponseWriter, r *http.Request) {
 		BreedName: flockdata.BreedName,
 		StartDate: flockdata.StartDate,
 		StartAge:  flockdata.StartAge,
-		Image: flockdata.Image,
+		Image:     flockdata.Image,
 		//	Age:        flockdata.Age,
+		EmailId:    flockdata.EmailId,
 		NoBirds:    flockdata.NoBirds,
 		ShedNumber: flockdata.ShedNumber,
 		Active:     "true",
@@ -148,6 +148,12 @@ func AddFlockHandler(w http.ResponseWriter, r *http.Request) {
 
 type Ids struct {
 	ID string `bson:"id,omitempty" json:"id,omitempty"`
+	EmailId string `json:"emailid" bson :emailid`
+	UserEmailId  string `json:"useremailid" bson:"useremailid"`
+
+}
+type mail struct {
+	EmailId string `json:"emailid" bson :emailid`
 }
 
 func ListFlockbyHandler(w http.ResponseWriter, r *http.Request) {
@@ -174,7 +180,22 @@ func ListFlockbyHandler(w http.ResponseWriter, r *http.Request) {
 func ListFlockHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  ListFlockHandler handler +++++++++++++++++++++++++")
-	list := service.ListFlock()
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("body:", r.Body)
+	fmt.Println("body:", b)
+
+	var mailrequest mail
+	err = json.Unmarshal(b, &mailrequest)
+	if err != nil {
+		log.Println("error found:", err)
+
+	}
+	fmt.Println("mailreq:", mailrequest.EmailId)
+	list := service.ListFlock(mailrequest.EmailId)
 	json.NewEncoder(w).Encode(list)
 }
 
@@ -407,7 +428,22 @@ func ListParticularFlockHandler(w http.ResponseWriter, r *http.Request) {
 func ListRemainderHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  List Reminder Handler +++++++++++++++++++++++++")
-	list := service.ListReminder()
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("body:", r.Body)
+	fmt.Println("body:", b)
+
+	var mailrequest mail
+	err = json.Unmarshal(b, &mailrequest)
+	if err != nil {
+		log.Println("error found:", err)
+
+	}
+	fmt.Println("mailreq:", mailrequest.EmailId)
+	list := service.ListReminder(mailrequest.EmailId)
 	json.NewEncoder(w).Encode(list)
 }
 
@@ -415,7 +451,7 @@ func ShopListHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++ ShopListHandler +++++++++++++++++++++++++")
 	list := service.ShopList()
-	log.Println("shpoList",list)
+	log.Println("shpoList", list)
 	json.NewEncoder(w).Encode(list)
 }
 
@@ -427,28 +463,29 @@ func PlaceOrderHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	list ,err:= service.PlaceOrder(order)
-	if err!=nil{
+	list, err := service.PlaceOrder(order)
+	if err != nil {
 		http.Error(w, "Invalid Credentials", http.StatusInternalServerError)
 		return
 	}
-	log.Println("placeordering is ",list)
+	log.Println("placeordering is ", list)
 	response := struct {
 		Message string `json:"message"`
 	}{
 		Message: list,
 	}
-	json.NewEncoder(w).Encode(response)}
+	json.NewEncoder(w).Encode(response)
+}
 
 func CartListHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  ListFlockbyHandler handler +++++++++++++++++++++++++")
 
 	var i int64
-	i=0
+	i = 0
 	i++
-	log.Println("++++++++++++++++++++++++++++count ===================== +++++++++++++++++++++++++",i)
-	
+	log.Println("++++++++++++++++++++++++++++count ===================== +++++++++++++++++++++++++", i)
+
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println(err)
@@ -462,7 +499,8 @@ func CartListHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println(request.ID)
 
 	id := request.ID
-	list := service.ShopListWithIDs(id)
+	log.Println("email API:",request.EmailId)
+	list := service.ShopListWithIDs(id,request.UserEmailId)
 	json.NewEncoder(w).Encode(list)
 }
 
@@ -470,7 +508,6 @@ func RemoveCartIDHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  ListFlockbyHandler handler +++++++++++++++++++++++++")
 
-	
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println(err)
@@ -489,28 +526,36 @@ func RemoveCartIDHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-
-
 func ListCartHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  List cart handler +++++++++++++++++++++++++")
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var request Ids
+	err = json.Unmarshal(b, &request)
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(request.UserEmailId)
 
-
-	list := service.ListCart()
+	list := service.ListCart(request.UserEmailId)
 	log.Println(list)
 	json.NewEncoder(w).Encode(list)
 }
 
 type EggQuantity struct {
-	ID           string `json:"id" bson:"id"`
-	Eggquantity  int `json:"eggquantity"  bson:"eggquantity" `
-	TotalAmount int  `json:"totalamount"  bson:"totalamount" `
+	ID          string `json:"id" bson:"id"`
+	Eggquantity int    `json:"eggquantity"  bson:"eggquantity" `
+	TotalAmount int    `json:"totalamount"  bson:"totalamount" `
 }
 
 type BirdQuantity struct {
 	ID           string `json:"id" bson:"id"`
-	Birdquantity int `json:"birdquantity"  bson:"birdquantity" `
-	TotalAmount int  `json:"totalamount"  bson:"totalamount" `
+	Birdquantity int    `json:"birdquantity"  bson:"birdquantity" `
+	TotalAmount  int    `json:"totalamount"  bson:"totalamount" `
 }
 
 func EggquantityHandler(w http.ResponseWriter, r *http.Request) {
@@ -527,12 +572,10 @@ func EggquantityHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	log.Println(request.Eggquantity)
-	response := service.UpdateEggQuantity(request.ID,request.Eggquantity,request.TotalAmount)
+	response := service.UpdateEggQuantity(request.ID, request.Eggquantity, request.TotalAmount)
 
 	json.NewEncoder(w).Encode(response)
 }
-
-
 
 func BirdquantityHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -548,11 +591,10 @@ func BirdquantityHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	log.Println(request.Birdquantity)
-	response := service.UpdateBirdQuantity(request.ID,request.Birdquantity,request.TotalAmount)
+	response := service.UpdateBirdQuantity(request.ID, request.Birdquantity, request.TotalAmount)
 
 	json.NewEncoder(w).Encode(response)
 }
-
 
 func CustomerRegHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -588,9 +630,6 @@ func CustomerRegHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-
-
-
 func CustomerLoginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  Customerlogin handler +++++++++++++++++++++++++")
@@ -620,8 +659,6 @@ func CustomerLoginHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-
-
 func AdminRegHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("++++++++++++++++++++++++++++  AdminRegHandler +++++++++++++++++++++++++")
@@ -638,7 +675,6 @@ func AdminRegHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Incomplete or invalid admin data", http.StatusBadRequest)
 		return
 	}
-	
 
 	msg, err := service.AddAdmin(admin)
 	log.Println("Received msg:", msg)
@@ -655,8 +691,6 @@ func AdminRegHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 
 }
-
-
 
 func ListOrderHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

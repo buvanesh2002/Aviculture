@@ -9,7 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-
 var LoginCollection *mongo.Collection
 var AddFlockCollection *mongo.Collection
 var AddEntryCollection *mongo.Collection
@@ -22,7 +21,7 @@ var OrderCollection *mongo.Collection
 
 func init() {
 	// mongourl := viper.GetString("mongourl")
-	mongourl := "mongodb+srv://rohith:rohith@cluster0.cgwpnv8.mongodb.net/?retryWrites=true&w=majority"
+	mongourl := "mongodb+srv://rohith:rohith@cluster0.cgwpnv8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 	log.Println("================", mongourl)
 	Ctx := context.Background()
 	defer Ctx.Done()
@@ -45,13 +44,13 @@ func init() {
 	// AddFlockEntriesCollection = client.Database(viper.GetString("db")).Collection(viper.GetString("AddflockEntries"))
 	// AddShopCollection = client.Database(viper.GetString("db")).Collection(viper.GetString("AddShop"))
 	// AddCartCollection = client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
-	LoginCollection = client.Database("Login").Collection("users")
-	AddFlockCollection = client.Database("Login").Collection("Flock")
-	AddEntryCollection = client.Database("Login").Collection("Entries")
-	AddRemainderCollection = client.Database("Login").Collection("Reminder")
-	//AddFlockEntriesCollection = client.Database("Login").Collection(viper.GetString("AddflockEntries"))
-	AddShopCollection = client.Database("Login").Collection("Shop")
-	AddCartCollection = client.Database("Login").Collection("Cart")
-	AddCustomerCollection = client.Database("Login").Collection("Customer")
-	OrderCollection = client.Database("Login").Collection("orders")
+	LoginCollection = client.Database("aviculture").Collection("users")
+	AddFlockCollection = client.Database("aviculture").Collection("Flock")
+	AddEntryCollection = client.Database("aviculture").Collection("Entries")
+	AddRemainderCollection = client.Database("aviculture").Collection("Reminder")
+	//AddFlockEntriesCollection = client.Database("aviculture").Collection(viper.GetString("AddflockEntries"))
+	AddShopCollection = client.Database("aviculture").Collection("Shop")
+	AddCartCollection = client.Database("aviculture").Collection("Cart")
+	AddCustomerCollection = client.Database("aviculture").Collection("Customer")
+	OrderCollection = client.Database("aviculture").Collection("orders")
 }

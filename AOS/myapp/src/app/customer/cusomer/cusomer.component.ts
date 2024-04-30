@@ -18,7 +18,7 @@ export class CusomerComponent implements OnInit {
     this.router.navigate(['cart']);
   }
   fetchCart(): void {
-    let obj = {};
+    let obj = {"useremailid":this.auth.useremail};
     this.appService.postRequest("listcart", obj).subscribe((result: any) => {
       console.log("result====", result);
       result.forEach((data : any)=> {
@@ -47,6 +47,8 @@ export class CusomerComponent implements OnInit {
   placeorder(){
     for (let i = 0; i < this.products.length; i++) {
     let obj = {
+      "useremailid":this.auth.useremail,
+      "emailid": this.products[i].emailid,
       "address": this.checkoutForm.address,
       "companyname": this.checkoutForm.companyname,
       "country": this.checkoutForm.country,

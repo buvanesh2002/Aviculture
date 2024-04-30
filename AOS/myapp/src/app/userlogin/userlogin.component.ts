@@ -48,6 +48,7 @@ export class UserloginComponent {
              //this.router.navigate(['listflockentry']);
              //this.router.navigate(['firstpage']);
              this.auth.dologin();
+             this.auth.userlogin(obj.email)
              this.router.navigate(['home-cus']);
             } else {
                 console.log("else")

@@ -112,6 +112,7 @@ export class UpadteFlockComponent implements OnInit {
   onSubmit() {
     
     let obj = {
+      "emailid" : this.auth.adminemail,
       "id":this.id,
       "flockName": this.flockData.flockName,
       "breedName": this.flockData.breedName,

@@ -29,7 +29,7 @@ export class CustomerregComponent {
       (result: any) => {
         this.showSuccess('Account created successfully!');
         this.reset();
-        this.router.navigate(['login']);
+        this.router.navigate(['userlogin']);
         // this.router.navigate(['listremainder']);
       },
       (error: any) => {

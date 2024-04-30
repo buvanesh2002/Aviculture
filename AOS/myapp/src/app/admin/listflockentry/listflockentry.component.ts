@@ -12,10 +12,10 @@ interface Item {
     birdssold: number;
     closingbirds: number;
     cummortality: number;
-    mortalityPercent: number; // Assuming it should be a percentage
+    mortalitypercent: number; // Assuming it should be a percentage
     eggsperDay: number;
     eggproducion: number;
-    productionPercent: number; // Assuming it should be a percentage
+    productionpercent: number; // Assuming it should be a percentage
     feed: number;
     feedperBird: number;
     feedperEgg: number;

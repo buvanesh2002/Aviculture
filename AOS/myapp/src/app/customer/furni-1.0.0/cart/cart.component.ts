@@ -21,7 +21,7 @@ export class CartComponent implements OnInit {
       this.id = params['id']; 
      console.log("fetch call=",this.id)// Access the 'id' route parameter
      if (this.id != null) {
-      this.fetchFlockData(this.id);
+      this.fetchFlockData(this.id,this.auth.useremail);
 
      }else{
       this.fetchCart()
@@ -31,9 +31,14 @@ export class CartComponent implements OnInit {
   }
 
 
-  fetchFlockData(id: string): void {
-    this.appService.postRequest("cartlist", { id: id }).subscribe((res: any) => {
+  fetchFlockData(id: string,email:string): void {
+    let obj = {
+     "id":id,
+     "useremailid":email
+    };
+    this.appService.postRequest("cartlist", obj).subscribe((res: any) => {
       this.count++
+      console.log(email)
       console.log(this.count)
       this.fetchCart();
     });
@@ -43,9 +48,10 @@ export class CartComponent implements OnInit {
 
   removeProduct(id: any) {
     this.appService.postRequest("removecatrid", { id: id }).subscribe((result: any) => {
-      this.fetchCart()
+    
       this.toastr.success(result);
       console.log("result====", result);
+      this.router.navigate(['cart']);
     });
   }
 
@@ -67,7 +73,9 @@ export class CartComponent implements OnInit {
 
 
   fetchCart(): void {
-    let obj = {};
+    let obj = {
+        "useremailid": this.auth.useremail
+    };
     this.appService.postRequest("listcart", obj).subscribe((result: any) => {
       console.log("result====", result);
       result.forEach((data : any)=> {
@@ -75,6 +83,7 @@ export class CartComponent implements OnInit {
       });
       this.products = result;
       // console.log(this.products) 
+      console.log('welcome to my pge',obj.useremailid)
     });
   }  
    

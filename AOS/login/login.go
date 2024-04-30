@@ -59,6 +59,7 @@ func AddFlock(value dto.Flockdata) (string, error) {
 	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("Addflock"))
 
 	data := bson.M{
+		"emailid":   value.EmailId,
 		"_id":       value.ID,
 		"flockName": value.FlockName,
 		"breedName": value.BreedName,
@@ -82,7 +83,7 @@ func AddFlock(value dto.Flockdata) (string, error) {
 	return "Flock added successfully", nil
 }
 
-func ListFlock() *[]dto.Flockdata {
+func ListFlock(email string) *[]dto.Flockdata {
 	AgeCalculator()
 	log.Println("===============List Credentials===============")
 	info := []dto.Flockdata{}
@@ -91,7 +92,7 @@ func ListFlock() *[]dto.Flockdata {
 	// log.Println("db name : ", db)
 	// // this is also add flock collection
 	// collection := Client.Database(db).Collection(viper.GetString("Addflock"))
-	cur, err := config.AddFlockCollection.Find(context.Background(), bson.M{"active": "true"})
+	cur, err := config.AddFlockCollection.Find(context.Background(), bson.M{"active": "true", "emailid": email})
 	if err != nil {
 		log.Println("Collection list error : ", err)
 	}
@@ -155,7 +156,7 @@ func DailyEntry(value dto.DailyEntry) (string, error) {
 	log.Println("..............", value)
 
 	log.Println("============= Daily Entry =================")
-	ctx := context.TODO()
+	ctx := context.Background()
 	defer ctx.Done()
 	// Client := config.GetConfig()
 	// defer Client.Disconnect(context.Background())
@@ -293,7 +294,7 @@ func AddReminder(value dto.Reminder) (string, error) {
 	return "Reminder added successfully", nil
 }
 
-func ShowReminders(value dto.Reminder) *[]dto.Reminder {
+func ShowReminders() *[]dto.Reminder {
 	log.Println("===============List Credentials===============")
 	DeleteReminder()
 	info := []dto.Reminder{}
@@ -312,6 +313,7 @@ func ShowReminders(value dto.Reminder) *[]dto.Reminder {
 		log.Println("Error while fetching documents:", err)
 		return nil
 	}
+	log.Println("list reminder:", info)
 	return &info
 }
 func UpdateEntry(value dto.DailyEntry) {
@@ -340,7 +342,7 @@ func DeleteReminder() string {
 
 	// Define filter to find completed reminders
 	filter := bson.M{
-		"afterdate": bson.M{"$lt": currentDate}, // Reminders with date less than current date are completed
+		"afterdate": bson.M{"$lt":currentDate} ,// Reminders with date less than current date are completed
 	}
 
 	// Perform deletion operation
@@ -372,7 +374,7 @@ func UpdateFlockEntries(value dto.DailyEntry) string {
 	err := config.AddFlockCollection.FindOne(context.TODO(), flockfilter).Decode(&flock)
 	flockEntries.Age = flock.Age
 
-	log.Println("flockvalues-------------------------", flock)
+	//log.Println("flockvalues-------------------------", flock)
 	//log.Println("err in updateflockentry :", err)
 	if err == nil && len(flock.ListEntry) > 0 {
 		log.Println("inside if ----------", flock.ListEntry)
@@ -467,14 +469,17 @@ func ListParticularFlock(Id string) ([]dto.ListEntry, error) {
 	entry = append(entry, flock.ListEntry...)
 	return entry, err
 }
-func ListReminder() []dto.Reminder {
-	log.Println("----------------Lsit Flock Entry----------------")
+func ListReminder(email string) []dto.Reminder {
+	log.Println("----------------Lsit Reminder----------------")
+	DeleteReminder()
 
 	var remainder []dto.Reminder
 	// Client := config.GetConfig()
 	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddReminder"))
 	// log.Println("----connected to DB------------------------")
-	cur, err := config.AddFlockCollection.Find(context.Background(), bson.M{"status": "true"})
+	currentDate := time.Now().Format("2006-01-02")
+
+	cur, err := config.AddRemainderCollection.Find(context.Background(), bson.M{"status": "true", "beforedate": bson.M{"$lte": currentDate},"emailid":email})
 	if err != nil {
 		log.Println("error finding:", err)
 		log.Println(err)
@@ -550,6 +555,7 @@ func ShopList() *[]dto.ListShop {
 					Birdprice: 50,
 					EggPrice:  5,
 					Image:     f.Image,
+					EmailId: f.EmailId,
 				})
 				if err != nil {
 					log.Println("Error while inserting document:", err)
@@ -593,15 +599,16 @@ func fetchShopDataFromDB(client *mongo.Client, id string) (*dto.ListShop, error)
 	return &shopData, nil
 }
 
-func ShopListWithIDs(id string) []dto.ListShop {
+func ShopListWithIDs(id,email  string) []dto.ListShop {
 	var shopList []dto.ListShop
+	fmt.Println("emaial inside shop with ids:",email)
 	// Client := config.GetConfig()
 	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
 	var shop dto.ListShop
 	log.Println(id)
 	id = removeFirstLastChar(id)
 	log.Println(id)
-	filter := bson.M{"id": id}
+	filter := bson.M{"id": id,"useremailid":email}
 	err := config.AddCartCollection.FindOne(context.Background(), filter).Decode(&shop)
 	if err != nil {
 
@@ -617,11 +624,12 @@ func ShopListWithIDs(id string) []dto.ListShop {
 				}
 				log.Println("Error fetching shop Data:", err)
 				return nil
-			} else {
+			} else { // add remaining required details in this else
 				log.Println("In Else")
 				shop.BirdQuantity = 0
 				shop.EggQuantity = 0
 				shop.TotalAmount = 0
+				shop.UserEmailId= email
 				iy, err := config.AddCartCollection.InsertOne(context.Background(), shop)
 				log.Println(iy)
 				if err != nil {
@@ -686,9 +694,9 @@ func RemoveFromGlobalArray(id string) string {
 
 }
 
-func ListCart() []dto.ListShop {
+func ListCart(email string) []dto.ListShop {
 	var shopList []dto.ListShop
-	query := bson.M{}
+	query := bson.M{"useremailid":email}
 	// Client := config.GetConfig()
 	// collection := Client.Database(viper.GetString("db")).Collection(viper.GetString("AddCart"))
 	cur, err := config.AddCartCollection.Find(context.Background(), query)
@@ -706,7 +714,7 @@ func ListCart() []dto.ListShop {
 
 		shopList = append(shopList, shop)
 	}
-	log.Println(shopList[0].BirdQuantity)
+	
 	log.Println(shopList)
 
 	if err := cur.Err(); err != nil {
@@ -817,7 +825,7 @@ func PlaceOrder(order dto.Order) (string, error) {
 	ctx := context.Background()
 	var totalprice int
 
-	query := bson.M{}
+	query := bson.M{"emailid":order.EmailId,"useremailid":order.UserEmailId}
 	cur, err := config.AddCartCollection.Find(context.Background(), query)
 	if err != nil {
 		log.Fatal("Failed to execute query:", err)
@@ -828,7 +836,7 @@ func PlaceOrder(order dto.Order) (string, error) {
 		log.Println("Error inserting order:", err)
 		return "", err
 	}
-    var quantity int
+	var quantity int
 	for cur.Next(context.Background()) {
 		var shop dto.ListShop
 		err := cur.Decode(&shop)
@@ -836,8 +844,8 @@ func PlaceOrder(order dto.Order) (string, error) {
 			log.Fatal("Error decoding document:", err)
 		}
 		var flock dto.Flockdata
-		log.Println("breedName:",shop.BreedName)
-		queryfind := bson.M{"breedName": shop.BreedName}
+		log.Println("breedName:", shop.BreedName)
+		queryfind := bson.M{"breedName": shop.BreedName,"emailid":order.EmailId}
 		err = config.AddFlockCollection.FindOne(ctx, queryfind).Decode(&flock)
 		lastentry := len(flock.ListEntry)
 		log.Println("lastentry :", lastentry)
@@ -853,12 +861,17 @@ func PlaceOrder(order dto.Order) (string, error) {
 		}
 		totalprice += shop.TotalAmount
 		_, err = config.AddFlockCollection.UpdateOne(ctx, queryfind, update)
-		if err!=nil {
-			fmt.Println("err updtaing",err)
+		if err != nil {
+			fmt.Println("err updtaing", err)
 		}
 
 	}
-	_ = config.AddCartCollection.Drop(ctx)
+	filter := bson.M{"emailid": order.EmailId, "breedName": order.BreedName,}
+	result, err := config.AddCartCollection.DeleteMany(ctx, filter)
+	if err != nil {
+		log.Println(err) 
+	}
+	fmt.Printf("%d documents deleted.\n", result.DeletedCount)
 	today := time.Now()
 
 	// Add 10 days to today's date
@@ -866,7 +879,7 @@ func PlaceOrder(order dto.Order) (string, error) {
 
 	// Format the new date as "2 Jan 2006"
 	formattedDate := newDate.Format("2 Jan 2006")
-	go SendOrderConformation(order.EmailAddress, strconv.Itoa(totalprice), strconv.Itoa(totalprice+50),formattedDate,"id_01",strconv.Itoa(quantity))
+	go SendOrderConformation(order.EmailAddress, strconv.Itoa(totalprice), strconv.Itoa(totalprice+50), formattedDate, "id_01", strconv.Itoa(quantity))
 	return "order placed successfully", err
 }
 

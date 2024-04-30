@@ -28,7 +28,7 @@ export class AdminregComponent {
       (result: any) => {
         this.showSuccess('admin created successfully!');
         this.resetForm();
-        // this.router.navigate(['login']);
+        this.router.navigate(['addremainder']);
       },
       (error: any) => {
         if (error.error && error.error.errors) {

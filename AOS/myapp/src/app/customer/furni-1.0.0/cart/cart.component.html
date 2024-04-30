@@ -62,16 +62,20 @@
 		<!-- End Header/Navigation -->
 
 		<!-- Start Hero Section -->
-			<div class="hero">
+			<div class="hero" style="margin-bottom: 150px;">
 				<div class="container">
 					<div class="row justify-content-between">
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
 								<h1>Cart</h1>
+								<p class="mb-4"> "Cart" is a virtual shopping cart where users can temporarily store selected items before proceeding to checkout. It acts as a holding area for items that users intend to purchase, allowing them to review their selections, adjust quantities, and remove or add items as needed.</p>
 							</div>
 						</div>
 						<div class="col-lg-7">
-							
+						
+								<div class="hero-img-wrap">
+									<img src="assets/images/chicken-egg.png" class="img-fluid">
+								</div>
 						</div>
 					</div>
 				</div>
@@ -80,12 +84,13 @@
 
 		
 
-		<div class="untree_co-section before-footer-section">
-			<div class="container">
-				<div class="row mb-5">
+		<div class="untree_co-section before-footer-section" >
+			<div class="container" >
+				<div class="row mb-5" *ngIf="products.length > 0; else emptyCart">
+
 					<form class="col-md-12" method="post">
 						<div class="site-blocks-table">
-							<table class="table">
+							<table class="table" >
 								<thead>
 									<tr>
 										<th class="product-thumbnail">Image</th>
@@ -141,9 +146,20 @@
 									</tr>
 								</tbody>
 							</table>
+							
 						</div>
 					</form>
+					
 				</div>
+				<ng-template #emptyCart >
+					<div class="row justify-content-center align-items-center">
+						<div class="col-md-8 text-center">
+							<h2>Your cart is empty</h2>
+							<p>Please add items to your cart to proceed</p>
+							<button class="btn btn-black btn-lg py-3" routerLink="/shop">Shop Now</button>
+						</div>
+					</div>
+				</ng-template>
 				<div class="row">
 					<div class="col-md-6">
 						<div class="row mb-5">

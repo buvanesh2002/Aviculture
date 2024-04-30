@@ -33,7 +33,9 @@ export class ListFlockComponent implements OnInit {
 
 
   listData() {
-    let obj = {};
+    let obj = {
+      "emailid": this.auth.adminemail
+    };
     this.responseData= []
     this.appservice.postRequest("listflock", obj).subscribe(
       (response) => {

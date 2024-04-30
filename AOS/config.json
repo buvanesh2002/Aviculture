@@ -1,7 +1,7 @@
 {
     "port":":8087",
-    "mongourl": "mongodb+srv://rohith:rohith@cluster0.cgwpnv8.mongodb.net/?retryWrites=true&w=majority",
-    "uiDirectory":"/home/mohammedyameen/Videos/Aviculture/AOS/static",
+    "mongourl": "mongodb://localhost:27017/27017?retryWrites=true&connectTimeoutMS=10000",
+    "uiDirectory":"/home/bhuvaneswaran/Documents/S8-project/aviculture/AOS/static",
     "db":"Login",
     "colleection":"users",
     "Addflock":"Flock",

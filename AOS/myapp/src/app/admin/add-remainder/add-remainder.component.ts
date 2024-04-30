@@ -15,7 +15,9 @@ export class AddRemainderComponent {
   constructor(private router: Router, private toastr: ToastrService, private appservice: AppService,public auth:AuthserviceService) {}
  
   onSubmit() {
+
     let obj = {
+      "emailid" : this.auth.adminemail,
       "reminderId": this.reminderData.reminderId,
       "remindername": this.reminderData.name,
       "beforeDate": this.reminderData.beforeDate.toString(),

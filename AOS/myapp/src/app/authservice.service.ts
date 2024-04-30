@@ -20,17 +20,27 @@ export class AuthserviceService {
      
     }
     isloggedin:boolean = false
+    adminemail:string = ''
+    useremail:string = ''
     islogged ():boolean{
       return this.isloggedin 
     }
     dologin(){
       this.isloggedin = true
     }
+    adminlogin(test:string){
+        this.adminemail=test;
+    }
+
     logout(){
       this.isloggedin = false
       this.router.navigate(['userlogin']);
     }
     adminlogout(){
       this.router.navigate(['login']);
+    }
+
+    userlogin(test:string){
+      this.useremail = test
     }
 }
